@@ -30,7 +30,9 @@ import {
   DialogHeader,
   DialogTitle,
   DialogTrigger,
+  DonutChart,
   DotsLoader,
+  FormField,
   Input,
   Label,
   LineChart,
@@ -52,6 +54,7 @@ import {
   SelectValue,
   Separator,
   Skeleton,
+  Sparkline,
   Spinner,
   StatCard,
   Switch,
@@ -67,6 +70,7 @@ import {
   ToastViewport,
   Tooltip,
   TooltipContent,
+  TooltipProvider,
   TooltipTrigger,
 } from '@srui/react';
 import { LivePreview } from './live-preview';
@@ -84,6 +88,7 @@ import { FormBuilderDemo } from './form-builder-demo';
 import { CommandPaletteDemo } from './command-palette-demo';
 import { NotificationCenterDemo } from './notification-center-demo';
 import { WizardDemo } from './wizard-demo';
+import { StatCardDemo } from './stat-card-demo';
 
 export function getMDXComponents(components?: MDXComponents) {
   return {
@@ -117,7 +122,9 @@ export function getMDXComponents(components?: MDXComponents) {
     DialogHeader,
     DialogTitle,
     DialogTrigger,
+    DonutChart,
     DotsLoader,
+    FormField,
     Input,
     Label,
     LineChart,
@@ -139,6 +146,7 @@ export function getMDXComponents(components?: MDXComponents) {
     SelectValue,
     Separator,
     Skeleton,
+    Sparkline,
     Spinner,
     StatCard,
     Switch,
@@ -154,6 +162,7 @@ export function getMDXComponents(components?: MDXComponents) {
     ToastViewport,
     Tooltip,
     TooltipContent,
+    TooltipProvider,
     TooltipTrigger,
     LivePreview,
     PresetGrid,
@@ -171,6 +180,7 @@ export function getMDXComponents(components?: MDXComponents) {
     CommandPaletteDemo,
     NotificationCenterDemo,
     WizardDemo,
+    StatCardDemo,
     ...components,
   } satisfies MDXComponents;
 }

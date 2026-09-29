@@ -1,0 +1,75 @@
+# @srui/react
+
+srui = Supercomponent React UI. React + Tailwind v4 component library with
+four runtime-switchable visual presets (flat, glass, neumorphic,
+skeuomorphic) on shadcn-style design tokens. Install as an npm package;
+components are the product (no copy-in).
+
+Install: `pnpm add @srui/react` · React 18/19 · Tailwind CSS v4 required
+(or use the precompiled `@srui/react/styles.css`).
+
+CSS setup (Tailwind hosts):
+```css
+@import "tailwindcss";
+@import "@srui/react/theme.css";
+@import "@srui/react/animations.css";
+@import "@srui/react/presets/flat.css";   /* + glass, neumorphic, skeuomorphic as needed */
+@source "../node_modules/@srui/react/dist";
+```
+Wrap the app: `<UIProvider>` (sets `data-style` + `dark` class on <html>,
+persists to localStorage keys `srui-style` / `srui-scheme`). Inline the
+result of `noFlashScript()` in <head> to avoid theme flash.
+
+Full docs: https://srui.dev/docs (Introduction, Installation, Theming,
+Presets, one page per component).
+
+## Exports (one line each, with props and a usage example)
+
+- `UIProvider` — props: `children, defaultStyle?: UIStyle ("flat"|"glass"|"neumorphic"|"skeuomorphic"), defaultScheme?: UIScheme ("light"|"dark"|"system")`. `<UIProvider defaultStyle="flat"><App/></UIProvider>`
+- `useUIStyle()` — returns `{ style, setStyle, scheme, setScheme, resolvedScheme }`.
+- `noFlashScript()` — returns the pre-paint script string.
+- `cn(...inputs)` — clsx + tailwind-merge class helper.
+- `Button` — props: native button attrs + `variant: "default"|"secondary"|"destructive"|"outline"|"ghost"|"link"`, `size: "sm"|"md"|"lg"|"icon"`, `loading?: boolean`. `<Button variant="outline" loading={busy}>Save</Button>`
+- `Card, CardHeader, CardTitle, CardDescription, CardAction, CardContent, CardFooter` — div slots; Card is the `surface`. `<Card><CardHeader><CardTitle>T</CardTitle></CardHeader><CardContent>…</CardContent></Card>`
+- `Input` — native input attrs + `invalid?: boolean`. `<Input invalid placeholder="Email" />`
+- `Textarea` — native textarea attrs + `invalid?: boolean`.
+- `Dialog, DialogTrigger, DialogClose, DialogContent, DialogHeader, DialogTitle, DialogDescription, DialogFooter` — Radix dialog wrapped; DialogContent: `showCloseButton?: boolean`. `<Dialog><DialogTrigger asChild><Button>Open</Button></DialogTrigger><DialogContent>…</DialogContent></Dialog>`
+- `Spinner`, `DotsLoader`, `Skeleton` — presentational loaders.
+- `LoadingOverlay` — props: `active: boolean, label?: string ("Loading…"), delayMs?: number (200), minDisplayMs?: number (400), variant?: "spinner"|"dots"`. `<div className="relative"><LoadingOverlay active={busy} /></div>`
+- `StatCard` — props: `label, value: number, formatValue?: (v)=>string, delta?: { value: number; direction: "up"|"down" }`. `<StatCard label="Revenue" value={48219} formatValue={v=>'$'+v.toLocaleString()} />`
+- `LineChart` — props: `labels: string[], series: { name, values, color? }[], height?, area?, showGrid?, showLegend?`. Draw-in animated.
+- `BarChart` — same shape as LineChart minus `area`; staggered grow-in.
+- `DonutChart` — props: `label, value (0-100), suffix?, size? (160), color?`. `<DonutChart label="Storage" value={68} suffix="%" />`
+- `Sparkline` — props: `values: number[], width? (120), height? (36), color?, strokeWidth?`.
+- `Select, SelectTrigger, SelectValue, SelectContent, SelectItem, SelectGroup, SelectLabel, SelectSeparator` — Radix select wrapped.
+- `Combobox` — props: `options: {value,label}[], value?, onChange(value), placeholder?, emptyText?, disabled?` (+ button attrs for aria-label). `<Combobox options={opts} value={v} onChange={setV} />`
+- `Tabs, TabsList, TabsTrigger, TabsContent` — Radix tabs wrapped.
+- `TooltipProvider, Tooltip, TooltipTrigger, TooltipContent` — TooltipContent adds `sideOffset?: number` (default 6).
+- `Popover, PopoverTrigger, PopoverContent, PopoverAnchor` — non-modal panel.
+- `ToastProvider` — place once near the root; `useToast()` returns `toast(options)`; options: `{ title, description?, variant?: "default"|"success"|"destructive", action?: { label, onClick } }`. Also exports Toast parts.
+- `Checkbox`, `RadioGroup, RadioGroupItem`, `Switch` — Radix wrapped; checked state uses `bg-primary`.
+- `Label` — Radix label wrapped.
+- `FormField` — props: `label, htmlFor, error?, hint?, children`. Renders Label + control + error (`role=alert`) or hint, never both.
+- `Avatar, AvatarImage, AvatarFallback` — AvatarFallback takes `name?: string` → initials.
+- `Badge` — `variant: "default"|"secondary"|"destructive"|"outline"|"success"|"warning"`.
+- `Separator` — `orientation?: "horizontal"|"vertical"` (default horizontal), `decorative?: boolean` (default true).
+- `Accordion, AccordionItem, AccordionTrigger, AccordionContent` — height-animated via Radix's content-height variable.
+- `Collapsible, CollapsibleTrigger, CollapsibleContent`.
+- `AppShell` — Tier 1 props: `sidebar, topbar?, breadcrumbs?: {label, href?}[], children`; Tier 2: `slots?: { topbarEnd?, sidebarFooter? }, classNames?: { root, sidebar, topbar, main, breadcrumbs }`; Tier 3 hook: `useAppShell()` → `{ isDesktop, drawerOpen, setDrawerOpen, openDrawer, closeDrawer }`. Sidebar docks ≥768px, becomes a Dialog drawer below.
+- `DataTable` — Tier 1 props: `columns: ColumnDef<T>[], data: T[], sortable?, selectable?, pageSize?, onRowSelectionChange?: (rows: T[]) => void, filterable?, pinColumns?, csvExport?`; Tier 2: `slots?: { toolbar?: ComponentType<{table}>, empty?: ReactNode }, classNames?: { root, header, row, cell }`; Tier 3 hook: `useDataTable(config)` → TanStack Table instance (zero JSX). Sorts/filters/paginates via the TanStack pipeline; virtualizes >200 rows when pageSize is unset.
+- `ChartCard` — props: `title, description?, chart: "line"|"bar", labels, series, timeRanges?, onTimeRangeChange?, loading?, area?` + Tier 2/3 (`useChartCard()` → `{ activeRange, setActiveRange, chartKey }`). Range changes remount the chart so the draw-in replays.
+- `FormBuilder` — props: `schema: z.ZodType, fields: { name, label, type: "text"|"email"|"password"|"number"|"textarea"|"select"|"checkbox", options?, placeholder?, hint? }[], onSubmit(values), submitLabel?` + Tier 2/3 (`useFormBuilder(schema, fields)` → `{ form, fieldProps, configOf }`). react-hook-form + Zod.
+- `CommandPalette` — props: `commands: { label, onSelect, shortcut? }[], open?, onOpenChange?, placeholder?` + Tier 2/3 (`useCommandPalette()`). Opens on Cmd/Ctrl+K.
+- `NotificationCenter` — props: `notifications: { id, title, read, timestamp: Date }[], onMarkRead(id)` + Tier 2/3 (`useNotificationCenter()` → `{ notifications, unreadCount, markRead, markAllRead }`).
+- `Wizard` — props: `steps: { label, content }[], onComplete` + Tier 2/3 (`useWizard(count, onComplete)` → `{ index, isFirst, isLast, next, back, reset }`).
+
+Tokens: shadcn-style names (`--background`, `--card`, `--popover`,
+`--primary`, `--secondary`, `--muted`, `--accent`, `--destructive`,
+`--success`, `--warning`, `--info`, each with `-foreground`;
+`--border`, `--input`, `--ring`; `--sidebar*` (7); `--chart-1…8`;
+surface recipe `--surface-shadow(-hover/-pressed)`, `--surface-blur`,
+`--surface-image`; motion `--dur-fast/base/slow`, `--ease-out/spring`;
+`--radius` aliased to sm/md/lg/xl). Utilities: `surface` (never sets
+background-color), `animate-draw/grow-y/grow-x/shimmer/spin-slow/
+count-fade/scale-in/fade-in`. Preset scope: `[data-style="<preset>"]` —
+scoped to any wrapper for side-by-side presets.

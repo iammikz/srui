@@ -15,19 +15,16 @@ import { StatCard } from "@srui/react";
 
 ## Usage
 
-<LivePreview code={`<StatCard
+<StatCardDemo />
+
+```tsx
+<StatCard
   label="Monthly revenue"
   value={48219}
-  formatValue={(v) => \`$\${v.toLocaleString()}\`}
+  formatValue={(v) => `$${v.toLocaleString()}`}
   delta={{ value: 12.4, direction: "up" }}
-/>`}>
-  <StatCard
-    label="Monthly revenue"
-    value={48219}
-    formatValue={(v) => `$${v.toLocaleString()}`}
-    delta={{ value: 12.4, direction: "up" }}
-  />
-</LivePreview>
+/>
+```
 
 ## Props
 
@@ -48,18 +45,8 @@ import { StatCard } from "@srui/react";
 
 ### Percent formatting, down delta
 
-<LivePreview code={`<StatCard
-  label="Churn rate"
-  value={2}
-  formatValue={(v) => \`\${v}%\`}
-  delta={{ value: 0.6, direction: "down" }}
-/>`}>
-  <StatCard
-    label="Churn rate"
-    value={2}
-    formatValue={(v) => `${v}%`}
-    delta={{ value: 0.6, direction: "down" }}
-  />
+<LivePreview code={`<StatCard label="Churn rate" value={2} delta={{ value: 0.6, direction: "down" }} />`}>
+  <StatCard label="Churn rate" value={2} delta={{ value: 0.6, direction: "down" }} />
 </LivePreview>
 
 ## Accessibility

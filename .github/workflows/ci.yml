@@ -1,0 +1,53 @@
+name: CI
+
+on:
+  push:
+    branches: [main]
+  pull_request:
+
+jobs:
+  build-and-test:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 22
+
+      - name: Enable corepack (pnpm 9.x per the implementation plan)
+        run: |
+          corepack enable
+          corepack prepare pnpm@9.12.0 --activate
+
+      - name: Install dependencies
+        run: pnpm install --frozen-lockfile
+
+      - name: Build the library (tsup + dts + precompiled CSS)
+        run: pnpm build
+
+      - name: Type-check the demo app
+        run: pnpm --filter demo exec tsc --noEmit
+
+      - name: Contrast matrix (§6.2)
+        run: node packages/react/scripts/contrast-check.mjs
+
+      - name: Install Playwright browsers
+        run: pnpm exec playwright install --with-deps chromium
+
+      - name: Accessibility suite (§6.1/6.3/6.4 — axe, reduced motion, keyboard)
+        run: pnpm test:a11y
+
+      - name: Visual regression (§7.1 — fails on >0.1% pixel diff)
+        run: pnpm test:visual
+
+      - name: Build the docs site
+        run: pnpm build:docs
+
+      - name: Upload visual diff artifacts on failure
+        if: failure()
+        uses: actions/upload-artifact@v4
+        with:
+          name: visual-diffs
+          path: packages/react/tests/.playwright
+          if-no-files-found: ignore
