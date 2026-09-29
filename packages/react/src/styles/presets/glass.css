@@ -1,0 +1,198 @@
+/*
+ * srui preset: glass — translucent surfaces over a blurred backdrop.
+ * Caution (known gotcha): glass needs contrast behind it. It reads badly
+ * over a flat single-color page, so this preset gives <body> a soft
+ * colorful backdrop; cap nested glass surfaces around 2 because
+ * backdrop-filter isn't free.
+ * Activated by [data-style="glass"].
+ */
+
+[data-style="glass"] {
+  --background: oklch(0.965 0.008 255);
+  --foreground: oklch(0.22 0.02 260);
+
+  /* translucent surfaces — the blur behind them is the point */
+  --card: oklch(1 0 0 / 0.55);
+  --card-foreground: oklch(0.22 0.02 260);
+
+  --popover: oklch(1 0 0 / 0.78);
+  --popover-foreground: oklch(0.22 0.02 260);
+
+  --primary: oklch(0.52 0.17 262);
+  --primary-foreground: oklch(0.985 0 0);
+
+  --secondary: oklch(0.55 0.03 260 / 0.12);
+  --secondary-foreground: oklch(0.28 0.03 262);
+
+  --muted: oklch(0.55 0.03 260 / 0.1);
+  --muted-foreground: oklch(0.44 0.03 262);
+
+  --accent: oklch(0.55 0.06 260 / 0.16);
+  --accent-foreground: oklch(0.28 0.04 262);
+
+  --destructive: oklch(0.55 0.2 25);
+  --destructive-foreground: oklch(0.985 0 0);
+
+  --success: oklch(0.52 0.13 155);
+  --success-foreground: oklch(0.985 0 0);
+
+  --warning: oklch(0.76 0.14 78);
+  --warning-foreground: oklch(0.27 0.06 70);
+
+  --info: oklch(0.55 0.16 250);
+  --info-foreground: oklch(0.985 0 0);
+
+  --border: oklch(1 0 0 / 0.5);
+  --input: oklch(0.3 0.03 260 / 0.1);
+  --ring: oklch(0.52 0.17 262);
+
+  --sidebar: oklch(1 0 0 / 0.45);
+  --sidebar-foreground: oklch(0.22 0.02 260);
+  --sidebar-primary: oklch(0.52 0.17 262);
+  --sidebar-primary-foreground: oklch(0.985 0 0);
+  --sidebar-accent: oklch(0.55 0.06 260 / 0.16);
+  --sidebar-accent-foreground: oklch(0.28 0.04 262);
+  --sidebar-border: oklch(1 0 0 / 0.4);
+
+  --surface-shadow:
+    0 8px 32px oklch(0.35 0.05 260 / 0.18), 0 1px 2px oklch(0.35 0.05 260 / 0.1);
+  --surface-shadow-hover:
+    0 12px 40px oklch(0.35 0.05 260 / 0.22), 0 2px 4px oklch(0.35 0.05 260 / 0.1);
+  --surface-shadow-pressed:
+    0 4px 16px oklch(0.35 0.05 260 / 0.16);
+  --surface-blur: 16px;
+  --surface-image: linear-gradient(
+    135deg,
+    oklch(1 0 0 / 0.14),
+    oklch(1 0 0 / 0.02) 55%,
+    oklch(1 0 0 / 0.06)
+  );
+
+  --radius: 0.75rem;
+}
+
+/* Glass needs something interesting behind it: soft fixed color blobs. */
+[data-style="glass"] body {
+  background-image:
+    radial-gradient(
+      60rem 40rem at 12% -10%,
+      oklch(0.78 0.13 195 / 0.4),
+      transparent 62%
+    ),
+    radial-gradient(
+      52rem 38rem at 108% 18%,
+      oklch(0.72 0.15 330 / 0.32),
+      transparent 60%
+    ),
+    radial-gradient(
+      46rem 40rem at 42% 118%,
+      oklch(0.8 0.13 140 / 0.3),
+      transparent 62%
+    );
+  background-attachment: fixed;
+}
+
+[data-style="glass"].dark,
+.dark [data-style="glass"] {
+  --background: oklch(0.175 0.015 262);
+  --foreground: oklch(0.94 0.01 260);
+
+  --card: oklch(0.32 0.03 262 / 0.5);
+  --card-foreground: oklch(0.94 0.01 260);
+
+  --popover: oklch(0.26 0.025 262 / 0.82);
+  --popover-foreground: oklch(0.94 0.01 260);
+
+  --primary: oklch(0.7 0.14 262);
+  --primary-foreground: oklch(0.15 0.02 262);
+
+  --secondary: oklch(0.8 0.02 260 / 0.1);
+  --secondary-foreground: oklch(0.92 0.01 260);
+
+  --muted: oklch(0.8 0.02 260 / 0.08);
+  --muted-foreground: oklch(0.72 0.015 262);
+
+  --accent: oklch(0.75 0.05 260 / 0.14);
+  --accent-foreground: oklch(0.92 0.01 260);
+
+  --destructive: oklch(0.65 0.18 25);
+  --destructive-foreground: oklch(0.14 0.02 25);
+
+  --success: oklch(0.68 0.13 155);
+  --success-foreground: oklch(0.16 0.02 155);
+
+  --warning: oklch(0.8 0.13 78);
+  --warning-foreground: oklch(0.27 0.06 70);
+
+  --info: oklch(0.7 0.13 250);
+  --info-foreground: oklch(0.16 0.03 250);
+
+  --border: oklch(1 0 0 / 0.14);
+  --input: oklch(1 0 0 / 0.12);
+  --ring: oklch(0.7 0.14 262);
+
+  --sidebar: oklch(0.3 0.03 262 / 0.42);
+  --sidebar-foreground: oklch(0.94 0.01 260);
+  --sidebar-primary: oklch(0.7 0.14 262);
+  --sidebar-primary-foreground: oklch(0.15 0.02 262);
+  --sidebar-accent: oklch(0.75 0.05 260 / 0.14);
+  --sidebar-accent-foreground: oklch(0.92 0.01 260);
+  --sidebar-border: oklch(1 0 0 / 0.12);
+
+  --surface-shadow:
+    0 8px 32px oklch(0 0 0 / 0.4), 0 1px 2px oklch(0 0 0 / 0.3);
+  --surface-shadow-hover:
+    0 12px 40px oklch(0 0 0 / 0.5), 0 2px 4px oklch(0 0 0 / 0.3);
+  --surface-shadow-pressed: 0 4px 16px oklch(0 0 0 / 0.35);
+  --surface-image: linear-gradient(
+    135deg,
+    oklch(1 0 0 / 0.08),
+    oklch(1 0 0 / 0.01) 55%,
+    oklch(1 0 0 / 0.04)
+  );
+}
+
+[data-style="glass"].dark body,
+.dark [data-style="glass"] body {
+  background-image:
+    radial-gradient(
+      60rem 40rem at 12% -10%,
+      oklch(0.42 0.14 250 / 0.55),
+      transparent 62%
+    ),
+    radial-gradient(
+      52rem 38rem at 108% 18%,
+      oklch(0.4 0.13 330 / 0.5),
+      transparent 60%
+    ),
+    radial-gradient(
+      46rem 40rem at 42% 118%,
+      oklch(0.42 0.1 150 / 0.45),
+      transparent 62%
+    );
+}
+
+/* Respect OS "reduce transparency": drop the blur and the page backdrop,
+ * make surfaces near-opaque. */
+@media (prefers-reduced-transparency: reduce) {
+  [data-style="glass"],
+  [data-style="glass"].dark,
+  .dark [data-style="glass"] {
+    --surface-blur: 0px;
+    --surface-image: none;
+  }
+  [data-style="glass"] {
+    --card: oklch(0.985 0.005 255);
+    --popover: oklch(0.985 0.005 255);
+  }
+  [data-style="glass"].dark,
+  .dark [data-style="glass"] {
+    --card: oklch(0.24 0.02 262);
+    --popover: oklch(0.24 0.02 262);
+  }
+  [data-style="glass"] body,
+  [data-style="glass"].dark body,
+  .dark [data-style="glass"] body {
+    background-image: none;
+  }
+}

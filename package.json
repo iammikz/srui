@@ -1,0 +1,19 @@
+{
+  "name": "srui",
+  "private": true,
+  "version": "0.0.0",
+  "description": "srui — Supercomponent React UI. Monorepo root.",
+  "packageManager": "pnpm@9.12.0",
+  "scripts": {
+    "dev": "pnpm --filter demo dev",
+    "dev:docs": "pnpm --filter docs dev",
+    "build": "pnpm --filter @srui/react build",
+    "build:docs": "pnpm --filter docs build",
+    "test": "pnpm --filter @srui/react test",
+    "test:a11y": "pnpm --filter @srui/react test:a11y",
+    "test:visual": "pnpm --filter @srui/react test:visual"
+  },
+  "devDependencies": {
+    "@changesets/cli": "^2.27.9"
+  }
+}

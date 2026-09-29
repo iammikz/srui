@@ -1,0 +1,7 @@
+@import "tailwindcss";
+@import "@srui/react/theme.css";
+@import "@srui/react/animations.css";
+@import "@srui/react/presets/flat.css";
+@import "@srui/react/presets/glass.css";
+@import "@srui/react/presets/neumorphic.css";
+@import "@srui/react/presets/skeuomorphic.css";

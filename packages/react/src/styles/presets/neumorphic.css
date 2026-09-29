@@ -1,0 +1,128 @@
+/*
+ * srui preset: neumorphic — soft extruded shapes on a single base tone.
+ * Caution (known gotcha): --card MUST equal --background here; any drift
+ * breaks the "extruded from the page" illusion. Elements are shaped purely
+ * by the dual-light surface shadows; borders are nearly invisible.
+ * Activated by [data-style="neumorphic"].
+ */
+
+[data-style="neumorphic"] {
+  --background: oklch(0.918 0.009 257);
+  --foreground: oklch(0.31 0.025 260);
+
+  /* must equal --background (see gotcha) */
+  --card: oklch(0.918 0.009 257);
+  --card-foreground: oklch(0.31 0.025 260);
+
+  --popover: oklch(0.918 0.009 257);
+  --popover-foreground: oklch(0.31 0.025 260);
+
+  --primary: oklch(0.5 0.17 262);
+  --primary-foreground: oklch(0.985 0 0);
+
+  --secondary: oklch(0.872 0.011 257);
+  --secondary-foreground: oklch(0.31 0.025 260);
+
+  --muted: oklch(0.872 0.011 257);
+  --muted-foreground: oklch(0.487 0.025 260);
+
+  --accent: oklch(0.882 0.013 257);
+  --accent-foreground: oklch(0.31 0.025 260);
+
+  --destructive: oklch(0.55 0.2 25);
+  --destructive-foreground: oklch(0.985 0 0);
+
+  --success: oklch(0.52 0.13 155);
+  --success-foreground: oklch(0.985 0 0);
+
+  --warning: oklch(0.76 0.14 78);
+  --warning-foreground: oklch(0.27 0.06 70);
+
+  --info: oklch(0.55 0.16 250);
+  --info-foreground: oklch(0.985 0 0);
+
+  --border: oklch(0.55 0.02 260 / 0.08);
+  --input: oklch(0.55 0.02 260 / 0.1);
+  --ring: oklch(0.5 0.17 262);
+
+  --sidebar: oklch(0.918 0.009 257);
+  --sidebar-foreground: oklch(0.31 0.025 260);
+  --sidebar-primary: oklch(0.5 0.17 262);
+  --sidebar-primary-foreground: oklch(0.985 0 0);
+  --sidebar-accent: oklch(0.882 0.013 257);
+  --sidebar-accent-foreground: oklch(0.31 0.025 260);
+  --sidebar-border: oklch(0.55 0.02 260 / 0.08);
+
+  /* extruded: dark bottom-right, light top-left */
+  --surface-shadow:
+    6px 6px 12px oklch(0.7 0.02 260 / 0.55),
+    -6px -6px 12px oklch(1 0 0 / 0.9);
+  --surface-shadow-hover:
+    8px 8px 16px oklch(0.7 0.02 260 / 0.6),
+    -8px -8px 16px oklch(1 0 0 / 0.95);
+  --surface-shadow-pressed:
+    inset 4px 4px 8px oklch(0.7 0.02 260 / 0.55),
+    inset -4px -4px 8px oklch(1 0 0 / 0.85);
+  --surface-blur: 0px;
+  --surface-image: none;
+
+  --radius: 1.25rem;
+}
+
+[data-style="neumorphic"].dark,
+.dark [data-style="neumorphic"] {
+  --background: oklch(0.245 0.015 262);
+  --foreground: oklch(0.9 0.01 260);
+
+  --card: oklch(0.245 0.015 262);
+  --card-foreground: oklch(0.9 0.01 260);
+
+  --popover: oklch(0.245 0.015 262);
+  --popover-foreground: oklch(0.9 0.01 260);
+
+  --primary: oklch(0.66 0.15 262);
+  --primary-foreground: oklch(0.17 0.02 262);
+
+  --secondary: oklch(0.29 0.015 262);
+  --secondary-foreground: oklch(0.9 0.01 260);
+
+  --muted: oklch(0.29 0.015 262);
+  --muted-foreground: oklch(0.7 0.015 262);
+
+  --accent: oklch(0.31 0.015 262);
+  --accent-foreground: oklch(0.9 0.01 260);
+
+  --destructive: oklch(0.63 0.19 25);
+  --destructive-foreground: oklch(0.985 0 0);
+
+  --success: oklch(0.66 0.13 155);
+  --success-foreground: oklch(0.16 0.02 155);
+
+  --warning: oklch(0.79 0.13 78);
+  --warning-foreground: oklch(0.27 0.06 70);
+
+  --info: oklch(0.68 0.13 250);
+  --info-foreground: oklch(0.16 0.03 250);
+
+  --border: oklch(1 0 0 / 8%);
+  --input: oklch(1 0 0 / 10%);
+  --ring: oklch(0.66 0.15 262);
+
+  --sidebar: oklch(0.245 0.015 262);
+  --sidebar-foreground: oklch(0.9 0.01 260);
+  --sidebar-primary: oklch(0.66 0.15 262);
+  --sidebar-primary-foreground: oklch(0.17 0.02 262);
+  --sidebar-accent: oklch(0.31 0.015 262);
+  --sidebar-accent-foreground: oklch(0.9 0.01 260);
+  --sidebar-border: oklch(1 0 0 / 8%);
+
+  --surface-shadow:
+    6px 6px 12px oklch(0.1 0.01 262 / 0.7),
+    -6px -6px 12px oklch(0.42 0.02 262 / 0.65);
+  --surface-shadow-hover:
+    8px 8px 16px oklch(0.1 0.01 262 / 0.75),
+    -8px -8px 16px oklch(0.45 0.02 262 / 0.7);
+  --surface-shadow-pressed:
+    inset 4px 4px 8px oklch(0.1 0.01 262 / 0.65),
+    inset -4px -4px 8px oklch(0.42 0.02 262 / 0.55);
+}

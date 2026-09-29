@@ -1,0 +1,42 @@
+<!doctype html>
+<html lang="en" data-style="flat">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>srui demo</title>
+    <script>
+      (function () {
+        try {
+          var s = localStorage.getItem("srui-style");
+          var c = localStorage.getItem("srui-scheme");
+          var sv =
+            s === "glass" || s === "neumorphic" || s === "skeuomorphic" || s === "flat"
+              ? s
+              : "flat";
+          var cv = c === "light" || c === "dark" || c === "system" ? c : "system";
+          var dark =
+            cv === "dark" ||
+            (cv === "system" && window.matchMedia("(prefers-color-scheme: dark)").matches);
+          var e = document.documentElement;
+          e.setAttribute("data-style", sv);
+          e.classList.toggle("dark", dark);
+          e.style.colorScheme = dark ? "dark" : "light";
+          // Test hook (used by Playwright): ?style=…&scheme=… override.
+          var q = new URLSearchParams(window.location.search);
+          var qs = q.get("style");
+          var qc = q.get("scheme");
+          if (qs && (qs === "flat" || qs === "glass" || qs === "neumorphic" || qs === "skeuomorphic")) {
+            e.setAttribute("data-style", qs);
+          }
+          if (qc && (qc === "light" || qc === "dark")) {
+            e.classList.toggle("dark", qc === "dark");
+          }
+        } catch (err) {}
+      })();
+    </script>
+  </head>
+  <body>
+    <div id="root"></div>
+    <script type="module" src="/src/main.tsx"></script>
+  </body>
+</html>

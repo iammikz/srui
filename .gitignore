@@ -1,0 +1,29 @@
+# dependencies
+node_modules/
+.pnpm-store/
+
+# builds
+dist/
+.next/
+out/
+build/
+*.tsbuildinfo
+
+# test artifacts
+packages/react/tests/**/screenshots/
+playwright-report/
+test-results/
+.verdaccio/
+
+# caches
+.turbo/
+.cache/
+.fumadocs/
+
+# env
+.env
+.env.local
+
+# editor / OS
+.DS_Store
+Thumbs.db
