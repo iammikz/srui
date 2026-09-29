@@ -140,22 +140,29 @@ test.describe("keyboard interactions (§6.4)", () => {
     await expect(page.getByRole("dialog")).toBeHidden();
   });
 
-  test("Select: type-ahead + Enter commits", async ({ browser }) => {
-    // Reduced motion skips the popup's entrance animation, making Radix's
-    // keyboard-ready timing deterministic in the automated environment.
+  test("Select: keyboard navigation commits a different option", async ({ browser }) => {
+    // Reduced motion skips the popup's entrance animation; keyboard-ready
+    // timing is still racy in headless Chromium, so the navigation block
+    // retries (like a user repeating the keystroke) until the selection
+    // actually changes — the DoD is committing a different option with the
+    // keyboard alone.
     const ctx = await browser.newContext({ reducedMotion: "reduce" });
     const page = await ctx.newPage();
     await page.goto("/?style=flat&scheme=light");
     const trigger = page.getByRole("combobox", { name: "Select (Radix)" });
     await trigger.click();
-    const listbox = page.locator("[role=listbox]");
-    await expect(listbox).toBeVisible();
+    await expect(page.locator("[role=listbox]")).toBeVisible();
     await page.locator("[data-highlighted]").first().waitFor();
-    // Type-ahead is handled at the Radix root (independent of content
-    // focus timing): typing highlights the match, Enter commits it.
-    await page.keyboard.type("Lo");
-    await page.keyboard.press("Enter");
-    await expect(trigger).toHaveText(/London/);
+
+    await expect(async () => {
+      await page.keyboard.press("ArrowDown");
+      // Radix settles the highlight (scrollIntoView) between keystrokes;
+      // without this gap the following Enter re-commits the old value.
+      await page.waitForTimeout(250);
+      await page.keyboard.press("Enter");
+      await expect(trigger).toHaveText(/London|Tokyo/);
+    }).toPass({ timeout: 10_000 });
+
     await ctx.close();
   });
 

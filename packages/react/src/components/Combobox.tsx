@@ -10,7 +10,7 @@ export interface ComboboxOption {
   label: string;
 }
 
-export interface ComboboxProps extends React.ComponentPropsWithoutRef<"button"> {
+export interface ComboboxProps {
   options: ComboboxOption[];
   value?: string;
   onChange: (value: string) => void;
@@ -19,6 +19,8 @@ export interface ComboboxProps extends React.ComponentPropsWithoutRef<"button"> 
   emptyText?: string;
   className?: string;
   disabled?: boolean;
+  /** Accessible name for the trigger button (no visible label). */
+  "aria-label"?: string;
 }
 
 /**
