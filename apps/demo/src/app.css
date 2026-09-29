@@ -5,3 +5,9 @@
 @import "@srui/react/presets/glass.css";
 @import "@srui/react/presets/neumorphic.css";
 @import "@srui/react/presets/skeuomorphic.css";
+/* The workspace link behaves like an installed package: Tailwind skips
+   node_modules, so point it at the built component classes explicitly
+   (same requirement as any external consumer — implementation plan §1.3). */
+/* One level up, with "./"-style relative form: the scanner does not
+   traverse pnpm's workspace junction via deeper ".." paths. */
+@source "../node_modules/@srui/react/dist";

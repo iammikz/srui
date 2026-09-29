@@ -1,6 +1,12 @@
 import { StrictMode } from "react";
 import { createRoot } from "react-dom/client";
-import { UIProvider, type UIScheme, type UIStyle } from "@srui/react";
+import {
+  UIProvider,
+  ToastProvider,
+  TooltipProvider,
+  type UIScheme,
+  type UIStyle,
+} from "@srui/react";
 import { App } from "./App";
 import "./app.css";
 
@@ -16,7 +22,11 @@ createRoot(document.getElementById("root")!).render(
       defaultStyle={styleParam ?? undefined}
       defaultScheme={schemeParam ?? undefined}
     >
-      <App />
+      <ToastProvider>
+        <TooltipProvider>
+          <App />
+        </TooltipProvider>
+      </ToastProvider>
     </UIProvider>
   </StrictMode>,
 );

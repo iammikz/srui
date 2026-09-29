@@ -1,0 +1,77 @@
+---
+title: Form Builder
+description: "Schema-driven forms — one config array, react-hook-form + Zod, srui fields."
+---
+
+`FormBuilder` turns a Zod schema plus a field-config array into a working
+form: one `FormField` (Phase 3) per entry, wired to `react-hook-form` with
+the Zod resolver. Field-level validation errors render under the field, and
+the submit `Button` shows its `loading` state while `onSubmit` is pending.
+
+## Installation
+
+```tsx
+import { FormBuilder } from "@srui/react";
+```
+
+## Usage
+
+<FormBuilderDemo />
+
+```tsx
+const schema = z.object({
+  name: z.string().min(2, "Name must be at least 2 characters."),
+  email: z.string().email("Enter a valid email address."),
+  role: z.string().min(1, "Pick a role."),
+});
+
+<FormBuilder
+  schema={schema}
+  fields={[
+    { name: "name", label: "Name", type: "text" },
+    { name: "email", label: "Email", type: "email" },
+    { name: "role", label: "Role", type: "select", options: [...] },
+  ]}
+  submitLabel="Create account"
+  onSubmit={async (values) => { await api.create(values); }}
+/>
+```
+
+Submit the demo above empty: Zod errors appear under each field, no reload,
+no console error.
+
+## Props
+
+| Prop | Type | Default | Description |
+|---|---|---|---|
+| `schema` | `z.ZodType` | — | Validation schema (drives the resolver) |
+| `fields` | `FormFieldConfig[]` | — | `{ name, label, type, options?, placeholder?, hint? }` |
+| `onSubmit` | `(values: z.infer<S>) => void \| Promise<void>` | — | Receives validated values |
+| `submitLabel` | `string` | `"Submit"` | Button label |
+
+`type` is one of `"text" | "email" | "password" | "number" | "textarea" |
+"select" | "checkbox"`.
+
+## Tier 2 — slots and classNames
+
+```tsx
+<FormBuilder … slots={{ footer: <a href="/">Cancel</a> }}
+  classNames={{ form: "…", field: "…", submit: "…" }} />
+```
+
+## Tier 3 — useFormBuilder()
+
+The headless hook: the RHF form instance (Zod resolver attached) plus
+per-field binding helpers. Zero JSX — build any layout.
+
+```tsx
+const { form, fieldProps, configOf } = useFormBuilder(schema, fields);
+// fieldProps("email") → { id, name, error } pre-paired for FormField
+```
+
+## Accessibility
+
+Every control is labelled (`Label`/`htmlFor` pair), errors render with
+`role="alert"` and set `aria-invalid` on the control, and the submit button
+announces pending work via `aria-busy`. Focus stays on the form; nothing
+about validation requires sight.

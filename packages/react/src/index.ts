@@ -115,3 +115,48 @@ export {
   CollapsibleTrigger,
   CollapsibleContent,
 } from "./components/Collapsible";
+
+// Phase 5 super-components
+export { AppShell, APP_SHELL_BREAKPOINT, useAppShell } from "./components/AppShell";
+export type {
+  AppShellProps,
+  AppShellSlots,
+  AppShellClassNames,
+  AppShellBreadcrumb,
+} from "./components/AppShell";
+export { DataTable, DATA_TABLE_VIRTUALIZE_THRESHOLD, useDataTable } from "./components/DataTable";
+export type {
+  DataTableProps,
+  DataTableSlots,
+  DataTableClassNames,
+  TableInstance,
+  UseDataTableConfig,
+} from "./components/DataTable";
+export { ChartCard, useChartCard } from "./components/ChartCard";
+export type {
+  ChartCardProps,
+  ChartCardSlots,
+  ChartCardClassNames,
+} from "./components/ChartCard";
+export { FormBuilder, useFormBuilder } from "./components/FormBuilder";
+export type {
+  FormBuilderProps,
+  FormBuilderSlots,
+  FormBuilderClassNames,
+  FormFieldConfig,
+} from "./components/FormBuilder";
+export { CommandPalette, useCommandPalette } from "./components/CommandPalette";
+export type {
+  CommandPaletteProps,
+  CommandPaletteSlots,
+  CommandPaletteClassNames,
+  CommandItem,
+} from "./components/CommandPalette";
+export { NotificationCenter, useNotificationCenter } from "./components/NotificationCenter";
+export type { NotificationItem } from "./components/NotificationCenter";
+export { Wizard, useWizard } from "./components/Wizard";
+export type { WizardProps, WizardStep } from "./components/Wizard";
+export { DonutChart } from "./components/chart/DonutChart";
+export type { DonutChartProps } from "./components/chart/DonutChart";
+export { Sparkline } from "./components/chart/Sparkline";
+export type { SparklineProps } from "./components/chart/Sparkline";

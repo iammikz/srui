@@ -28,6 +28,13 @@
     "components/badge",
     "components/separator",
     "components/accordion",
-    "components/collapsible"
+    "components/collapsible",
+    "components/app-shell",
+    "components/data-table",
+    "components/chart-card",
+    "components/form-builder",
+    "components/command-palette",
+    "components/notification-center",
+    "components/wizard"
   ]
 }

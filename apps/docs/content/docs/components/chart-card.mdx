@@ -1,0 +1,75 @@
+---
+title: Chart Card
+description: Card + chart + time-range switcher + loading overlay, in one header-driven component.
+---
+
+`ChartCard` wraps `Card` and `LineChart`/`BarChart` (Phase 0): a header with
+title/description and an optional segmented time-range switcher, the chart
+itself, and a `LoadingOverlay` for pending data. Switching time ranges
+**remounts** the chart (via a `key`), so the draw-in animation replays
+instead of morphing the path in place.
+
+## Installation
+
+```tsx
+import { ChartCard } from "@srui/react";
+```
+
+## Usage
+
+<ChartCardDemo />
+
+```tsx
+<ChartCard
+  title="Revenue"
+  chart="line"
+  labels={months}
+  series={[{ name: "Revenue", values }]}
+  timeRanges={["7d", "30d", "90d"]}
+  onTimeRangeChange={setRange}
+  loading={pending}
+/>
+```
+
+## Props
+
+| Prop | Type | Default | Description |
+|---|---|---|---|
+| `title` | `string` | — | Card title |
+| `description` | `string` | — | Card description |
+| `chart` | `"line" \| "bar"` | — | Which Phase 0 chart to render |
+| `labels` | `string[]` | — | X-axis labels |
+| `series` | `LineChartSeries[] \| { values: number[] }` | — | Series or single-values shorthand |
+| `timeRanges` | `string[]` | — | Segmented button group in the header |
+| `onTimeRangeChange` | `(range: string) => void` | — | Fires on range switch |
+| `loading` | `boolean` | `false` | `LoadingOverlay` over the chart area |
+| `area` | `boolean` | `false` | Fill under line charts |
+
+## Tier 2 — slots and classNames
+
+```tsx
+<ChartCard
+  …
+  slots={{ headerAction: <Button size="sm" variant="ghost">Download</Button> }}
+  classNames={{ root: "…", header: "…", content: "…", timeRanges: "…" }}
+/>
+```
+
+## Tier 3 — useChartCard()
+
+The headless hook: active range state plus a `chartKey` that changes with
+it, for remount-driven replay of any chart's entrance animation.
+
+```tsx
+const { activeRange, setActiveRange, chartKey } = useChartCard({
+  timeRanges: ["7d", "30d", "90d"],
+  onTimeRangeChange: load,
+});
+<div key={chartKey}><MyChart range={activeRange} /></div>
+```
+
+## Accessibility
+
+The range group is `role="group"` with `aria-pressed` state on each button;
+the overlay announces loading via `role="status"`. The chart SVG itself
+carries a descriptive `aria-label` (see Charts).

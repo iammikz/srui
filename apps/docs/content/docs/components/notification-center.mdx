@@ -1,0 +1,59 @@
+---
+title: Notification Center
+description: A bell trigger opening a Popover feed of notification cards.
+---
+
+`NotificationCenter` is a `Popover` (Phase 3) containing a scrollable list
+of items rendered with `Card`: a bell trigger with an unread badge, relative
+timestamps, and per-item / mark-all read controls.
+
+## Installation
+
+```tsx
+import { NotificationCenter } from "@srui/react";
+```
+
+## Usage
+
+<NotificationCenterDemo />
+
+```tsx
+const [items, setItems] = useState([
+  { id: "1", title: "Deploy finished", read: false, timestamp: new Date(Date.now() - 5 * 60000) },
+]);
+
+<NotificationCenter
+  notifications={items}
+  onMarkRead={(id) => setItems((l) => l.map((n) => (n.id === id ? { ...n, read: true } : n)))}
+/>
+```
+
+## Props
+
+| Prop | Type | Default | Description |
+|---|---|---|---|
+| `notifications` | `{ id: string; title: string; read: boolean; timestamp: Date }[]` | — | The feed (newest first is handled for you) |
+| `onMarkRead` | `(id: string) => void` | — | Mark one notification read |
+
+## Tier 2 — slots and classNames
+
+```tsx
+<NotificationCenter … slots={{ empty: "You're all caught up." }}
+  classNames={{ trigger: "…", list: "…", item: "…" }} />
+```
+
+## Tier 3 — useNotificationCenter()
+
+The headless hook: unread count, newest-first ordering, mark-read helpers.
+
+```tsx
+const { notifications, unreadCount, markRead, markAllRead } =
+  useNotificationCenter(items, onMarkRead);
+```
+
+## Accessibility
+
+The trigger's accessible name includes the unread count ("Notifications, 2
+unread"); the list is a labelled `role="feed"`; mark-read buttons have
+per-item labels (`Mark "Deploy finished" as read`). Unread state is conveyed
+by border weight + bold, not color alone.

@@ -11,7 +11,9 @@
 @import '@srui/react/presets/glass.css';
 @import '@srui/react/presets/neumorphic.css';
 @import '@srui/react/presets/skeuomorphic.css';
-@source "../../node_modules/@srui/react/dist";
+/* pnpm's workspace link is a Windows junction the scanner can't traverse,
+   so point at the real package path (same content the published dist has). */
+@source "../node_modules/@srui/react/dist";
 
 html {
   scrollbar-gutter: stable;

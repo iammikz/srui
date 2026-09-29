@@ -1,0 +1,76 @@
+---
+title: App Shell
+description: Application layout — docked sidebar, topbar, breadcrumbs, and a drawer below 768px.
+---
+
+`AppShell` is the page-level super-component: a fixed-width desktop sidebar
+(`--sidebar*` tokens) that collapses into a **Dialog-based drawer** below the
+768px breakpoint — it reuses Phase 0's `Dialog` rather than a second overlay
+system. The main content area keeps a stable width across the swap.
+
+## Installation
+
+```tsx
+import { AppShell } from "@srui/react";
+```
+
+## Usage
+
+<AppShellDemo />
+
+```tsx
+<AppShell
+  sidebar={<nav>…</nav>}
+  topbar={<span>Acme Admin</span>}
+  breadcrumbs={[
+    { label: "Home", href: "/" },
+    { label: "Projects", href: "/projects" },
+    { label: "srui" },
+  ]}
+>
+  <main>your page</main>
+</AppShell>
+```
+
+## Props
+
+| Prop | Type | Default | Description |
+|---|---|---|---|
+| `sidebar` | `ReactNode` | — | Sidebar content (docked ≥768px, drawer below) |
+| `topbar` | `ReactNode` | — | Topbar content (a menu button is added below 768px) |
+| `breadcrumbs` | `{ label: string; href?: string }[]` | — | Breadcrumb trail; last item is `aria-current="page"` |
+| `children` | `ReactNode` | — | Main content |
+
+## Tier 2 — slots and classNames
+
+```tsx
+<AppShell
+  sidebar={…}
+  slots={{ topbarEnd: <Badge>live</Badge>, sidebarFooter: <UserCard /> }}
+  classNames={{ root: "…", sidebar: "…", topbar: "…", main: "…", breadcrumbs: "…" }}
+/>
+```
+
+`classNames` keys map one-to-one to the DOM parts: `root`, `sidebar`,
+`topbar`, `main`, `breadcrumbs`.
+
+## Tier 3 — useAppShell()
+
+The headless hook: the 768px media-query flag plus drawer open state.
+
+```tsx
+const { isDesktop, drawerOpen, setDrawerOpen, openDrawer, closeDrawer } =
+  useAppShell();
+```
+
+Build a completely different shell (e.g. a collapsible icon rail) on top of
+it — the hook returns state and handlers only, no JSX.
+
+## Accessibility
+
+- The drawer is a Radix `Dialog`: focus trap, `aria-modal`, Escape to close,
+  focus returns to the menu button.
+- Breadcrumbs are a `nav[aria-label]` with an ordered list; the current page
+  carries `aria-current="page"`.
+- Crossing the breakpoint closes the drawer, so navigation is never
+  duplicated between drawer and docked sidebar.

@@ -25,28 +25,8 @@ import {
   BarChart,
 } from "@srui/react";
 import { StyleSwitcher } from "./StyleSwitcher";
-
-function Section({
-  id,
-  title,
-  description,
-  children,
-}: {
-  id: string;
-  title: string;
-  description?: string;
-  children: React.ReactNode;
-}) {
-  return (
-    <section id={id} className="scroll-mt-24">
-      <h2 className="mb-1 text-lg font-semibold">{title}</h2>
-      {description ? (
-        <p className="mb-4 text-sm text-muted-foreground">{description}</p>
-      ) : null}
-      <div className="surface rounded-xl bg-card p-6">{children}</div>
-    </section>
-  );
-}
+import { Primitives, Section } from "./sections/Primitives";
+import { SuperComponents } from "./sections/SuperComponents";
 
 const revenue = [4200, 5100, 4800, 6100, 5900, 7200, 8100];
 const signups = [120, 180, 150, 210, 260, 240, 310];
@@ -236,6 +216,9 @@ export function App() {
             </div>
           </div>
         </Section>
+
+        <Primitives />
+        <SuperComponents />
       </main>
 
       <footer className="border-t border-border py-6 text-center text-xs text-muted-foreground">

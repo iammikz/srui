@@ -77,6 +77,13 @@ import { ComboboxDemo } from './combobox-demo';
 import { ToastDemo, ToastVariantsDemo } from './toast-demo';
 import { CheckboxDemo } from './checkbox-demo';
 import { CollapsibleDemo } from './collapsible-demo';
+import { AppShellDemo } from './app-shell-demo';
+import { DataTableDemo } from './data-table-demo';
+import { ChartCardDemo } from './chart-card-demo';
+import { FormBuilderDemo } from './form-builder-demo';
+import { CommandPaletteDemo } from './command-palette-demo';
+import { NotificationCenterDemo } from './notification-center-demo';
+import { WizardDemo } from './wizard-demo';
 
 export function getMDXComponents(components?: MDXComponents) {
   return {
@@ -157,6 +164,13 @@ export function getMDXComponents(components?: MDXComponents) {
     ToastVariantsDemo,
     CheckboxDemo,
     CollapsibleDemo,
+    AppShellDemo,
+    DataTableDemo,
+    ChartCardDemo,
+    FormBuilderDemo,
+    CommandPaletteDemo,
+    NotificationCenterDemo,
+    WizardDemo,
     ...components,
   } satisfies MDXComponents;
 }

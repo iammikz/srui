@@ -17,7 +17,9 @@
     "next": "16.3.5",
     "react": "^19.3.0",
     "react-dom": "^19.3.0",
-    "@srui/react": "workspace:*"
+    "@srui/react": "workspace:*",
+    "zod": "^3.24.2",
+    "@tanstack/react-table": "^8.21.2"
   },
   "devDependencies": {
     "@tailwindcss/postcss": "^4.3.3",

@@ -1,0 +1,65 @@
+---
+title: Command Palette
+description: Cmd/Ctrl+K command palette — cmdk inside srui's Dialog.
+---
+
+`CommandPalette` wraps `cmdk` inside srui's `Dialog` (Phase 0 — one overlay
+system, not cmdk's own). It opens on **Cmd/Ctrl+K**; the listener is
+registered inside the component and cleaned up on unmount. Arrow keys move
+the selection, Enter runs the command, Escape closes.
+
+## Installation
+
+```tsx
+import { CommandPalette } from "@srui/react";
+```
+
+## Usage
+
+<CommandPaletteDemo />
+
+```tsx
+<CommandPalette
+  commands={[
+    { label: "Go home", onSelect: () => router.push("/"), shortcut: "G H" },
+    { label: "Toggle theme", onSelect: toggleTheme },
+  ]}
+/>
+```
+
+(That's a live one — press it, then try the real thing with **Ctrl+K**.)
+
+## Props
+
+| Prop | Type | Default | Description |
+|---|---|---|---|
+| `commands` | `{ label: string; onSelect: () => void; shortcut?: string }[]` | — | The command list |
+| `open` / `onOpenChange` | `boolean` / `(open: boolean) => void` | internal | Controlled open state |
+| `placeholder` | `string` | `"Type a command…"` | Filter input placeholder |
+
+## Tier 2 — slots and classNames
+
+```tsx
+<CommandPalette
+  commands={commands}
+  slots={{ empty: "Nothing found.", footer: <HintRow /> }}
+  classNames={{ dialog: "…", input: "…", list: "…", item: "…" }}
+/>
+```
+
+## Tier 3 — useCommandPalette()
+
+The headless hook: open state plus the Cmd/Ctrl+K listener.
+
+```tsx
+const { open, setOpen } = useCommandPalette();
+```
+
+Wire it to your own overlay or list — no JSX from the hook.
+
+## Accessibility
+
+The palette is a Radix `Dialog` (focus trap, `aria-modal`, labelled
+"Command palette"); cmdk announces the highlighted option, and shortcuts
+shown are display hints — every command is reachable by typing and Enter
+alone.

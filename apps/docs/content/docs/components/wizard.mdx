@@ -1,0 +1,59 @@
+---
+title: Wizard
+description: Multi-step form shell with a Badge step indicator and Back/Next buttons.
+---
+
+`Wizard` is the multi-step shell: a step indicator (step numbers reuse
+`Badge`; the current step is highlighted, done steps get a check), the
+step's content, and Back/Next `Button`s. Next on the last step becomes
+"Finish" and fires `onComplete`.
+
+## Installation
+
+```tsx
+import { Wizard } from "@srui/react";
+```
+
+## Usage
+
+<WizardDemo />
+
+```tsx
+<Wizard
+  steps={[
+    { label: "Account", content: <Input placeholder="Workspace name" /> },
+    { label: "Team", content: <p>Invite teammates…</p> },
+    { label: "Confirm", content: <p>Review and finish.</p> },
+  ]}
+  onComplete={() => console.log("done")}
+/>
+```
+
+## Props
+
+| Prop | Type | Default | Description |
+|---|---|---|---|
+| `steps` | `{ label: string; content: ReactNode }[]` | — | The steps, in order |
+| `onComplete` | `() => void` | — | Fired by Next on the last step |
+
+## Tier 2 — slots and classNames
+
+```tsx
+<Wizard … slots={{ footerStart: <a href="/">Cancel</a> }}
+  classNames={{ root: "…", indicator: "…", content: "…", footer: "…" }} />
+```
+
+## Tier 3 — useWizard()
+
+The headless hook: step index, boundary flags, and navigation — zero JSX.
+
+```tsx
+const { index, isFirst, isLast, next, back, reset } = useWizard(steps.length, onComplete);
+```
+
+## Accessibility
+
+The indicator is an ordered list; the current step carries
+`aria-current="step"`. Step content is plain DOM (label your inputs —
+`FormField` composes well here). Back is hidden-but-inert on the first step
+so tab order stays stable.

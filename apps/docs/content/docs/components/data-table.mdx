@@ -1,0 +1,90 @@
+---
+title: Data Table
+description: Sortable, filterable, paginated, selectable table with virtualization and CSV export, on TanStack Table.
+---
+
+`DataTable` is the Tier 1 face of a TanStack Table configuration: sort by
+clicking headers, per-column text filters, pagination with `Button` controls,
+a `Checkbox` selection column, sticky first/last column pinning, automatic
+virtualization above ~200 rows, and client-side CSV export of the visible
+columns. Sort → filter → paginate compose through TanStack's row pipeline,
+so any order of operations gives the same result.
+
+## Installation
+
+```tsx
+import { DataTable } from "@srui/react";
+```
+
+## Usage
+
+<DataTableDemo />
+
+```tsx
+const columns: ColumnDef<Person, unknown>[] = [
+  { accessorKey: "name", header: "Name" },
+  { accessorKey: "email", header: "Email" },
+  { accessorKey: "role", header: "Role" },
+];
+
+<DataTable
+  columns={columns}
+  data={people}
+  selectable
+  filterable
+  pageSize={5}
+  onRowSelectionChange={(rows) => console.log(rows)}
+/>
+```
+
+## Props
+
+| Prop | Type | Default | Description |
+|---|---|---|---|
+| `columns` | `ColumnDef<T>[]` | — | TanStack column definitions |
+| `data` | `T[]` | — | Row data |
+| `sortable` | `boolean` | `true` | Header-click sorting (`aria-sort` included) |
+| `selectable` | `boolean` | `false` | Checkbox column (select-all-page included) |
+| `pageSize` | `number` | — | Enables the paginated footer with Prev/Next `Button`s |
+| `onRowSelectionChange` | `(rows: T[]) => void` | — | Called with selected row objects |
+| `filterable` | `boolean` | `false` | Per-column text filter row |
+| `pinColumns` | `boolean` | `false` | Sticky first/last columns (`position: sticky`) |
+| `csvExport` | `boolean` | `true` | Client-side "Export CSV" button |
+
+Virtualization is automatic: without `pageSize`, datasets over 200 rows
+render through `@tanstack/react-virtual` (a 10,000-row table scrolls at
+60fps — try the button in the demo above).
+
+## Tier 2 — slots and classNames
+
+```tsx
+<DataTable
+  columns={columns}
+  data={data}
+  slots={{
+    toolbar: ({ table }) => <MyToolbar count={table.getFilteredRowModel().rows.length} />,
+    empty: "No people match your filters.",
+  }}
+  classNames={{ root: "…", header: "…", row: "…", cell: "…" }}
+/>
+```
+
+## Tier 3 — useDataTable()
+
+The headless hook: a fully wired TanStack instance (sorting, filtering,
+pagination, selection) with zero JSX.
+
+```tsx
+const table = useDataTable<Person>({ columns, data, selectable: true });
+// render anything: cards, a list, your own <table>…
+table.getRowModel().rows.map((row) => …);
+```
+
+## Accessibility
+
+- Sort buttons expose `aria-sort` (`ascending`/`descending`); screen-reader
+  labels cover the select-all and per-row checkboxes.
+- The filter row labels each input (`Filter by <column>`), and the row count
+  is an `aria-live` region so filtering announcements happen without focus
+  moves.
+- Virtualized rows keep native table semantics (`table`/`thead`/`tbody`).
