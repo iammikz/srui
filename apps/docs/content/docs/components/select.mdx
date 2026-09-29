@@ -1,0 +1,97 @@
+---
+title: Select
+description: Native-feeling dropdown select, wrapping Radix Select, with full keyboard support.
+---
+
+`Select` wraps `@radix-ui/react-select`: type-ahead, arrow-key navigation,
+and an animated popover (`bg-popover` + `surface` + `animate-scale-in`).
+The trigger mirrors `Input`'s treatment (`surface bg-input/30`).
+
+## Installation
+
+```tsx
+import {
+  Select, SelectTrigger, SelectValue, SelectContent,
+  SelectItem, SelectGroup, SelectLabel, SelectSeparator,
+} from "@srui/react";
+```
+
+## Usage
+
+<LivePreview code={`<Select defaultValue="mon">
+  <SelectTrigger className="w-48"><SelectValue placeholder="Day" /></SelectTrigger>
+  <SelectContent>
+    <SelectItem value="mon">Monday</SelectItem>
+    <SelectItem value="tue">Tuesday</SelectItem>
+    <SelectItem value="wed">Wednesday</SelectItem>
+  </SelectContent>
+</Select>`}>
+  <Select defaultValue="mon">
+    <SelectTrigger className="w-48" aria-label="Day of week">
+      <SelectValue placeholder="Day" />
+    </SelectTrigger>
+    <SelectContent>
+      <SelectItem value="mon">Monday</SelectItem>
+      <SelectItem value="tue">Tuesday</SelectItem>
+      <SelectItem value="wed">Wednesday</SelectItem>
+    </SelectContent>
+  </Select>
+</LivePreview>
+
+## Props
+
+| Export | Notes |
+|---|---|
+| `Select` | Root; `value`/`onValueChange` for controlled use |
+| `SelectTrigger` | `React.ComponentPropsWithoutRef<typeof RadixSelect.Trigger>` — styled like `Input` |
+| `SelectValue` | Renders the selected label (or `placeholder`) |
+| `SelectContent` | The popover; `bg-popover` + `surface` + `animate-scale-in`, `position="popper"` default |
+| `SelectItem` | Option with check indicator |
+| `SelectGroup` / `SelectLabel` | Option grouping |
+| `SelectSeparator` | Divider inside the list |
+
+## Examples
+
+### Grouped with separators
+
+<LivePreview code={`<Select defaultValue="eu">
+  <SelectTrigger className="w-56"><SelectValue /></SelectTrigger>
+  <SelectContent>
+    <SelectGroup>
+      <SelectLabel>Europe</SelectLabel>
+      <SelectItem value="eu">Berlin</SelectItem>
+      <SelectItem value="uk">London</SelectItem>
+    </SelectGroup>
+    <SelectSeparator />
+    <SelectGroup>
+      <SelectLabel>Asia</SelectLabel>
+      <SelectItem value="jp">Tokyo</SelectItem>
+    </SelectGroup>
+  </SelectContent>
+</Select>`}>
+  <Select defaultValue="eu">
+    <SelectTrigger className="w-56" aria-label="City">
+      <SelectValue />
+    </SelectTrigger>
+    <SelectContent>
+      <SelectGroup>
+        <SelectLabel>Europe</SelectLabel>
+        <SelectItem value="eu">Berlin</SelectItem>
+        <SelectItem value="uk">London</SelectItem>
+      </SelectGroup>
+      <SelectSeparator />
+      <SelectGroup>
+        <SelectLabel>Asia</SelectLabel>
+        <SelectItem value="jp">Tokyo</SelectItem>
+      </SelectGroup>
+    </SelectContent>
+  </Select>
+</LivePreview>
+
+## Accessibility
+
+Radix provides the full pattern: the trigger is a `combobox`-role button,
+`aria-expanded`/`aria-controls` wiring, arrow-key and type-ahead item
+navigation, Home/End, and Escape to close. Selected items expose
+`aria-selected`; give the trigger an `aria-label` when it has no visible
+text label.

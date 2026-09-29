@@ -1,0 +1,85 @@
+---
+title: Accordion
+description: Collapsible item list with height animation, wrapping Radix Accordion.
+---
+
+`Accordion` wraps `@radix-ui/react-accordion`. Content height animates
+against Radix's measured `--radix-accordion-content-height` CSS variable on
+the `data-[state]` selectors (the pattern from the Radix docs), and the
+whole transition disappears under `motion-reduce`.
+
+## Installation
+
+```tsx
+import { Accordion, AccordionItem, AccordionTrigger, AccordionContent } from "@srui/react";
+```
+
+## Usage
+
+<LivePreview code={`<Accordion type="single" collapsible className="w-80">
+  <AccordionItem value="a">
+    <AccordionTrigger>Is it accessible?</AccordionTrigger>
+    <AccordionContent>Yes — arrow keys, Home/End, and ARIA wiring come from Radix.</AccordionContent>
+  </AccordionItem>
+  <AccordionItem value="b">
+    <AccordionTrigger>Is it animated?</AccordionTrigger>
+    <AccordionContent>Height animates against Radix's measured height variable.</AccordionContent>
+  </AccordionItem>
+</Accordion>`}>
+  <Accordion type="single" collapsible className="w-80">
+    <AccordionItem value="a">
+      <AccordionTrigger>Is it accessible?</AccordionTrigger>
+      <AccordionContent>
+        Yes — arrow keys, Home/End, and ARIA wiring come from Radix.
+      </AccordionContent>
+    </AccordionItem>
+    <AccordionItem value="b">
+      <AccordionTrigger>Is it animated?</AccordionTrigger>
+      <AccordionContent>
+        Height animates against Radix's measured height variable.
+      </AccordionContent>
+    </AccordionItem>
+  </Accordion>
+</LivePreview>
+
+## Props
+
+| Export | Notes |
+|---|---|
+| `Accordion` | Root: `type="single" \| "multiple"`, `collapsible`, `defaultValue` |
+| `AccordionItem` | One panel; `value` required |
+| `AccordionTrigger` | Header button; chevron rotates when open |
+| `AccordionContent` | Animated body |
+
+## Examples
+
+### Multiple open
+
+<LivePreview code={`<Accordion type="multiple" defaultValue={["a", "b"]} className="w-80">
+  <AccordionItem value="a">
+    <AccordionTrigger>First</AccordionTrigger>
+    <AccordionContent>Open by default.</AccordionContent>
+  </AccordionItem>
+  <AccordionItem value="b">
+    <AccordionTrigger>Second</AccordionTrigger>
+    <AccordionContent>Also open by default.</AccordionContent>
+  </AccordionItem>
+</Accordion>`}>
+  <Accordion type="multiple" defaultValue={["a", "b"]} className="w-80">
+    <AccordionItem value="a">
+      <AccordionTrigger>First</AccordionTrigger>
+      <AccordionContent>Open by default.</AccordionContent>
+    </AccordionItem>
+    <AccordionItem value="b">
+      <AccordionTrigger>Second</AccordionTrigger>
+      <AccordionContent>Also open by default.</AccordionContent>
+    </AccordionItem>
+  </Accordion>
+</LivePreview>
+
+## Accessibility
+
+Full `accordion` ARIA pattern from Radix: triggers expose
+`aria-expanded`/`aria-controls`, panels are labelled by their triggers,
+arrow keys and Home/End navigate between headers. The height transition
+carries a `motion-reduce:transition-none` override.

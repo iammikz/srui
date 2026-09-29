@@ -1,0 +1,80 @@
+---
+title: Form Field
+description: Label + control + error/hint wiring for any input; includes Label.
+---
+
+`FormField` is the wiring component: a `Label`, your control, and inline
+feedback — `error` (in `text-destructive`) or `hint` (in
+`text-muted-foreground`), never both. This page also covers `Label`, which
+`FormField` uses internally.
+
+## Installation
+
+```tsx
+import { FormField, Label } from "@srui/react";
+```
+
+## Usage
+
+<LivePreview code={`<FormField
+  label="Email"
+  htmlFor="email"
+  hint="We'll never share your email."
+>
+  <Input id="email" type="email" placeholder="you@example.com" />
+</FormField>`}>
+  <FormField
+    label="Email"
+    htmlFor="email"
+    hint="We'll never share your email."
+    className="w-80"
+  >
+    <Input id="email" type="email" placeholder="you@example.com" />
+  </FormField>
+</LivePreview>
+
+## FormField props
+
+| Prop | Type | Default | Description |
+|---|---|---|---|
+| `label` | `string` | — | Field label |
+| `htmlFor` | `string` | — | Associates label + control (`id` on the control) |
+| `error` | `string` | — | Error text; takes precedence over `hint` |
+| `hint` | `string` | — | Helper text |
+| `children` | `ReactNode` | — | The Input / Select / Textarea / … control |
+
+## Label
+
+`Label` wraps `@radix-ui/react-label`: `htmlFor` association, peer-disabled
+styling. Use it directly for controls that manage their own layout:
+
+<LivePreview code={`<Label htmlFor="terms" className="mb-2">Terms</Label>
+<Checkbox id="terms" />`}>
+  <label className="flex items-center gap-2 text-sm">
+    <Checkbox id="terms" /> I agree to the terms
+  </label>
+</LivePreview>
+
+## Examples
+
+### Error state
+
+<LivePreview code={`<FormField label="Username" htmlFor="username" error="That username is taken.">
+  <Input id="username" invalid value="srui" readOnly />
+</FormField>`}>
+  <FormField
+    label="Username"
+    htmlFor="username"
+    error="That username is taken."
+    className="w-80"
+  >
+    <Input id="username" invalid value="srui" readOnly />
+  </FormField>
+</LivePreview>
+
+## Accessibility
+
+`Label` → control association via `htmlFor`/`id` gives every control an
+accessible name. The error message renders with `role="alert"` so it is
+announced when it appears; pair it with `invalid` on the control for
+`aria-invalid`.

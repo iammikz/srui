@@ -1,0 +1,56 @@
+---
+title: Separator
+description: Visual divider, wrapping Radix Separator.
+---
+
+`Separator` wraps `@radix-ui/react-separator` — a `--border`-colored rule,
+horizontal or vertical, decorative by default.
+
+## Installation
+
+```tsx
+import { Separator } from "@srui/react";
+```
+
+## Usage
+
+<LivePreview code={`<div className="w-72 text-sm">
+  <p>Content above</p>
+  <Separator className="my-3" />
+  <p>Content below</p>
+</div>`}>
+  <div className="w-72 text-sm">
+    <p>Content above</p>
+    <Separator className="my-3" />
+    <p>Content below</p>
+  </div>
+</LivePreview>
+
+## Props
+
+| Prop | Type | Default | Description |
+|---|---|---|---|
+| `orientation` | `"horizontal" \| "vertical"` | `"horizontal"` | Rule direction |
+| `decorative` | `boolean` | `true` | `true` hides it from the a11y tree; set `false` only if it separates content semantically |
+
+## Examples
+
+### Vertical
+
+<LivePreview code={`<div className="flex h-8 items-center gap-3 text-sm">
+  <span>Left</span>
+  <Separator orientation="vertical" />
+  <span>Right</span>
+</div>`}>
+  <div className="flex h-8 items-center gap-3 text-sm">
+    <span>Left</span>
+    <Separator orientation="vertical" />
+    <span>Right</span>
+  </div>
+</LivePreview>
+
+## Accessibility
+
+Decorative by default (`aria-hidden`), which is what you want almost
+always. Set `decorative={false}` only when the separator is a meaningful
+content boundary for assistive tech.

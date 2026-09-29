@@ -1,0 +1,80 @@
+---
+title: Button
+description: The action trigger, in six variants and four sizes, with a built-in loading state.
+---
+
+Buttons trigger actions. Every variant restyles across all four presets via
+the token contract — the `default`, `secondary` and `destructive` variants
+carry the `surface` recipe, so they pick up preset shadows, gloss and blur
+automatically.
+
+## Installation
+
+```tsx
+import { Button } from "@srui/react";
+```
+
+## Usage
+
+<LivePreview code={`<Button>Click me</Button>`}>
+  <Button>Click me</Button>
+</LivePreview>
+
+```tsx
+<Button>Click me</Button>
+```
+
+## Props
+
+| Prop | Type | Default | Description |
+|---|---|---|---|
+| `variant` | `"default" \| "secondary" \| "destructive" \| "outline" \| "ghost" \| "link"` | `"default"` | Visual style |
+| `size` | `"sm" \| "md" \| "lg" \| "icon"` | `"md"` | Control size (`icon` is square) |
+| `loading` | `boolean` | `false` | Shows a spinner, disables the button, sets `aria-busy` |
+| ...props | `React.ButtonHTMLAttributes<HTMLButtonElement>` | — | All native button attributes |
+
+## Examples
+
+### Variants
+
+<LivePreview code={`<Button>Default</Button>
+<Button variant="secondary">Secondary</Button>
+<Button variant="destructive">Destructive</Button>
+<Button variant="outline">Outline</Button>
+<Button variant="ghost">Ghost</Button>
+<Button variant="link">Link</Button>`}>
+  <Button>Default</Button>
+  <Button variant="secondary">Secondary</Button>
+  <Button variant="destructive">Destructive</Button>
+  <Button variant="outline">Outline</Button>
+  <Button variant="ghost">Ghost</Button>
+  <Button variant="link">Link</Button>
+</LivePreview>
+
+### Sizes
+
+<LivePreview code={`<Button size="sm">Small</Button>
+<Button size="md">Medium</Button>
+<Button size="lg">Large</Button>`}>
+  <Button size="sm">Small</Button>
+  <Button size="md">Medium</Button>
+  <Button size="lg">Large</Button>
+</LivePreview>
+
+### Loading state
+
+`loading` disables the button and announces progress to screen readers via
+`aria-busy`.
+
+<LivePreview code={`<Button loading>Save changes</Button>`}>
+  <Button loading>Save changes</Button>
+</LivePreview>
+
+## Accessibility
+
+- Native `<button>` element: Enter and Space activate it for free.
+- `loading` sets `disabled` **and** `aria-busy="true"` so assistive tech
+  announces the in-flight state.
+- Focus rings use `outline-*` (never Tailwind `ring-*`, which would collide
+  with preset surface shadows) and are tuned to stay legible on the
+  neumorphic gray field via `--ring`.

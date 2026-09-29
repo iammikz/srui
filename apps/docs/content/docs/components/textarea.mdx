@@ -1,0 +1,39 @@
+---
+title: Textarea
+description: Multi-line text input with the Input treatment.
+---
+
+`Textarea` follows the `Input` pattern exactly — `bg-input/30` field,
+`outline-ring` focus, `invalid` state — on a native `<textarea>`.
+
+## Installation
+
+```tsx
+import { Textarea } from "@srui/react";
+```
+
+## Usage
+
+<LivePreview code={`<Textarea placeholder="Tell us a little bit about yourself" className="min-h-28" />`}>
+  <Textarea placeholder="Tell us a little bit about yourself" className="min-h-28 w-80" />
+</LivePreview>
+
+## Props
+
+| Prop | Type | Default | Description |
+|---|---|---|---|
+| `invalid` | `boolean` | `false` | Red border + `aria-invalid="true"` |
+| ...props | `React.TextareaHTMLAttributes<HTMLTextAreaElement>` | — | All native textarea attributes |
+
+## Examples
+
+### Invalid state
+
+<LivePreview code={`<Textarea invalid placeholder="Too short" className="min-h-24" />`}>
+  <Textarea invalid placeholder="Too short" className="min-h-24 w-80" />
+</LivePreview>
+
+## Accessibility
+
+Native `<textarea>`; label it with `Label`/`FormField`. `invalid` sets
+`aria-invalid` and the border/focus color switch to `--destructive`.

@@ -1,0 +1,151 @@
+---
+title: Charts
+description: LineChart, BarChart, DonutChart and Sparkline — hand-rolled SVG on d3-scale/d3-shape, animated.
+---
+
+srui's charts are hand-rolled SVG built on `d3-scale`/`d3-shape` (standing
+decision: full control over preset styling and animation). Line paths draw
+themselves in via the `pathLength={1}` trick; bars grow from their own
+baseline with `transform-box: fill-box`; the donut sweeps its
+`stroke-dashoffset` like the line chart.
+
+## Installation
+
+```tsx
+import { LineChart, BarChart, DonutChart, Sparkline } from "@srui/react";
+```
+
+## LineChart
+
+<LivePreview code={`const labels = ["Jan", "Feb", "Mar", "Apr", "May", "Jun", "Jul"];
+
+<LineChart
+  labels={labels}
+  series={[
+    { name: "Revenue", values: [42, 51, 48, 61, 59, 72, 81] },
+    { name: "Signups", values: [12, 18, 15, 21, 26, 24, 31] },
+  ]}
+/>`}>
+  <LineChart
+    labels={["Jan", "Feb", "Mar", "Apr", "May", "Jun", "Jul"]}
+    series={[
+      { name: "Revenue", values: [42, 51, 48, 61, 59, 72, 81] },
+      { name: "Signups", values: [12, 18, 15, 21, 26, 24, 31] },
+    ]}
+  />
+</LivePreview>
+
+### LineChart props
+
+| Prop | Type | Default | Description |
+|---|---|---|---|
+| `labels` | `string[]` | — | X-axis category labels |
+| `series` | `LineChartSeries[]` (`{ name, values, color? }`) | — | One stroked path each |
+| `height` | `number` | `240` | Plot height in px (viewBox width is 600) |
+| `area` | `boolean` | `false` | Fill under the line with 15% opacity |
+| `showGrid` / `showLegend` | `boolean` | `true` | Toggle gridlines / legend |
+| `className` | `string` | — | For the wrapping figure |
+
+Series colors default to `var(--chart-1)` … `var(--chart-8)`.
+
+### Area mode
+
+<LivePreview code={`<LineChart
+  area
+  labels={labels}
+  series={[{ name: "Revenue", values: [42, 51, 48, 61, 59, 72, 81] }]}
+/>`}>
+  <LineChart
+    area
+    labels={["Jan", "Feb", "Mar", "Apr", "May", "Jun", "Jul"]}
+    series={[{ name: "Revenue", values: [42, 51, 48, 61, 59, 72, 81] }]}
+  />
+</LivePreview>
+
+## BarChart
+
+<LivePreview code={`<BarChart
+  labels={labels}
+  series={[
+    { name: "2024", values: [12, 18, 15, 21, 26, 24, 31] },
+    { name: "2025", values: [15, 22, 19, 26, 30, 29, 38] },
+  ]}
+/>`}>
+  <BarChart
+    labels={["Jan", "Feb", "Mar", "Apr", "May", "Jun", "Jul"]}
+    series={[
+      { name: "2024", values: [12, 18, 15, 21, 26, 24, 31] },
+      { name: "2025", values: [15, 22, 19, 26, 30, 29, 38] },
+    ]}
+  />
+</LivePreview>
+
+### BarChart props
+
+Same shape as LineChart minus `area`: `labels`, `series`, `height`,
+`showGrid`, `showLegend`, `className`. Multiple series render grouped
+bars; bars animate in with a per-bar stagger.
+
+## DonutChart
+
+A ring/gauge whose arc sweep animates like the line draw-in. Use it for
+part-to-whole values (a single slice) or progress.
+
+<LivePreview code={`<DonutChart
+  label="Storage"
+  value={68}
+  suffix="%"
+/>`}>
+  <DonutChart label="Storage" value={68} suffix="%" />
+</LivePreview>
+
+### DonutChart props
+
+| Prop | Type | Default | Description |
+|---|---|---|---|
+| `label` | `string` | — | Text under the value |
+| `value` | `number` | — | 0–100 portion of the ring |
+| `suffix` | `string` | `""` | Rendered after the value |
+| `size` | `number` | `160` | SVG size in px |
+| `color` | `string` | `var(--chart-2)` | Arc color |
+
+## Sparkline
+
+A minimal `LineChart` variant — no axes, gridlines or legend — sized for
+inline use in a table cell or a `StatCard`-style tile.
+
+<LivePreview code={`<div className="flex items-center gap-4">
+  <div>
+    <div className="text-xs text-muted-foreground">Weekly signups</div>
+    <div className="text-xl font-semibold tabular-nums">1,284</div>
+  </div>
+  <Sparkline values={[12, 18, 15, 21, 26, 24, 31, 29, 38]} />
+</div>`}>
+  <div className="flex items-center gap-6">
+    <div className="text-left">
+      <div className="text-xs text-muted-foreground">Weekly signups</div>
+      <div className="text-xl font-semibold tabular-nums">1,284</div>
+    </div>
+    <Sparkline values={[12, 18, 15, 21, 26, 24, 31, 29, 38]} />
+  </div>
+</LivePreview>
+
+### Sparkline props
+
+| Prop | Type | Default | Description |
+|---|---|---|---|
+| `values` | `number[]` | — | The series |
+| `width` / `height` | `number` | `120` / `36` | SVG dimensions |
+| `color` | `string` | `var(--chart-1)` | Stroke color |
+| `strokeWidth` | `number` | `2` | Stroke weight |
+
+## Accessibility
+
+Each chart SVG carries `role="img"` and an `aria-label` describing the
+series ("Line chart: Revenue" / "Line chart with 2 series"); legends are
+`figcaption`s. For data-critical contexts, provide the underlying numbers
+in a table or `sr-only` text — charts are decorative summaries by default.
+
+All draw/grow animations are `motion-safe:`-gated with final states baked
+into the markup, so reduced-motion users always see complete charts (see
+the `pathLength={1}` gotcha in the plan).

@@ -1,0 +1,56 @@
+---
+title: Radio Group
+description: Single-choice radio set, wrapping Radix RadioGroup.
+---
+
+`RadioGroup` wraps `@radix-ui/react-radio-group`: arrow-key selection,
+`bg-primary` checked dot on `--dur-fast` transitions, plain-`<label>`
+compatible.
+
+## Installation
+
+```tsx
+import { RadioGroup, RadioGroupItem } from "@srui/react";
+```
+
+## Usage
+
+<LivePreview code={`<RadioGroup defaultValue="comfortable">
+  <label className="flex items-center gap-2 text-sm"><RadioGroupItem value="default" /> Default</label>
+  <label className="flex items-center gap-2 text-sm"><RadioGroupItem value="comfortable" /> Comfortable</label>
+  <label className="flex items-center gap-2 text-sm"><RadioGroupItem value="compact" /> Compact</label>
+</RadioGroup>`}>
+  <RadioGroup defaultValue="comfortable">
+    <label className="flex items-center gap-2 text-sm"><RadioGroupItem value="default" /> Default</label>
+    <label className="flex items-center gap-2 text-sm"><RadioGroupItem value="comfortable" /> Comfortable</label>
+    <label className="flex items-center gap-2 text-sm"><RadioGroupItem value="compact" /> Compact</label>
+  </RadioGroup>
+</LivePreview>
+
+## Props
+
+| Export | Notes |
+|---|---|
+| `RadioGroup` | Root: `value`/`onValueChange`, `orientation`, `disabled` |
+| `RadioGroupItem` | One option: `value`, `disabled` |
+
+## Examples
+
+### Horizontal
+
+<LivePreview code={`<RadioGroup orientation="horizontal" defaultValue="m">
+  <label className="flex items-center gap-2 text-sm"><RadioGroupItem value="s" /> S</label>
+  <label className="flex items-center gap-2 text-sm"><RadioGroupItem value="m" /> M</label>
+  <label className="flex items-center gap-2 text-sm"><RadioGroupItem value="l" /> L</label>
+</RadioGroup>`}>
+  <RadioGroup orientation="horizontal" defaultValue="m">
+    <label className="flex items-center gap-2 text-sm"><RadioGroupItem value="s" /> S</label>
+    <label className="flex items-center gap-2 text-sm"><RadioGroupItem value="m" /> M</label>
+    <label className="flex items-center gap-2 text-sm"><RadioGroupItem value="l" /> L</label>
+  </RadioGroup>
+</LivePreview>
+
+## Accessibility
+
+Full `radiogroup` ARIA pattern via Radix: arrow keys move selection,
+`aria-checked` on items, labels give each radio its accessible name.

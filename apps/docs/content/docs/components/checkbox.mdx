@@ -1,0 +1,56 @@
+---
+title: Checkbox
+description: Binary checkbox control, wrapping Radix Checkbox, with a primary-checked state.
+---
+
+`Checkbox` wraps `@radix-ui/react-checkbox`: the checked state uses
+`bg-primary`, transitions run on `--dur-fast`, and the whole thing works
+inside a plain `<label>` for click-to-toggle.
+
+## Installation
+
+```tsx
+import { Checkbox } from "@srui/react";
+```
+
+## Usage
+
+<LivePreview code={`<label className="flex items-center gap-2 text-sm">
+  <Checkbox defaultChecked /> Accept terms
+</label>`}>
+  <label className="flex items-center gap-2 text-sm">
+    <Checkbox defaultChecked /> Accept terms
+  </label>
+</LivePreview>
+
+## Props
+
+`React.ComponentPropsWithoutRef<typeof RadixCheckbox.Root>` — `checked`,
+`onCheckedChange`, `disabled`, `required`, `name`, `value`, plus native
+button attributes.
+
+## Examples
+
+### Controlled
+
+<LivePreview code={`const [ok, setOk] = useState(true);
+<Checkbox checked={ok} onCheckedChange={(v) => setOk(v === true)} />`}>
+  <label className="flex items-center gap-2 text-sm">
+    <CheckboxDemo />
+  </label>
+</LivePreview>
+
+### Disabled
+
+<LivePreview code={`<Checkbox disabled /> <Checkbox disabled defaultChecked />`}>
+  <span className="flex items-center gap-4">
+    <Checkbox disabled />
+    <Checkbox disabled defaultChecked />
+  </span>
+</LivePreview>
+
+## Accessibility
+
+Radix renders a real `checkbox` role button with `aria-checked`; Space
+toggles it; the label wrapping pattern gives it an accessible name with
+zero wiring.

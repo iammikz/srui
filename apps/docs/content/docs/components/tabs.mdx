@@ -1,0 +1,76 @@
+---
+title: Tabs
+description: Tab navigation with an animated active state, wrapping Radix Tabs.
+---
+
+`Tabs` wraps `@radix-ui/react-tabs`. The list uses `bg-muted`; the active
+trigger lifts onto a `surface`; content changes cross-fade with
+`animate-fade-in`.
+
+## Installation
+
+```tsx
+import { Tabs, TabsList, TabsTrigger, TabsContent } from "@srui/react";
+```
+
+## Usage
+
+<LivePreview code={`<Tabs defaultValue="account">
+  <TabsList>
+    <TabsTrigger value="account">Account</TabsTrigger>
+    <TabsTrigger value="password">Password</TabsTrigger>
+  </TabsList>
+  <TabsContent value="account">Account settings…</TabsContent>
+  <TabsContent value="password">Password settings…</TabsContent>
+</Tabs>`}>
+  <Tabs defaultValue="account">
+    <TabsList>
+      <TabsTrigger value="account">Account</TabsTrigger>
+      <TabsTrigger value="password">Password</TabsTrigger>
+    </TabsList>
+    <TabsContent className="mt-3 text-sm text-muted-foreground">
+      Account settings…
+    </TabsContent>
+    <TabsContent className="mt-3 text-sm text-muted-foreground">
+      Password settings…
+    </TabsContent>
+  </Tabs>
+</LivePreview>
+
+## Props
+
+Each part passes through Radix's own prop types:
+
+| Export | Notes |
+|---|---|
+| `Tabs` | Root; `defaultValue` or `value`/`onValueChange` |
+| `TabsList` | The tab strip (`bg-muted`) |
+| `TabsTrigger` | One tab button; `data-[state=active]` lifts onto `surface` |
+| `TabsContent` | Panel for one value; `animate-fade-in` on change |
+
+## Examples
+
+### Full-width tabs
+
+<LivePreview code={`<Tabs defaultValue="one">
+  <TabsList className="w-full">
+    <TabsTrigger value="one">One</TabsTrigger>
+    <TabsTrigger value="two">Two</TabsTrigger>
+    <TabsTrigger value="three">Three</TabsTrigger>
+  </TabsList>
+</Tabs>`}>
+  <Tabs defaultValue="one">
+    <TabsList className="w-full">
+      <TabsTrigger value="one">One</TabsTrigger>
+      <TabsTrigger value="two">Two</TabsTrigger>
+      <TabsTrigger value="three">Three</TabsTrigger>
+    </TabsList>
+  </Tabs>
+</LivePreview>
+
+## Accessibility
+
+Radix wires the `tablist`/`tab`/`tabpanel` ARIA pattern: arrow keys move
+between triggers, Home/End jump to the edges, the active tab gets
+`aria-selected`, and panels are labelled by their triggers. Content fade
+is `motion-safe:`-gated.

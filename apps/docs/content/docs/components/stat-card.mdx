@@ -1,0 +1,70 @@
+---
+title: Stat Card
+description: KPI tile with an animated count-up value and optional delta indicator.
+---
+
+`StatCard` renders a label, a large tabular number, and an optional change
+badge. The value counts up over `--dur-slow` (skipped entirely under
+reduced motion) and fades in with `animate-count-fade`.
+
+## Installation
+
+```tsx
+import { StatCard } from "@srui/react";
+```
+
+## Usage
+
+<LivePreview code={`<StatCard
+  label="Monthly revenue"
+  value={48219}
+  formatValue={(v) => \`$\${v.toLocaleString()}\`}
+  delta={{ value: 12.4, direction: "up" }}
+/>`}>
+  <StatCard
+    label="Monthly revenue"
+    value={48219}
+    formatValue={(v) => `$${v.toLocaleString()}`}
+    delta={{ value: 12.4, direction: "up" }}
+  />
+</LivePreview>
+
+## Props
+
+| Prop | Type | Default | Description |
+|---|---|---|---|
+| `label` | `string` | — | The metric name |
+| `value` | `number` | — | The number (animated on change) |
+| `formatValue` | `(v: number) => string` | `String(v)` | Currency/percent formatting |
+| `delta` | `{ value: number; direction: "up" \| "down" }` | — | Change badge; `up` renders in `--success`, `down` in `--destructive` |
+
+## Examples
+
+### Without a delta
+
+<LivePreview code={`<StatCard label="Active users" value={3128} />`}>
+  <StatCard label="Active users" value={3128} />
+</LivePreview>
+
+### Percent formatting, down delta
+
+<LivePreview code={`<StatCard
+  label="Churn rate"
+  value={2}
+  formatValue={(v) => \`\${v}%\`}
+  delta={{ value: 0.6, direction: "down" }}
+/>`}>
+  <StatCard
+    label="Churn rate"
+    value={2}
+    formatValue={(v) => `${v}%`}
+    delta={{ value: 0.6, direction: "down" }}
+  />
+</LivePreview>
+
+## Accessibility
+
+- The delta direction is conveyed by color **and** an arrow icon, so it
+  survives color-blindness and monochrome rendering.
+- The count-up animation checks `prefers-reduced-motion` and renders the
+  final value immediately when set; the fade uses `motion-safe:`.

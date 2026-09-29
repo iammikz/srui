@@ -1,0 +1,35 @@
+---
+title: Introduction
+description: Supercomponent React UI — four runtime-switchable presets on shadcn-style tokens, for Tailwind v4.
+---
+
+**srui** is a React component library for Tailwind CSS v4. It ships
+shadcn-style design tokens, animated charts and loaders, and
+super-components — all available in **four visual presets** you can switch
+at runtime, with no page reload and no duplicated markup.
+
+Unlike copy-in component libraries, srui is distributed as an npm package
+(`@srui/react`). The components are the product: you install them, wrap
+your app in `<UIProvider>`, and they stay up to date. You style them with
+tokens, not by editing their source.
+
+## Why four presets?
+
+Most UI kits commit to one aesthetic. srui treats the aesthetic as a
+*runtime setting*: the same component tree can render as clean **flat**,
+translucent **glass**, extruded **neumorphic**, or beveled **skeuomorphic** —
+because every visual decision routes through the token contract (colors,
+shadows, gradients, blur, radii, motion) instead of hard-coded values.
+
+Here is the same `Card`, `Input` and `Button` rendered in all four presets
+simultaneously — each cell scopes `data-style` to its own wrapper, exactly
+like your pages scope it via `<UIProvider>`:
+
+<PresetGrid />
+
+## Where to go next
+
+- [Installation](/docs/installation) — add srui to your app
+- [Theming](/docs/theming) — the token contract and how to override it
+- [Presets](/docs/theming/presets) — the four presets in depth
+- [Components](/docs/components/button) — the component API, one page per component

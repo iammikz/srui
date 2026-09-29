@@ -1,0 +1,85 @@
+---
+title: Loader
+description: Spinner, DotsLoader, Skeleton and LoadingOverlay — the loading-state family.
+---
+
+Four loading affordances for four situations: `Spinner` for buttons and
+inline busy states, `DotsLoader` for quieter inline waits, `Skeleton` for
+content placeholders, and `LoadingOverlay` for covering a region while work
+is in flight.
+
+## Installation
+
+```tsx
+import { Spinner, DotsLoader, Skeleton, LoadingOverlay } from "@srui/react";
+```
+
+## Usage
+
+<LivePreview code={`<Spinner /> <DotsLoader /> <Skeleton className="h-4 w-40" />`}>
+  <Spinner />
+  <DotsLoader />
+  <Skeleton className="h-4 w-40" />
+</LivePreview>
+
+## LoadingOverlay
+
+`LoadingOverlay` covers its nearest **positioned** ancestor (add
+`relative` to the container). It delays appearing by `delayMs` and stays
+visible at least `minDisplayMs`, so quick operations never flash a
+spinner.
+
+<div className="relative not-prose my-6 grid min-h-40 place-items-center rounded-lg border border-border p-6">
+  <p className="text-sm text-muted-foreground">Some content that gets covered while loading.</p>
+  <LoadingOverlayDemo />
+</div>
+
+```tsx
+<div className="relative min-h-40">
+  {/* content */}
+  <LoadingOverlay active={busy} label="Fetching data…" />
+</div>
+```
+
+### LoadingOverlay props
+
+| Prop | Type | Default | Description |
+|---|---|---|---|
+| `active` | `boolean` | — | Whether work is in flight |
+| `label` | `string` | `"Loading…"` | Announced (`aria-live="polite"`) and rendered; English default, override for i18n |
+| `delayMs` | `number` | `200` | Delay before the overlay appears |
+| `minDisplayMs` | `number` | `400` | Minimum time it stays visible once shown |
+| `variant` | `"spinner" \| "dots"` | `"spinner"` | Which indicator to render |
+
+## Examples
+
+### Skeleton layout
+
+<LivePreview code={`<div className="flex w-72 flex-col gap-2">
+  <Skeleton className="h-4 w-3/4" />
+  <Skeleton className="h-4 w-1/2" />
+  <Skeleton className="h-4 w-5/6" />
+</div>`}>
+  <div className="flex w-72 flex-col gap-2">
+    <Skeleton className="h-4 w-3/4" />
+    <Skeleton className="h-4 w-1/2" />
+    <Skeleton className="h-4 w-5/6" />
+  </div>
+</LivePreview>
+
+### Slow spinner variant
+
+<LivePreview code={`<Spinner className="size-8 motion-safe:animate-spin-slow" />`}>
+  <Spinner className="size-8 motion-safe:animate-spin-slow" />
+</LivePreview>
+
+## Accessibility
+
+- `LoadingOverlay` renders `role="status"` with `aria-live="polite"` and
+  the `label` text, so screen readers announce loading start/end without
+  interrupting.
+- `Spinner` and `DotsLoader` are `role="presentation"` — they are visual
+  only; provide text (or an `sr-only` label) next to them when they appear
+  alone.
+- Every animation is `motion-safe:`-gated; reduced-motion users see final
+  states, never a stuck half-drawn element.

@@ -1,0 +1,111 @@
+---
+title: Theming
+description: The srui token contract — every variable, what it drives, and how to override it.
+---
+
+srui components never hard-code colors, shadows or motion. Everything
+routes through CSS custom properties defined in
+[`@srui/react/theme.css`](https://github.com/srui-ui/srui) and overridden per
+preset. This page is the complete reference.
+
+## Color tokens
+
+Set in `theme.css` under `:root` / `.dark`, aliased to Tailwind utilities
+via `@theme inline`:
+
+| Token | Tailwind utility | Notes |
+|---|---|---|
+| `--background` / `--foreground` | `bg-background` / `text-foreground` | page-level |
+| `--card` / `--card-foreground` | `bg-card` / `text-card-foreground` | must equal `--background` in the neumorphic preset |
+| `--popover` / `--popover-foreground` | `bg-popover` / `text-popover-foreground` | dialogs, dropdowns, tooltips |
+| `--primary` / `--primary-foreground` | `bg-primary` / `text-primary-foreground` | |
+| `--secondary` / `--secondary-foreground` | `bg-secondary` / `text-secondary-foreground` | |
+| `--muted` / `--muted-foreground` | `bg-muted` / `text-muted-foreground` | de-emphasized text, skeleton base |
+| `--accent` / `--accent-foreground` | `bg-accent` / `text-accent-foreground` | hover states |
+| `--destructive` / `--destructive-foreground` | `bg-destructive` / `text-destructive-foreground` | |
+| `--success` / `--success-foreground` | `bg-success` / `text-success-foreground` | our extension to shadcn's set |
+| `--warning` / `--warning-foreground` | `bg-warning` / `text-warning-foreground` | our extension |
+| `--info` / `--info-foreground` | `bg-info` / `text-info-foreground` | our extension |
+| `--border` | `border-border` | |
+| `--input` | `bg-input` (at low opacity, e.g. `bg-input/30`) | |
+| `--ring` | via `outline-ring`, never `ring-*` (see below) | |
+| `--sidebar*` (7 tokens, mirrors the main set) | `bg-sidebar`, etc. | for `AppShell` |
+| `--chart-1` … `--chart-8` | referenced directly as `stroke`/`fill` in chart SVGs | not Tailwind classes |
+
+## Surface recipe tokens
+
+Structure, not color — every preset overrides all five. The `surface`
+utility composes them; it **never sets `background-color`**, so it composes
+with `bg-card` / `bg-popover` / `bg-primary` in any stylesheet order.
+
+| Token | Used by | Meaning |
+|---|---|---|
+| `--surface-shadow` | `surface` utility, resting state | |
+| `--surface-shadow-hover` | components with a hover elevation change (`hover:shadow-(--surface-shadow-hover)`) | |
+| `--surface-shadow-pressed` | active/pressed state (`active:shadow-(--surface-shadow-pressed)`) | |
+| `--surface-blur` | `surface` utility's `backdrop-filter` | `0px` except glass |
+| `--surface-image` | `surface` utility's `background-image` | gradients/highlights; `none` except glass and skeuomorphic |
+
+## Motion tokens
+
+| Token | Value | Used for |
+|---|---|---|
+| `--dur-fast` | `120ms` | micro-interactions (input focus) |
+| `--dur-base` | `200ms` | default transitions (button, card hover) |
+| `--dur-slow` | `500ms` | large state changes |
+| `--ease-out` | `cubic-bezier(0.2, 0.8, 0.2, 1)` | default easing |
+| `--ease-spring` | `cubic-bezier(0.34, 1.56, 0.64, 1)` | dialog/popover entrance |
+
+## Radius tokens
+
+`--radius` holds the preset's base value and is aliased to
+`--radius-sm` / `--radius-md` / `--radius-lg` / `--radius-xl` via
+`@theme inline` — the `rounded-sm` … `rounded-xl` utilities follow the
+active preset automatically.
+
+## Animation utilities
+
+Registered in `animations.css` under `@theme`, usable as plain classes:
+`animate-draw`, `animate-grow-y`, `animate-grow-x`, `animate-shimmer`,
+`animate-spin-slow`, `animate-count-fade`, `animate-scale-in`,
+`animate-fade-in`. srui always pairs them with `motion-safe:` so
+reduced-motion users get the final state instead of a stuck animation.
+
+## Overriding a token
+
+Redefine the variable after the `@import`s — the last definition wins for
+your whole app:
+
+```css title="src/index.css"
+@import "tailwindcss";
+@import "@srui/react/theme.css";
+@import "@srui/react/presets/flat.css";
+
+/* your brand */
+:root {
+  --primary: oklch(0.55 0.18 295);
+  --radius: 0.75rem;
+}
+.dark {
+  --primary: oklch(0.7 0.15 295);
+}
+```
+
+To scope an override to one subtree, set the variable on any wrapper —
+custom properties inherit, so everything inside re-themes (this is exactly
+how `<PresetGrid>` on the Introduction page shows four presets at once).
+
+## Dark mode
+
+`UIProvider` toggles a `dark` class on `<html>` based on its `scheme` state
+(`"light" | "dark" | "system"`), persisted under the `srui-scheme`
+localStorage key. Every token above has a `.dark` variant in each preset.
+Setting `data-style` on a wrapper (not `<html>`) re-themes just that
+subtree — but `.dark` always applies at the page level.
+
+## Token playground
+
+Change `--primary`, `--radius` and `--background` and watch the preview
+update live:
+
+<TokenPlayground />

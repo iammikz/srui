@@ -1,0 +1,87 @@
+---
+title: Card
+description: The base content surface — header, title, description, content and footer slots.
+---
+
+`Card` is the canonical `surface`: it composes `bg-card` with the preset's
+shadow, gloss and blur recipe. In the neumorphic preset its background
+equals the page (by design); in glass it's translucent; in skeuomorphic it
+gets the paper gloss.
+
+## Installation
+
+```tsx
+import {
+  Card, CardHeader, CardTitle, CardDescription,
+  CardContent, CardFooter, CardAction,
+} from "@srui/react";
+```
+
+## Usage
+
+<LivePreview code={`<Card>
+  <CardHeader>
+    <CardTitle>Create project</CardTitle>
+    <CardDescription>Deploy your new project in one-click.</CardDescription>
+  </CardHeader>
+  <CardContent>Content</CardContent>
+  <CardFooter className="justify-end">
+    <Button size="sm">Deploy</Button>
+  </CardFooter>
+</Card>`}>
+  <Card className="w-full max-w-sm">
+    <CardHeader>
+      <CardTitle>Create project</CardTitle>
+      <CardDescription>Deploy your new project in one-click.</CardDescription>
+    </CardHeader>
+    <CardContent className="text-sm text-muted-foreground">
+      Content goes here.
+    </CardContent>
+    <CardFooter className="justify-end">
+      <Button size="sm">Deploy</Button>
+    </CardFooter>
+  </Card>
+</LivePreview>
+
+## Props
+
+Each part accepts all native `div` props (`className`, `onClick`, …):
+
+| Export | Role |
+|---|---|
+| `Card` | The surface; `bg-card` + `surface` |
+| `CardHeader` | Top slot; grid for title/description/action |
+| `CardTitle` | Title text |
+| `CardDescription` | Muted description text |
+| `CardAction` | Top-right action area (e.g. a menu button) |
+| `CardContent` | Body slot |
+| `CardFooter` | Bottom slot |
+
+## Examples
+
+### With a header action
+
+<LivePreview code={`<Card>
+  <CardHeader>
+    <CardTitle>Notifications</CardTitle>
+    <CardAction><Badge>3 new</Badge></CardAction>
+  </CardHeader>
+  <CardContent>You have 3 unread messages.</CardContent>
+</Card>`}>
+  <Card className="w-full max-w-sm">
+    <CardHeader>
+      <CardTitle>Notifications</CardTitle>
+      <CardAction><Badge>3 new</Badge></CardAction>
+    </CardHeader>
+    <CardContent className="text-sm text-muted-foreground">
+      You have 3 unread messages.
+    </CardContent>
+  </Card>
+</LivePreview>
+
+## Accessibility
+
+Cards are plain `div`s — content semantics (headings, buttons) are up to
+you. If a whole card is clickable, put the interactive element inside it
+rather than making the card itself a button, so screen readers see a sane
+element tree.

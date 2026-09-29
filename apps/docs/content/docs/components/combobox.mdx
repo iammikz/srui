@@ -1,0 +1,62 @@
+---
+title: Combobox
+description: Filterable select — cmdk list inside a Popover, with Select's visual footprint.
+---
+
+`Combobox` is the searchable alternative to `Select`: an input that filters
+the option list client-side as you type. It wraps `cmdk` inside srui's
+`Popover`, and its trigger matches `Select`'s height and surface treatment.
+
+## Installation
+
+```tsx
+import { Combobox } from "@srui/react";
+```
+
+## Usage
+
+<ComboboxDemo />
+
+```tsx
+const options = [
+  { value: "react", label: "React" },
+  { value: "vue", label: "Vue" },
+  { value: "svelte", label: "Svelte" },
+  { value: "solid", label: "Solid" },
+];
+
+const [value, setValue] = useState("");
+
+<Combobox
+  options={options}
+  value={value}
+  onChange={setValue}
+  placeholder="Framework…"
+  emptyText="No framework matches."
+/>
+```
+
+## Props
+
+| Prop | Type | Default | Description |
+|---|---|---|---|
+| `options` | `{ value: string; label: string }[]` | — | The option list |
+| `value` | `string` | — | Selected value (controlled) |
+| `onChange` | `(value: string) => void` | — | Called with the picked value (empty string deselects) |
+| `placeholder` | `string` | `"Select…"` | Trigger + filter input placeholder |
+| `emptyText` | `string` | `"No results found."` | Empty-state text; English default, override for i18n |
+
+## Examples
+
+### Disabled
+
+<LivePreview code={`<Combobox options={options} value="" onChange={() => {}} disabled />`}>
+  <ComboboxDemo disabled />
+</LivePreview>
+
+## Accessibility
+
+The filter input is a real textbox with `aria-expanded` on the trigger;
+cmdk drives arrow-key movement, Enter to commit, and Escape to close, and
+announces the highlighted option. The empty state is text content, so it's
+read naturally when filtering empties the list.

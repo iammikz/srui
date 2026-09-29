@@ -1,0 +1,62 @@
+---
+title: Badge
+description: Small status label in six variants, including our success and warning extensions.
+---
+
+`Badge` renders a compact status label. Beyond shadcn's four variants it
+includes `success` and `warning` (srui's extension to the token set).
+
+## Installation
+
+```tsx
+import { Badge } from "@srui/react";
+```
+
+## Usage
+
+<LivePreview code={`<Badge>Default</Badge>`}>
+  <Badge>Default</Badge>
+</LivePreview>
+
+## Props
+
+| Prop | Type | Default | Description |
+|---|---|---|---|
+| `variant` | `"default" \| "secondary" \| "destructive" \| "outline" \| "success" \| "warning"` | `"default"` | Color treatment |
+| ...props | `React.ComponentProps<"span">` | — | Native span attributes |
+
+## Examples
+
+### All variants
+
+<LivePreview code={`<Badge>Default</Badge>
+<Badge variant="secondary">Secondary</Badge>
+<Badge variant="destructive">Destructive</Badge>
+<Badge variant="outline">Outline</Badge>
+<Badge variant="success">Success</Badge>
+<Badge variant="warning">Warning</Badge>`}>
+  <span className="flex flex-wrap gap-2">
+    <Badge>Default</Badge>
+    <Badge variant="secondary">Secondary</Badge>
+    <Badge variant="destructive">Destructive</Badge>
+    <Badge variant="outline">Outline</Badge>
+    <Badge variant="success">Success</Badge>
+    <Badge variant="warning">Warning</Badge>
+  </span>
+</LivePreview>
+
+### As a counter
+
+<LivePreview code={`<Button variant="outline">
+  Inbox <Badge variant="secondary">12</Badge>
+</Button>`}>
+  <Button variant="outline">
+    Inbox <Badge variant="secondary">12</Badge>
+  </Button>
+</LivePreview>
+
+## Accessibility
+
+Badges are plain text — readable by default. Don't rely on the variant
+color alone to convey meaning; put the meaning in the text ("Success",
+"Deprecated") as these examples do.

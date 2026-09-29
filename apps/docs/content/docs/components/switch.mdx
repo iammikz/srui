@@ -1,0 +1,65 @@
+---
+title: Switch
+description: Toggle control, wrapping Radix Switch.
+---
+
+`Switch` wraps `@radix-ui/react-switch`: `bg-primary` when on, a sliding
+thumb on `--dur-fast`, works inside a plain `<label>`.
+
+## Installation
+
+```tsx
+import { Switch } from "@srui/react";
+```
+
+## Usage
+
+<LivePreview code={`<label className="flex items-center gap-2 text-sm">
+  <Switch defaultChecked /> Airplane mode
+</label>`}>
+  <label className="flex items-center gap-2 text-sm">
+    <Switch defaultChecked /> Airplane mode
+  </label>
+</LivePreview>
+
+## Props
+
+`React.ComponentPropsWithoutRef<typeof RadixSwitch.Root>` — `checked`,
+`onCheckedChange`, `disabled`, `required`, `name`, `value`.
+
+## Examples
+
+### Form-like rows
+
+<LivePreview code={`<div className="grid gap-3">
+  <label className="flex items-center justify-between gap-4 text-sm">
+    Email notifications <Switch defaultChecked />
+  </label>
+  <label className="flex items-center justify-between gap-4 text-sm">
+    Weekly digest <Switch />
+  </label>
+</div>`}>
+  <div className="grid w-72 gap-3">
+    <label className="flex items-center justify-between gap-4 text-sm">
+      Email notifications <Switch defaultChecked />
+    </label>
+    <label className="flex items-center justify-between gap-4 text-sm">
+      Weekly digest <Switch />
+    </label>
+  </div>
+</LivePreview>
+
+### Disabled
+
+<LivePreview code={`<Switch disabled /> <Switch disabled defaultChecked />`}>
+  <span className="flex items-center gap-4">
+    <Switch disabled />
+    <Switch disabled defaultChecked />
+  </span>
+</LivePreview>
+
+## Accessibility
+
+Radix renders a `switch` role with `aria-checked`; Space toggles; the
+wrapped-label pattern names it. Color is never the only signal — the thumb
+position changes too.

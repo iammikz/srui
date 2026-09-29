@@ -1,0 +1,44 @@
+---
+title: Collapsible
+description: Single expand/collapse region, wrapping Radix Collapsible.
+---
+
+`Collapsible` wraps `@radix-ui/react-collapsible` — the one-item sibling of
+`Accordion`. Content height transitions against
+`--radix-collapsible-content-height`, disabled under `motion-reduce`.
+
+## Installation
+
+```tsx
+import { Collapsible, CollapsibleTrigger, CollapsibleContent } from "@srui/react";
+```
+
+## Usage
+
+<CollapsibleDemo />
+
+```tsx
+<Collapsible>
+  <CollapsibleTrigger asChild>
+    <Button variant="outline" size="sm">Show details</Button>
+  </CollapsibleTrigger>
+  <CollapsibleContent className="pt-3 text-sm text-muted-foreground">
+    Hidden until opened.
+  </CollapsibleContent>
+</Collapsible>
+```
+
+## Props
+
+| Export | Notes |
+|---|---|
+| `Collapsible` | Root: `open`/`onOpenChange` or `defaultOpen` |
+| `CollapsibleTrigger` | Toggle button (`asChild` supported) |
+| `CollapsibleContent` | Animated body |
+
+## Accessibility
+
+Trigger exposes `aria-expanded` and `aria-controls`; content is
+automatically hidden from the a11y tree when collapsed. Any trigger
+content works — put an arrow icon in and rotate it on
+`data-[state=open]` if you want a visual affordance.

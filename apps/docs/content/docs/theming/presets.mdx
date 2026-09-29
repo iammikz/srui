@@ -1,0 +1,76 @@
+---
+title: Presets
+description: Flat, glass, neumorphic and skeuomorphic — when to use each, and what to watch out for.
+---
+
+A preset is one stylesheet that redefines the whole token contract under a
+`data-style` attribute. `<UIProvider>` puts that attribute on `<html>` and
+keeps it in sync with the user's choice.
+
+---
+
+## Flat
+
+Clean and minimal. Structure comes from borders, shadows are barely there,
+and nothing distracts from content. This is the default preset — the right
+choice for dense, information-first UIs, admin panels, and anywhere you
+want your own brand color to do the talking.
+
+<PresetGrid only="flat" />
+
+**Caution:** flat surfaces live and die by contrast. If you override
+`--background`, keep `--foreground` at WCAG AA (4.5:1) — and remember
+`--card` defaults to the same value as `--background`, so separation comes
+from `--border` and `--surface-shadow`, not color shifts.
+
+Activated by `data-style="flat"`.
+
+## Glass
+
+Translucent surfaces floating over a blurred, softly colorful backdrop.
+Depth comes from what you can see *through* each layer. Great for
+marketing pages, media overlays, and apps that want a premium, spatial
+feel.
+
+<PresetGrid only="glass" />
+
+**Caution (known gotcha): glass needs contrast behind it.** It reads
+badly over a flat single-color background, so this preset paints a fixed
+gradient on `<body>` — in your own layouts, make sure there is imagery or
+gradient behind glass surfaces. Also **cap nested glass surfaces around
+2**: `backdrop-filter` is not free, and stacking blurs kills scroll
+performance on low-end devices.
+
+Activated by `data-style="glass"`.
+
+## Neumorphic
+
+Soft, extruded shapes on a single base tone — dual light shadows make
+elements look punched out of the page itself. Distinctive and tactile;
+best for focused, low-density interfaces (players, dashboards with few
+big controls, smart-home style UIs).
+
+<PresetGrid only="neumorphic" />
+
+**Caution (known gotcha): neumorphism's `--card` must equal
+`--background`.** Any drift breaks the "extruded from the page" illusion —
+if you override either, override both to the same value. Contrast is the
+other risk: keep an eye on `--muted-foreground` on the shared background,
+and check that focus rings (via `--ring`) are legible on the gray field.
+
+Activated by `data-style="neumorphic"`.
+
+## Skeuomorphic
+
+Real-world materials: paper background, glossy vertical gradients, beveled
+edges and honest borders. Nostalgic and fun; use it for playful products,
+game-adjacent UIs, or whenever you want controls that look pressable.
+
+<PresetGrid only="skeuomorphic" />
+
+**Caution:** the gloss comes from `--surface-image` layered over each
+surface's background color. If you override `--card`, pick a value light
+(or dark) enough that the white gloss gradient stays visible — very
+saturated base colors swallow it.
+
+Activated by `data-style="skeuomorphic"`.

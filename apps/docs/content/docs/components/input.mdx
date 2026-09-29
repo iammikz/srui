@@ -1,0 +1,54 @@
+---
+title: Input
+description: Text input field with token-styled focus and invalid states.
+---
+
+`Input` is a native `<input>` styled through the token contract: the field
+tint is `bg-input/30`, focus uses the `--ring` outline, and `invalid` swaps
+both to `--destructive`.
+
+## Installation
+
+```tsx
+import { Input } from "@srui/react";
+```
+
+## Usage
+
+<LivePreview code={`<Input placeholder="Email address" />`}>
+  <Input placeholder="Email address" className="w-72" />
+</LivePreview>
+
+```tsx
+<Input placeholder="Email address" />
+```
+
+## Props
+
+| Prop | Type | Default | Description |
+|---|---|---|---|
+| `invalid` | `boolean` | `false` | Red border + `aria-invalid="true"` |
+| ...props | `React.InputHTMLAttributes<HTMLInputElement>` | `type="text"` | All native input attributes |
+
+## Examples
+
+### Invalid state
+
+<LivePreview code={`<Input invalid value="not-an-email" readOnly />`}>
+  <Input invalid value="not-an-email" readOnly className="w-72" />
+</LivePreview>
+
+### Disabled
+
+<LivePreview code={`<Input disabled placeholder="Disabled" />`}>
+  <Input disabled placeholder="Disabled" className="w-72" />
+</LivePreview>
+
+## Accessibility
+
+- Native `<input>`; label it with `Label` + `htmlFor`, or wrap it in
+  `FormField` which wires that up.
+- `invalid` sets `aria-invalid` — pair it with an error message in
+  `role="alert"` (see `FormField`).
+- Focus is visible via a 2px `outline-ring` with offset, on `:focus-visible`
+  only, so pointer clicks don't show a ring.

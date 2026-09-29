@@ -1,0 +1,72 @@
+---
+title: Tooltip
+description: Hover/focus hint bubble, wrapping Radix Tooltip.
+---
+
+`Tooltip` wraps `@radix-ui/react-tooltip`: `bg-popover` + `surface`
+content, Radix's default show delay, dismiss on Escape. Place
+`TooltipProvider` once near the root (or around a subtree) and use any
+number of tooltips below it.
+
+## Installation
+
+```tsx
+import { TooltipProvider, Tooltip, TooltipTrigger, TooltipContent } from "@srui/react";
+```
+
+## Usage
+
+<LivePreview code={`<TooltipProvider delayDuration={200}>
+  <Tooltip>
+    <TooltipTrigger asChild>
+      <Button variant="outline">Hover me</Button>
+    </TooltipTrigger>
+    <TooltipContent>Thanks for hovering. I am a tooltip.</TooltipContent>
+  </Tooltip>
+</TooltipProvider>`}>
+  <TooltipProvider delayDuration={200}>
+    <Tooltip>
+      <TooltipTrigger asChild>
+        <Button variant="outline">Hover me</Button>
+      </TooltipTrigger>
+      <TooltipContent>Thanks for hovering. I am a tooltip.</TooltipContent>
+    </Tooltip>
+  </TooltipProvider>
+</LivePreview>
+
+## Props
+
+| Export | Notes |
+|---|---|
+| `TooltipProvider` | Required ancestor; `delayDuration` etc. |
+| `Tooltip` | Root; `open`/`onOpenChange` for controlled use |
+| `TooltipTrigger` | The hover/focus target (`asChild` supported) |
+| `TooltipContent` | The bubble; adds `sideOffset?: number` (default `6`) plus Radix Content props (`side`, `align`, …) |
+
+## Examples
+
+### All sides
+
+<LivePreview code={`<TooltipProvider>
+  <Tooltip><TooltipTrigger asChild><Button variant="ghost">Top</Button></TooltipTrigger>
+    <TooltipContent side="top">Top side</TooltipContent></Tooltip>
+  <Tooltip><TooltipTrigger asChild><Button variant="ghost">Bottom</Button></TooltipTrigger>
+    <TooltipContent side="bottom" sideOffset={10}>Bottom, offset 10</TooltipContent></Tooltip>
+</TooltipProvider>`}>
+  <TooltipProvider>
+    <Tooltip>
+      <TooltipTrigger asChild><Button variant="ghost">Top</Button></TooltipTrigger>
+      <TooltipContent side="top">Top side</TooltipContent>
+    </Tooltip>
+    <Tooltip>
+      <TooltipTrigger asChild><Button variant="ghost">Bottom</Button></TooltipTrigger>
+      <TooltipContent side="bottom" sideOffset={10}>Bottom, offset 10</TooltipContent>
+    </Tooltip>
+  </TooltipProvider>
+</LivePreview>
+
+## Accessibility
+
+Tooltips appear on keyboard focus as well as hover and dismiss on Escape
+(Radix behavior). Tooltips are *supplements* — never put information in a
+tooltip that isn't available elsewhere, since touch users can't hover.

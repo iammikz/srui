@@ -1,0 +1,72 @@
+---
+title: Avatar
+description: User image with automatic initials fallback, wrapping Radix Avatar.
+---
+
+`Avatar` wraps `@radix-ui/react-avatar`. When the image fails to load (or
+hasn't yet), the fallback renders initials derived from `name` — Radix
+handles the timing via `onLoadingStatusChange`, so initials appear
+immediately on failure.
+
+## Installation
+
+```tsx
+import { Avatar, AvatarImage, AvatarFallback } from "@srui/react";
+```
+
+## Usage
+
+<LivePreview code={`<Avatar>
+  <AvatarImage src="/jane.png" alt="Jane Doe" />
+  <AvatarFallback name="Jane Doe" />
+</Avatar>`}>
+  <Avatar>
+    <AvatarImage src="/definitely-missing.png" alt="Jane Doe" />
+    <AvatarFallback name="Jane Doe" />
+  </Avatar>
+</LivePreview>
+
+(The image above intentionally 404s — that's the fallback doing its job.)
+
+## Props
+
+| Export | Notes |
+|---|---|
+| `Avatar` | Root; size/shape via `className` |
+| `AvatarImage` | Radix Image: `src`, `alt`, `onLoadingStatusChange` |
+| `AvatarFallback` | Adds `name?: string` — renders initials when no `children` given |
+
+## Examples
+
+### Sizes
+
+<LivePreview code={`<Avatar className="size-8"><AvatarFallback name="Ada Lovelace" /></Avatar>
+<Avatar className="size-10"><AvatarFallback name="Ada Lovelace" /></Avatar>
+<Avatar className="size-14"><AvatarFallback name="Ada Lovelace" /></Avatar>`}>
+  <span className="flex items-center gap-3">
+    <Avatar className="size-8"><AvatarFallback name="Ada Lovelace" /></Avatar>
+    <Avatar className="size-10"><AvatarFallback name="Ada Lovelace" /></Avatar>
+    <Avatar className="size-14"><AvatarFallback name="Ada Lovelace" /></Avatar>
+  </span>
+</LivePreview>
+
+### Custom fallback content
+
+<LivePreview code={`<Avatar>
+  <AvatarFallback><UserIcon className="size-5" /></AvatarFallback>
+</Avatar>`}>
+  <Avatar>
+    <AvatarFallback>
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" className="size-5" aria-hidden="true">
+        <circle cx="12" cy="8" r="4" />
+        <path d="M4 21c0-4 3.6-6 8-6s8 2 8 6" strokeLinecap="round" />
+      </svg>
+    </AvatarFallback>
+  </Avatar>
+</LivePreview>
+
+## Accessibility
+
+`AvatarImage` takes a real `alt`; when the fallback is showing, the
+container is decorative (initials are readable text). Announce loading
+failures to users only if the avatar carries unique information.

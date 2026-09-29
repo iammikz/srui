@@ -1,0 +1,23 @@
+@import 'tailwindcss';
+@import 'fumadocs-ui/css/neutral.css';
+@import 'fumadocs-ui/css/preset.css';
+
+/* srui token contract, animations and all four presets. The @source line is
+   required: Tailwind v4 skips node_modules, and srui's component classes
+   live in the workspace-linked package's dist (implementation plan §1.3). */
+@import '@srui/react/theme.css';
+@import '@srui/react/animations.css';
+@import '@srui/react/presets/flat.css';
+@import '@srui/react/presets/glass.css';
+@import '@srui/react/presets/neumorphic.css';
+@import '@srui/react/presets/skeuomorphic.css';
+@source "../../node_modules/@srui/react/dist";
+
+html {
+  scrollbar-gutter: stable;
+}
+
+html > body[data-scroll-locked] {
+  margin-right: 0px !important;
+  --removed-body-scroll-bar-size: 0px !important;
+}

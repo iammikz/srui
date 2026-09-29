@@ -1,0 +1,156 @@
+---
+title: Installation
+description: Add @srui/react to a Tailwind v4 project.
+---
+
+srui is a regular npm package. You need React 18+ and Tailwind CSS v4.
+
+## 1. Install the package
+
+<Tabs items={['pnpm', 'npm', 'yarn']}>
+
+<TabsContent value="pnpm">
+
+```bash
+pnpm add @srui/react
+```
+
+</TabsContent>
+
+<TabsContent value="npm">
+
+```bash
+npm install @srui/react
+```
+
+</TabsContent>
+
+<TabsContent value="yarn">
+
+```bash
+yarn add @srui/react
+```
+
+</TabsContent>
+
+</Tabs>
+
+## 2. Import the styles
+
+In your global CSS entry (the file that imports `tailwindcss`), add srui's
+token contract, its animations, and **every preset you want available**:
+
+```css title="src/index.css"
+@import "tailwindcss";
+@import "@srui/react/theme.css";
+@import "@srui/react/animations.css";
+@import "@srui/react/presets/flat.css";
+@import "@srui/react/presets/glass.css";
+@import "@srui/react/presets/neumorphic.css";
+@import "@srui/react/presets/skeuomorphic.css";
+@source "../node_modules/@srui/react/dist";
+```
+
+<Callout title="Why is @source required?">
+  Tailwind v4 automatically scans your project for class names but **skips
+  `node_modules` by default**. srui's component classes live inside
+  `node_modules/@srui/react/dist`, so without the explicit `@source` line
+  the utilities those components rely on (`bg-primary`, `surface`, …) are
+  never generated and everything renders unstyled.
+</Callout>
+
+## 3. Wrap your app in UIProvider
+
+`UIProvider` holds the active preset (`data-style` on `<html>`) and color
+scheme (the `dark` class), and persists both to `localStorage`.
+
+To avoid a flash of the wrong theme before React hydrates, also inline the
+exported `noFlashScript()` into your document head:
+
+```tsx title="src/main.tsx"
+import { createRoot } from "react-dom/client";
+import { UIProvider, noFlashScript } from "@srui/react";
+import App from "./App";
+
+createRoot(document.getElementById("root")!).render(
+  <UIProvider>
+    <App />
+  </UIProvider>,
+);
+```
+
+```html title="index.html (inside <head>)"
+<script>
+  {/* replace this comment with the output of noFlashScript() */}
+</script>
+```
+
+The copy-pasteable script (rendered here from `noFlashScript()`):
+
+```js
+(function(){try{var s=localStorage.getItem('srui-style');var c=localStorage.getItem('srui-scheme');var sv=(s==='glass'||s==='neumorphic'||s==='skeuomorphic'||s==='flat')?s:'flat';var cv=(c==='light'||c==='dark'||c==='system')?c:'system';var dark=cv==='dark'||(cv==='system'&&window.matchMedia('(prefers-color-scheme: dark)').matches);var e=document.documentElement;e.setAttribute('data-style',sv);e.classList.toggle('dark',dark);e.style.colorScheme=dark?'dark':'light';}catch(err){}})();
+```
+
+It reads the persisted `srui-style` / `srui-scheme` keys and applies
+`data-style` + the `dark` class before first paint.
+
+## Not using Tailwind? The precompiled fallback
+
+If your project doesn't use Tailwind v4, import the precompiled stylesheet
+instead of steps 2's imports — it contains the tokens, presets, base styles
+and every utility srui's components use (compiled with `prefix(srui)` so it
+can't collide with your own classes):
+
+```css
+@import "@srui/react/styles.css";
+```
+
+Skip the `@source` line in this setup — there is nothing for Tailwind to
+scan.
+
+## Framework notes
+
+<Tabs items={['Vite', 'Next.js']}>
+
+<TabsContent value="Vite">
+
+Works as shown above. Put the `@source` line in the same CSS file as the
+`@import`s; no plugin beyond `@tailwindcss/vite` is needed.
+
+</TabsContent>
+
+<TabsContent value="Next.js">
+
+srui's components ship the `"use client"` directive, so they work in Server
+Components out of the box — but any file that *uses* them with state must
+itself be a client component.
+
+For the no-flash script use `next/script` with `beforeInteractive` (or an
+inline `<script>` in the root layout's `<head>`):
+
+```tsx title="app/layout.tsx"
+import Script from "next/script";
+import { UIProvider, noFlashScript } from "@srui/react";
+
+export default function RootLayout({ children }: { children: React.ReactNode }) {
+  return (
+    <html lang="en" suppressHydrationWarning>
+      <head>
+        <Script id="srui-noflash" strategy="beforeInteractive">
+          {noFlashScript()}
+        </Script>
+      </head>
+      <body>
+        <UIProvider>{children}</UIProvider>
+      </body>
+    </html>
+  );
+}
+```
+
+`suppressHydrationWarning` on `<html>` is required because the script
+mutates `data-style` / `class` before React hydrates.
+
+</TabsContent>
+
+</Tabs>

@@ -1,0 +1,97 @@
+---
+title: Dialog
+description: Modal overlay window, wrapping Radix Dialog, with spring scale-in.
+---
+
+`Dialog` wraps `@radix-ui/react-dialog` (never re-exported directly): focus
+trap, Escape to close, backdrop click, and `aria-modal` semantics come from
+Radix; srui adds the `surface` + `bg-popover` treatment and the
+`animate-scale-in` entrance with `--ease-spring`.
+
+## Installation
+
+```tsx
+import {
+  Dialog, DialogTrigger, DialogContent, DialogHeader,
+  DialogTitle, DialogDescription, DialogFooter, DialogClose,
+} from "@srui/react";
+```
+
+## Usage
+
+<LivePreview code={`<Dialog>
+  <DialogTrigger asChild>
+    <Button variant="outline">Open dialog</Button>
+  </DialogTrigger>
+  <DialogContent>
+    <DialogHeader>
+      <DialogTitle>Are you sure?</DialogTitle>
+      <DialogDescription>This action cannot be undone.</DialogDescription>
+    </DialogHeader>
+    <DialogFooter>
+      <DialogClose asChild><Button variant="outline">Cancel</Button></DialogClose>
+      <DialogClose asChild><Button variant="destructive">Delete</Button></DialogClose>
+    </DialogFooter>
+  </DialogContent>
+</Dialog>`}>
+  <Dialog>
+    <DialogTrigger asChild>
+      <Button variant="outline">Open dialog</Button>
+    </DialogTrigger>
+    <DialogContent>
+      <DialogHeader>
+        <DialogTitle>Are you absolutely sure?</DialogTitle>
+        <DialogDescription>
+          This action cannot be undone. This will permanently delete your
+          account and remove your data from our servers.
+        </DialogDescription>
+      </DialogHeader>
+      <DialogFooter>
+        <DialogClose asChild>
+          <Button variant="outline">Cancel</Button>
+        </DialogClose>
+        <DialogClose asChild>
+          <Button variant="destructive">Delete account</Button>
+        </DialogClose>
+      </DialogFooter>
+    </DialogContent>
+  </Dialog>
+</LivePreview>
+
+## Props
+
+| Export | Notes |
+|---|---|
+| `Dialog` | Root; Radix `open`/`onOpenChange` for controlled use |
+| `DialogTrigger` | Button that opens the dialog (`asChild` supported) |
+| `DialogClose` | Button that closes it |
+| `DialogContent` | The panel; `showCloseButton?: boolean` (default `true`), plus Radix Content props |
+| `DialogHeader` / `DialogFooter` | Layout slots |
+| `DialogTitle` / `DialogDescription` | Required for screen readers (Radix warns if missing) |
+
+## Examples
+
+### Without the default close button
+
+<LivePreview code={`<DialogContent showCloseButton={false}>…</DialogContent>`}>
+  <Dialog>
+    <DialogTrigger asChild>
+      <Button variant="ghost">No X button</Button>
+    </DialogTrigger>
+    <DialogContent showCloseButton={false}>
+      <DialogHeader>
+        <DialogTitle>Minimal dialog</DialogTitle>
+        <DialogDescription>Closes on Escape or the backdrop.</DialogDescription>
+      </DialogHeader>
+    </DialogContent>
+  </Dialog>
+</LivePreview>
+
+## Accessibility
+
+- Radix provides the focus trap, `aria-modal`, and labelled-by wiring;
+  always include `DialogTitle` (and ideally `DialogDescription`).
+- Escape closes; Tab cycles within the dialog; focus returns to the
+  trigger on close.
+- Entrance animation is `motion-safe:`-gated — reduced-motion users get an
+  instant dialog with no stuck mid-scale state.

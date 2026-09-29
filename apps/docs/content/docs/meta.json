@@ -1,0 +1,33 @@
+{
+  "pages": [
+    "index",
+    "installation",
+    "---Theming---",
+    "theming",
+    "theming/presets",
+    "---Components---",
+    "components/button",
+    "components/card",
+    "components/input",
+    "components/dialog",
+    "components/loader",
+    "components/stat-card",
+    "components/charts",
+    "components/select",
+    "components/combobox",
+    "components/tabs",
+    "components/tooltip",
+    "components/popover",
+    "components/toast",
+    "components/checkbox",
+    "components/radio-group",
+    "components/switch",
+    "components/textarea",
+    "components/form-field",
+    "components/avatar",
+    "components/badge",
+    "components/separator",
+    "components/accordion",
+    "components/collapsible"
+  ]
+}
