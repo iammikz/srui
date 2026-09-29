@@ -1,6 +1,6 @@
 {
   "name": "@srui/react",
-  "version": "0.0.0",
+  "version": "0.1.0",
   "description": "Supercomponent React UI — four runtime-switchable visual presets on shadcn-style tokens, for Tailwind v4.",
   "license": "MIT",
   "type": "module",
@@ -11,7 +11,9 @@
   "exports": {
     ".": {
       "types": "./dist/index.d.ts",
-      "import": "./dist/index.js"
+      "import": "./dist/index.js",
+      "require": "./dist/index.js",
+      "default": "./dist/index.js"
     },
     "./theme.css": "./src/styles/theme.css",
     "./presets/*.css": "./src/styles/presets/*.css",

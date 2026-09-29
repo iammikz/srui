@@ -1,0 +1,94 @@
+<!doctype html>
+<!--
+  Phase 1.4 DoD verification page: a plain HTML page (no Tailwind, no build
+  step) importing ONLY @srui/react's precompiled fallback stylesheet
+  (dist/srui.css) and the ESM bundle (dist/index.js). Serve the packages/react
+  directory over HTTP (e.g. `python -m http.server 8123` from packages/react)
+  and open /tests/plain-page/.
+-->
+<html lang="en" data-style="flat">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>srui precompiled CSS test</title>
+    <link rel="stylesheet" href="../../dist/srui.css" />
+    <script type="importmap">
+      {
+        "imports": {
+          "react": "https://esm.sh/react@19.1.0",
+          "react/jsx-runtime": "https://esm.sh/react@19.1.0/jsx-runtime",
+          "@radix-ui/react-dialog": "https://esm.sh/@radix-ui/react-dialog@1.1.6?deps=react@19.1.0",
+          "clsx": "https://esm.sh/clsx@2.1.1",
+          "d3-scale": "https://esm.sh/d3-scale@4.0.2",
+          "d3-shape": "https://esm.sh/d3-shape@3.2.0",
+          "lucide-react": "https://esm.sh/lucide-react@0.487.0?deps=react@19.1.0",
+          "tailwind-merge": "https://esm.sh/tailwind-merge@3.2.0",
+          "tailwind-variants": "https://esm.sh/tailwind-variants@1.0.0"
+        }
+      }
+    </script>
+    <style>
+      body {
+        margin: 0;
+        font-family: system-ui, sans-serif;
+        padding: 40px;
+        display: flex;
+        flex-direction: column;
+        gap: 24px;
+        align-items: flex-start;
+      }
+      .row { display: flex; gap: 12px; align-items: center; flex-wrap: wrap; }
+      .preset-pickers button { margin-right: 6px; }
+    </style>
+  </head>
+  <body>
+    <h1>srui — precompiled CSS fallback test</h1>
+    <p id="status">loading…</p>
+    <div class="preset-pickers row" id="pickers">
+      <button onclick="setPreset('flat')">flat</button>
+      <button onclick="setPreset('glass')">glass</button>
+      <button onclick="setPreset('neumorphic')">neumorphic</button>
+      <button onclick="setPreset('skeuomorphic')">skeuomorphic</button>
+      <button onclick="document.documentElement.classList.toggle('dark')">toggle dark</button>
+    </div>
+    <div class="row" id="root"></div>
+    <script>
+      window.addEventListener("error", (e) => {
+        document.getElementById("status").textContent =
+          "error: " + (e.message || e.error || "unknown");
+      });
+      window.addEventListener("unhandledrejection", (e) => {
+        document.getElementById("status").textContent =
+          "rejection: " + String(e.reason).slice(0, 200);
+      });
+      function setPreset(p) {
+        document.documentElement.setAttribute("data-style", p);
+      }
+    </script>
+    <script type="module">
+      try {
+        const React = await import("react");
+        const { createRoot } = await import("https://esm.sh/react-dom@19.1.0/client?deps=react@19.1.0");
+        const srui = await import("../../dist/index.js");
+
+        const root = createRoot(document.getElementById("root"));
+        root.render(
+          React.createElement(
+            "div",
+            { className: "row" },
+            React.createElement(srui.Button, null, "Default"),
+            React.createElement(srui.Button, { variant: "secondary" }, "Secondary"),
+            React.createElement(srui.Button, { variant: "destructive" }, "Destructive"),
+            React.createElement(srui.Button, { variant: "outline" }, "Outline"),
+          ),
+        );
+        document.getElementById("status").textContent =
+          "loaded — srui.css + dist/index.js only, no Tailwind";
+      } catch (err) {
+        document.getElementById("status").textContent =
+          "module error: " + String(err && err.message ? err.message : err).slice(0, 200);
+        console.error(err);
+      }
+    </script>
+  </body>
+</html>
