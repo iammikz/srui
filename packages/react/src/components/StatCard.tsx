@@ -63,10 +63,10 @@ export function StatCard({
           <CardAction>
             <span
               className={cn(
-                "inline-flex items-center gap-1 rounded-md bg-muted px-2 py-0.5 text-xs font-medium",
+                "inline-flex items-center gap-1 rounded-md px-2 py-0.5 text-xs font-medium",
                 delta.direction === "up"
-                  ? "text-success"
-                  : "text-destructive",
+                  ? "bg-success text-success-foreground"
+                  : "bg-destructive text-destructive-foreground",
               )}
             >
               {delta.direction === "up" ? (

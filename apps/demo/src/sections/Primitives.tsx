@@ -106,6 +106,8 @@ export function Primitives() {
               value={comboboxValue}
               onChange={setComboboxValue}
               placeholder="Framework…"
+              className=""
+              aria-label="Framework combobox"
             />
           </div>
         </div>
