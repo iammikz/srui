@@ -52,7 +52,8 @@ intentional visual change with
   Windows the scanner can't traverse pnpm's junction via deep `..` paths
   (use the one-level-up `../node_modules/@srui/react/dist` form).
 - Publishing: changesets are configured; `pnpm changeset version` +
-  `pnpm --filter @srui/react publish` when registry credentials exist.
+  `pnpm --filter @srui/react publish` when registry credentials exist —
+  see [`publish-package.md`](./publish-package.md) for the full step-by-step.
 
 See `implementation-plan.md` for the full project contract and
 `packages/react/ACCESSIBILITY.md` for the accessibility state.
