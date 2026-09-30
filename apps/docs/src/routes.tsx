@@ -1,6 +1,6 @@
 import type { ComponentType } from "react";
 import { useEffect } from "react";
-import { Outlet } from "react-router-dom";
+import { Navigate, Outlet, useLocation } from "react-router-dom";
 import type { RouteRecord } from "vite-react-ssg";
 import { DocsLayout } from "./DocsLayout";
 import { MdxProvider } from "./mdx-components";
@@ -46,6 +46,27 @@ import * as FormBuilder from "../content/docs/components/form-builder.mdx";
 import * as CommandPalette from "../content/docs/components/command-palette.mdx";
 import * as NotificationCenter from "../content/docs/components/notification-center.mdx";
 import * as Wizard from "../content/docs/components/wizard.mdx";
+
+/**
+ * Static hosts differ on extensionless deep links (`vite preview` and other
+ * strict servers only resolve the trailing-slash form). Normalize: any path
+ * without a trailing slash redirects to its slashed form, which serves the
+ * correct prerendered page; anything else is a real 404.
+ */
+function TrailingSlashRedirect() {
+  const { pathname, search } = useLocation();
+  if (pathname !== "/" && !pathname.endsWith("/")) {
+    return <Navigate to={`${pathname}/${search}`} replace />;
+  }
+  return (
+    <article className="docs-page">
+      <h1>Page not found</h1>
+      <p className="text-muted-foreground">
+        That route doesn&apos;t exist. Try the sidebar.
+      </p>
+    </article>
+  );
+}
 
 interface MdxModule {
   default: ComponentType;
@@ -114,6 +135,7 @@ export const routes: RouteRecord[] = [
       { path: "components/command-palette", element: <DocsPage mod={CommandPalette} /> },
       { path: "components/notification-center", element: <DocsPage mod={NotificationCenter} /> },
       { path: "components/wizard", element: <DocsPage mod={Wizard} /> },
+      { path: "*", element: <TrailingSlashRedirect /> },
     ],
   },
 ];
