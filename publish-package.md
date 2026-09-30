@@ -106,7 +106,7 @@ Instead of publishing from a workstation, use the
 [changesets/action](https://github.com/changesets/action) in GitHub Actions:
 
 1. Create an npm **automation/granular token** with publish rights on the
-   `@srui` scope.
+   `@iammikz` user scope.
 2. Add it as the `NPM_TOKEN` repository secret.
 3. Add a workflow step (can live in `.github/workflows/ci.yml`) that runs
    `changesets/action` — it opens a "Version Packages" PR whenever
