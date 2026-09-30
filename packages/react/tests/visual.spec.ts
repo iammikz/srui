@@ -11,42 +11,51 @@ import { test, expect } from "@playwright/test";
 const PRESETS = ["flat", "glass", "neumorphic", "skeuomorphic"] as const;
 
 const PAGES: Record<string, string> = {
-  button: "/docs/components/button",
-  card: "/docs/components/card",
-  input: "/docs/components/input",
-  dialog: "/docs/components/dialog",
-  loader: "/docs/components/loader",
-  "stat-card": "/docs/components/stat-card",
-  charts: "/docs/components/charts",
-  select: "/docs/components/select",
-  combobox: "/docs/components/combobox",
-  tabs: "/docs/components/tabs",
-  tooltip: "/docs/components/tooltip",
-  popover: "/docs/components/popover",
-  toast: "/docs/components/toast",
-  checkbox: "/docs/components/checkbox",
-  "radio-group": "/docs/components/radio-group",
-  switch: "/docs/components/switch",
-  textarea: "/docs/components/textarea",
-  "form-field": "/docs/components/form-field",
-  avatar: "/docs/components/avatar",
-  badge: "/docs/components/badge",
-  separator: "/docs/components/separator",
-  accordion: "/docs/components/accordion",
-  collapsible: "/docs/components/collapsible",
-  "app-shell": "/docs/components/app-shell",
-  "data-table": "/docs/components/data-table",
-  "chart-card": "/docs/components/chart-card",
-  "form-builder": "/docs/components/form-builder",
-  "command-palette": "/docs/components/command-palette",
-  "notification-center": "/docs/components/notification-center",
-  wizard: "/docs/components/wizard",
+  button: "/components/button/",
+  card: "/components/card/",
+  input: "/components/input/",
+  dialog: "/components/dialog/",
+  loader: "/components/loader/",
+  "stat-card": "/components/stat-card",
+  charts: "/components/charts/",
+  select: "/components/select/",
+  combobox: "/components/combobox/",
+  tabs: "/components/tabs/",
+  tooltip: "/components/tooltip/",
+  popover: "/components/popover/",
+  toast: "/components/toast/",
+  checkbox: "/components/checkbox/",
+  "radio-group": "/components/radio-group",
+  switch: "/components/switch/",
+  textarea: "/components/textarea/",
+  "form-field": "/components/form-field",
+  avatar: "/components/avatar/",
+  badge: "/components/badge/",
+  separator: "/components/separator/",
+  accordion: "/components/accordion/",
+  collapsible: "/components/collapsible/",
+  "app-shell": "/components/app-shell",
+  "data-table": "/components/data-table",
+  "chart-card": "/components/chart-card",
+  "form-builder": "/components/form-builder",
+  "command-palette": "/components/command-palette",
+  "notification-center": "/components/notification-center",
+  wizard: "/components/wizard/",
 };
 
 for (const preset of PRESETS) {
   test.describe(`visual regression — ${preset}`, () => {
     for (const [name, path] of Object.entries(PAGES)) {
       test(`${name} (${preset})`, async ({ page }) => {
+        // Screenshot the prerendered artifact: block script requests so no
+        // hydration runs during the stability check (the SSG HTML is
+        // complete; the inline no-flash script still applies the preset
+        // pre-paint). Interaction coverage lives in the a11y suite.
+        await page.route("**/*", (route) =>
+          route.request().resourceType() === "script"
+            ? route.abort()
+            : route.continue(),
+        );
         // Drive the docs site the same way the switcher does: persisted
         // style + light scheme, applied pre-paint by the no-flash script.
         await page.addInitScript(
@@ -66,11 +75,16 @@ for (const preset of PRESETS) {
 
         await expect(article).toHaveScreenshot(`${name}-${preset}.png`, {
           maxDiffPixelRatio: 0.001,
-          fullPage: true,
+          // Element screenshots capture the whole element already; fullPage
+          // triggers a viewport resize that fights AppShell's re-renders
+          // during the stability check.
           // Freeze CSS animations/transitions at their end state (charts,
           // count-ups, entrance effects) for deterministic baselines.
           animations: "disabled",
           caret: "hide",
+          // Full-page shots of the AppShell-framed pages are heavier than
+          // the default 5s expect budget allows for the stability passes.
+          timeout: 30_000,
         });
       });
     }

@@ -1,0 +1,32 @@
+<!doctype html>
+<html lang="en" data-style="flat">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>srui — Supercomponent React UI</title>
+    <script>
+      (function () {
+        try {
+          var s = localStorage.getItem("srui-style");
+          var c = localStorage.getItem("srui-scheme");
+          var sv =
+            s === "glass" || s === "neumorphic" || s === "skeuomorphic" || s === "flat"
+              ? s
+              : "flat";
+          var cv = c === "light" || c === "dark" || c === "system" ? c : "system";
+          var dark =
+            cv === "dark" ||
+            (cv === "system" && window.matchMedia("(prefers-color-scheme: dark)").matches);
+          var e = document.documentElement;
+          e.setAttribute("data-style", sv);
+          e.classList.toggle("dark", dark);
+          e.style.colorScheme = dark ? "dark" : "light";
+        } catch (err) {}
+      })();
+    </script>
+  </head>
+  <body>
+    <div id="root"></div>
+    <script type="module" src="/src/main.tsx"></script>
+  </body>
+</html>

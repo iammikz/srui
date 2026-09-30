@@ -134,12 +134,18 @@ srui/
    │     └─ app.css
    └─ docs/                      # documentation & component-library site (Phase 2)
       ├─ package.json
-      ├─ next.config.mjs
-      ├─ app/
-      │  ├─ layout.tsx           # wraps the app in UIProvider
-      │  └─ layout.config.tsx    # top nav: name, GitHub link, style/dark-mode switcher
-      ├─ components/
-      │  └─ live-preview.tsx     # <LivePreview> MDX component, see Phase 2.6
+      ├─ vite.config.ts           # Vite + @vitejs/plugin-react + @tailwindcss/vite + @mdx-js/rollup
+      ├─ tsconfig.json
+      ├─ index.html
+      ├─ src/
+      │  ├─ main.tsx              # ViteReactSSG entry point
+      │  ├─ routes.tsx            # explicit React Router route list
+      │  ├─ nav.ts                # sidebar config, consumed by DocsLayout
+      │  ├─ DocsLayout.tsx         # shared page shell, built from AppShell (Phase 5)
+      │  └─ components/
+      │     ├─ LivePreview.tsx    # <LivePreview>, see Phase 2.6
+      │     ├─ PresetGrid.tsx     # see Phase 2.2
+      │     └─ TokenPlayground.tsx # see Phase 2.4
       └─ content/docs/
          ├─ index.mdx            # Introduction
          ├─ installation.mdx
@@ -147,7 +153,7 @@ srui/
          ├─ theming/
          │  └─ presets.mdx
          └─ components/
-            ├─ _template.mdx     # reference only, never linked in the sidebar
+            ├─ _template.mdx     # reference only, never routed or linked in nav.ts
             ├─ button.mdx
             ├─ card.mdx
             ├─ input.mdx
@@ -378,21 +384,7 @@ For consumers not using Tailwind v4 at all.
   - [ ] Importing only that one file in a plain HTML page (no Tailwind)
         renders a `Button` with correct colors and a working `surface` shadow
 
-### 1.5 `"use client"` preservation
-
-Not needed until a Next.js consumer is targeted, but confirm now so it
-isn't a surprise later — this also matters for `apps/docs` in Phase 2,
-which is a Next.js app.
-- **Definition of done:**
-  - [ ] Add `"use client";` as the first line of any component file that
-        uses a React hook (`Button.tsx` doesn't need it; `UIProvider.tsx`,
-        `Dialog.tsx`, `Loader.tsx`, `StatCard.tsx`, `LineChart.tsx` do)
-  - [ ] After `pnpm build`, `grep -l "use client" packages/react/dist/index.js`
-        still finds the directive — if `tsup` stripped it, add
-        `banner: { js: '"use client";' }` to a `tsup.config.ts` instead of
-        relying on the inline directive surviving bundling
-
-### 1.6 Versioning and publish
+### 1.5 Versioning and publish
 
 ```bash
 pnpm add -D -w @changesets/cli
@@ -416,65 +408,133 @@ Phase 5 each add their own component's docs page as part of finishing that
 component — the site is never "caught up" in one batch pass, it grows in
 lockstep with the library.
 
-Stack: Next.js (App Router) + Fumadocs, so every code sample can be
-authored in MDX with live, interactive previews.
+**Stack: Vite + React + React Router, no Next.js.** MDX content is
+compiled by a Vite plugin rather than a Next.js-specific docs framework.
+Static HTML per route is produced by `vite-react-ssg` so the site is
+fast and crawlable without adopting a server framework — see
+`docs-site-tech-stack-plan.md` (delivered alongside this plan) for the
+full comparison of options and why this combination was chosen.
+
+**Dogfooding principle — read this before building anything in this
+phase:** the docs site's own UI chrome is built using `@srui/react`
+itself, not plain unstyled `<div>`s. The top nav's style switcher is a row
+of `Button`s. The sidebar is rendered inside `AppShell`. Framework-specific
+snippets use `Tabs`. Callouts and the live-preview box use `Card`. A
+"copy" button is `Button` with `variant="ghost"`. This isn't cosmetic —
+the site being visibly built from srui's own components, in production,
+under real content, is itself part of what proves the library works. If a
+page needs a UI element that has no srui component yet, that's a signal
+the component library is missing something real — flag it, don't reach
+for a plain HTML element as a workaround.
 
 ```bash
-pnpm create fumadocs-app apps/docs
+mkdir -p apps/docs/src apps/docs/content/docs
 cd apps/docs
-pnpm add @srui/react
+pnpm init
+pnpm add react react-dom react-router-dom @srui/react
+pnpm add -D vite @vitejs/plugin-react @tailwindcss/vite tailwindcss \
+  @mdx-js/rollup vite-react-ssg typescript @types/react @types/react-dom
+```
+
+`apps/docs/vite.config.ts`:
+```ts
+import { defineConfig } from "vite";
+import react from "@vitejs/plugin-react";
+import tailwindcss from "@tailwindcss/vite";
+import mdx from "@mdx-js/rollup";
+
+export default defineConfig({
+  plugins: [
+    { enforce: "pre", ...mdx({ providerImportSource: "@mdx-js/react" }) },
+    react({ include: /\.(jsx|js|mdx|md|tsx|ts)$/ }),
+    tailwindcss(),
+  ],
+  ssgOptions: { script: "async", formatting: "minify" }, // consumed by vite-react-ssg
+});
+```
+`apps/docs/package.json` scripts:
+```json
+{
+  "scripts": {
+    "dev": "vite",
+    "build": "vite-react-ssg build",
+    "preview": "vite preview"
+  }
+}
 ```
 
 ### 2.1 Site shell and navigation
 
-- **File:** `apps/docs/app/layout.tsx` — wraps the app in `<UIProvider>`
-  (imported from `@srui/react`) so every live example on every page can be
-  flipped between presets and light/dark using one shared switcher
-- **File:** `apps/docs/app/layout.config.tsx` (Fumadocs convention) — top
-  nav: "srui" wordmark, a link to the GitHub repo, and a style/dark-mode
-  switcher (same UI as `apps/demo`'s `StyleSwitcher` — extract it to a
-  shared location if you want one implementation, or duplicate the ~20
-  lines; either is fine at this scale)
-- **Sidebar navigation structure**, defined via Fumadocs' `meta.json`
-  convention under `content/docs/`:
+- **File:** `apps/docs/src/main.tsx` — entry point used by `vite-react-ssg`;
+  exports `ViteReactSSG(<App />, ({ router }) => {})` per that package's
+  API, with routes defined in `src/routes.tsx`
+- **File:** `apps/docs/src/routes.tsx` — a plain array of React Router
+  route objects (`{ path, element }`), one per page. No file-based routing
+  convention to learn — every route is an explicit line in this file
+- **File:** `apps/docs/src/DocsLayout.tsx` — the shared page shell, built
+  from `AppShell` (imported from `@srui/react`, built in Phase 5 — until
+  Phase 5 lands, use a minimal flex layout and swap in `AppShell` once it
+  exists; do not build a second, throwaway shell component to avoid this
+  ordering issue). Wraps everything in `<UIProvider>` so every live
+  example on every page can be flipped between presets and light/dark
+  using one shared switcher
+- **File:** `apps/docs/src/nav.ts` — a plain TypeScript config, not a
+  framework convention, describing the sidebar:
+  ```ts
+  export const nav = [
+    { section: "Getting Started", items: [
+      { label: "Introduction", href: "/" },
+      { label: "Installation", href: "/installation" },
+    ]},
+    { section: "Theming", items: [
+      { label: "Theming", href: "/theming" },
+      { label: "Presets", href: "/theming/presets" },
+    ]},
+    { section: "Components", items: [
+      { label: "Button", href: "/components/button" },
+      { label: "Card", href: "/components/card" },
+      { label: "Input", href: "/components/input" },
+      { label: "Dialog", href: "/components/dialog" },
+      { label: "Loader", href: "/components/loader" },
+      { label: "Stat Card", href: "/components/stat-card" },
+      { label: "Charts", href: "/components/charts" },
+      // Select, Combobox, Tabs, Tooltip, Popover, Toast, Checkbox,
+      // Radio Group, Switch, Textarea, Form Field, Avatar, Badge,
+      // Separator, Accordion — appended one at a time in Phase 3
+      // App Shell, Data Table, Chart Card, Form Builder, Command
+      // Palette, Notification Center, Wizard — appended in Phase 5
+    ]},
+  ];
   ```
-  Getting Started
-    Introduction          → /docs
-    Installation           → /docs/installation
-  Theming
-    Theming                 → /docs/theming
-    Presets                   → /docs/theming/presets
-  Components
-    Button                      → /docs/components/button
-    Card                          → /docs/components/card
-    Input                           → /docs/components/input
-    Dialog                            → /docs/components/dialog
-    Loader                              → /docs/components/loader
-    Stat Card                             → /docs/components/stat-card
-    Charts                                  → /docs/components/charts
-    (Select, Combobox, Tabs, Tooltip, Popover, Toast, Checkbox,
-     Radio Group, Switch, Textarea, Form Field, Avatar, Badge,
-     Separator, Accordion — added one at a time in Phase 3)
-    (App Shell, Data Table, Chart Card, Form Builder, Command Palette,
-     Notification Center, Wizard — added one at a time in Phase 5)
-  ```
+  `DocsLayout` renders this array as the `AppShell`'s `sidebar` prop —
+  each item is a `Button variant="ghost"` styled as a nav link (active
+  route gets `variant="secondary"`)
 - **Definition of done:**
-  - [ ] The sidebar renders with all three top-level sections
+  - [ ] The sidebar renders with all three top-level sections, sourced
+        entirely from `nav.ts` (no hardcoded links duplicated elsewhere)
   - [ ] The style/dark-mode switcher in the top nav affects every live
         preview on the current page instantly, with no page reload
+  - [ ] `pnpm --filter docs build` produces static HTML for every route in
+        `routes.tsx` (confirm via `apps/docs/dist/**/index.html`)
 
 ### 2.2 Introduction page
 
-- **File:** `apps/docs/content/docs/index.mdx`
+- **File:** `apps/docs/content/docs/index.mdx`, routed at `/` in
+  `routes.tsx` (import the `.mdx` file directly as a component:
+  `import Introduction from "../content/docs/index.mdx"`)
 - **Required content:**
   - What srui is (Supercomponent React UI) and the one-paragraph pitch:
     shadcn-style tokens, four runtime-switchable presets, Tailwind v4,
     distributed as an npm package rather than copy-in source
+  - A line noting that this site is itself built with `@srui/react` — the
+    dogfooding point from this phase's intro, stated for the reader
   - A short "why four presets" explainer with one live side-by-side
     preview of the same `Card` rendered in all four presets — build this
-    as a small reusable `<PresetGrid>` MDX component (used again on the
-    Presets page in 2.5)
-  - Links to Installation and to the Components section
+    as a small reusable `<PresetGrid>` component (a plain `.tsx` component
+    under `apps/docs/src/components/`, imported into MDX like any other
+    component; used again on the Presets page in 2.5)
+  - Links to Installation and to the Components section (real
+    `<Link to="...">` from `react-router-dom`, not `<a href>`)
 - **Definition of done:**
   - [ ] `<PresetGrid>` renders four live `Card`s, each showing a different
         preset simultaneously on screen (each instance sets `data-style`
@@ -484,19 +544,24 @@ pnpm add @srui/react
 
 ### 2.3 Installation page
 
-- **File:** `apps/docs/content/docs/installation.mdx`
+- **File:** `apps/docs/content/docs/installation.mdx`, routed at
+  `/installation`
 - **Required content, in this order:**
-  1. `pnpm add @srui/react` (with npm/yarn equivalents shown as tabs)
+  1. `pnpm add @srui/react` (with npm/yarn equivalents shown in a `Tabs`
+     component from `@srui/react`, not a Markdown code-fence switcher)
   2. The three `@import` lines plus the `@source` line from Phase 1.3,
-     with a callout explaining why `@source` is required (Tailwind v4
-     skips `node_modules` by default)
+     with a callout (a `Card` with `variant="outline"`-style treatment)
+     explaining why `@source` is required (Tailwind v4 skips
+     `node_modules` by default)
   3. Wrapping the app in `<UIProvider>`, plus the no-flash inline script
      from `UIProvider.tsx`'s exported `noFlashScript`, shown as a
      copy-pasteable snippet
   4. A note on the precompiled CSS fallback from Phase 1.4, for consumers
      not using Tailwind
-  5. Framework-specific tabs: Vite, Next.js (including the `"use client"`
-     note from Phase 1.5)
+  5. One Vite setup walkthrough (this project's own supported consumer
+     path — no other framework's setup is documented at this stage; if a
+     future phase adds support for another bundler/framework, add its tab
+     here then)
 - **Definition of done:**
   - [ ] Following this page exactly, in the throwaway consumer project
         from Phase 1.3, produces a correctly styled page with no steps
@@ -504,7 +569,7 @@ pnpm add @srui/react
 
 ### 2.4 Theming page
 
-- **File:** `apps/docs/content/docs/theming.mdx`
+- **File:** `apps/docs/content/docs/theming.mdx`, routed at `/theming`
 - **Required content:**
   - The full **Canonical token reference** table from this plan (color
     tokens, surface recipe tokens, motion tokens, radius tokens),
@@ -513,16 +578,19 @@ pnpm add @srui/react
     after the `@import`s
   - How dark mode works: the `.dark` class, toggled by `UIProvider`'s
     `scheme` state
-  - A live "token playground": text/color inputs bound to `--primary`,
-    `--radius`, and `--background`, applied to a preview `Card` in real
-    time (a small client component; no persistence needed)
+  - A live "token playground": text/color inputs (rendered with `Input`
+    from `@srui/react`) bound to `--primary`, `--radius`, and
+    `--background`, applied to a preview `Card` in real time (a small
+    component under `apps/docs/src/components/TokenPlayground.tsx`,
+    imported into the MDX file; no persistence needed)
 - **Definition of done:**
   - [ ] Changing a value in the token playground visibly updates the
         preview immediately, with no page reload
 
 ### 2.5 Presets page
 
-- **File:** `apps/docs/content/docs/theming/presets.mdx`
+- **File:** `apps/docs/content/docs/theming/presets.mdx`, routed at
+  `/theming/presets`
 - **Required content:** one section per preset — Flat, Glass, Neumorphic,
   Skeuomorphic — each containing:
   - A one-paragraph description of the visual approach and when to use it
@@ -581,23 +649,25 @@ sizes, loading/error/disabled states, etc.)
 specific to this component)
 ```
 
-- **New file:** `apps/docs/components/live-preview.tsx` — the
-  `<LivePreview>` MDX component referenced above; renders its children
-  inside a bordered `surface` box that reflects the current
-  `UIProvider` style/scheme, plus a "view code" toggle that reveals the
-  matching code block
+- **New file:** `apps/docs/src/components/LivePreview.tsx` — the
+  `<LivePreview>` component referenced above (a plain component, globally
+  available to MDX via the `providerImportSource`/MDX provider set up in
+  `vite.config.ts`); renders its children inside a bordered `Card` (from
+  `@srui/react`) that reflects the current `UIProvider` style/scheme, plus
+  a "view code" `Button` that toggles the matching code block
 - **Definition of done:**
-  - [ ] `_template.mdx` exists but is not linked from any `meta.json` —
-        it is copy-from reference material, not a published page
+  - [ ] `_template.mdx` exists but has no entry in `nav.ts` and no route
+        in `routes.tsx` — it is copy-from reference material, not a
+        published page
 
 ### Phase 2 cross-cutting requirement (applies to every later phase)
 
 Starting with Phase 3, **every task that adds a new exported component
-also adds that component's docs page**, using the template from 2.6, and
-adds it to the sidebar structure from 2.1. This requirement is stated once
-here rather than repeated in every later task — from this point on, a
-component task is not complete until its docs page exists (see rule 4 in
-"How to use this document").
+also adds that component's docs page**, using the template from 2.6, adds
+a route for it in `routes.tsx`, and adds it to `nav.ts`. This requirement
+is stated once here rather than repeated in every later task — from this
+point on, a component task is not complete until its docs page exists
+(see rule 4 in "How to use this document").
 
 **Definition of done for Phase 2 as a whole:**
 - [ ] `apps/docs` runs (`pnpm --filter docs dev`) and its sidebar shows
@@ -608,6 +678,11 @@ component task is not complete until its docs page exists (see rule 4 in
 - [ ] The style/dark-mode switcher in the docs site's top nav uses the
       same `useUIStyle` hook as `apps/demo`, not a second, separate
       implementation of style state
+- [ ] Every piece of the site's own chrome (nav, sidebar, callouts,
+      framework tabs, the live-preview box) is built from `@srui/react`
+      components — a quick audit: `grep -rn "<div" apps/docs/src` should
+      turn up layout wrappers only, not buttons/cards/tabs reimplemented
+      by hand
 
 ---
 
@@ -1022,10 +1097,11 @@ pnpm dlx storybook@latest init --type react-vite
       `LoadingOverlay`'s default `label`, `Combobox`'s default
       `emptyText`, etc. — make them required or clearly documented as
       English defaults meant to be overridden
-- [ ] Framework templates: a minimal working example per framework
-      (Vite, Next.js App Router, React Router) in `examples/`, each
-      importing `@srui/react` from the registry (not via `workspace:*`);
-      link them from the Installation page (Phase 2.3)
+- [ ] Framework templates: a minimal working example per bundler/framework
+      the library is meant to support (Vite is the only one documented as
+      of Phase 2 — add others here only once they're actually verified) in
+      `examples/`, each importing `@srui/react` from the registry (not via
+      `workspace:*`); link them from the Installation page (Phase 2.3)
 
 ---
 
@@ -1044,7 +1120,8 @@ pnpm dlx storybook@latest init --type react-vite
 | Focus rings | `outline-*`, never `ring-*` | Tailwind's `ring-*` utilities use `box-shadow`, which would collide with preset surface shadows |
 | Forms | `react-hook-form` + `zod` | Matches `FormBuilder`'s schema-driven design |
 | Tables | `@tanstack/react-table` + `@tanstack/react-virtual` | Headless, matches the three-tier API pattern |
-| Docs site | Next.js + Fumadocs, in `apps/docs` | MDX-based live previews; matches the ui.shadcn.com/docs shape this project is modeled on |
+| Docs site | Vite + React + React Router + `vite-react-ssg`, in `apps/docs`; MDX via `@mdx-js/rollup`; no Next.js | Stays "just React," matches the ui.shadcn.com/docs shape without adopting a server framework; see `docs-site-tech-stack-plan.md` for the option comparison |
+| Docs site UI | Built from `@srui/react` itself (dogfooding) | The site doubles as a live, production showcase of the library it documents |
 
 ## Known gotchas (checked in relevant Definitions of Done above, listed together for reference)
 

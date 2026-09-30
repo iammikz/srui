@@ -1,0 +1,107 @@
+@import "tailwindcss";
+@import "@srui/react/theme.css";
+@import "@srui/react/animations.css";
+@import "@srui/react/presets/flat.css";
+@import "@srui/react/presets/glass.css";
+@import "@srui/react/presets/neumorphic.css";
+@import "@srui/react/presets/skeuomorphic.css";
+/* One level up, with "./"-style relative form: the scanner does not
+   traverse pnpm's workspace junction via deeper ".." paths. */
+@source "../node_modules/@srui/react/dist";
+
+/* Docs prose typography — written against srui's own tokens. */
+.docs-page {
+  max-width: 48rem;
+}
+.docs-page > p,
+.docs-page > ul,
+.docs-page > ol {
+  margin: 0 0 1rem;
+  line-height: 1.7;
+  color: var(--foreground);
+}
+.docs-page > ul,
+.docs-page > ol {
+  padding-inline-start: 1.25rem;
+  list-style: disc;
+}
+.docs-page > ol {
+  list-style: decimal;
+}
+.docs-page li {
+  margin-bottom: 0.375rem;
+}
+.docs-page h1 {
+  font-size: 1.875rem;
+  font-weight: 700;
+  letter-spacing: -0.02em;
+  margin: 0 0 0.5rem;
+}
+.docs-page h2 {
+  font-size: 1.375rem;
+  font-weight: 600;
+  margin: 2.25rem 0 0.75rem;
+  padding-bottom: 0.375rem;
+  border-bottom: 1px solid var(--border);
+}
+.docs-page h3 {
+  font-size: 1.0625rem;
+  font-weight: 600;
+  margin: 1.75rem 0 0.5rem;
+}
+.docs-page code {
+  font-family: ui-monospace, SFMono-Regular, Menlo, Consolas, monospace;
+  font-size: 0.85em;
+  background: color-mix(in oklab, var(--muted) 80%, transparent);
+  border: 1px solid var(--border);
+  border-radius: 0.375rem;
+  padding: 0.1em 0.35em;
+}
+.docs-page pre {
+  background: var(--muted);
+  border: 1px solid var(--border);
+  border-radius: 0.75rem;
+  padding: 1rem;
+  overflow-x: auto;
+  margin: 0 0 1.25rem;
+  line-height: 1.6;
+}
+.docs-page pre code {
+  background: none;
+  border: none;
+  padding: 0;
+  font-size: 0.8125rem;
+}
+.docs-page table {
+  width: 100%;
+  border-collapse: collapse;
+  font-size: 0.875rem;
+  margin: 0 0 1.25rem;
+}
+.docs-page th {
+  text-align: left;
+  font-weight: 600;
+  border-bottom: 2px solid var(--border);
+  padding: 0.5rem 0.625rem;
+}
+.docs-page td {
+  border-bottom: 1px solid var(--border);
+  padding: 0.5rem 0.625rem;
+  vertical-align: top;
+}
+.docs-page a {
+  color: var(--primary);
+  text-decoration: underline;
+  text-underline-offset: 3px;
+}
+.docs-page hr {
+  border: none;
+  border-top: 1px solid var(--border);
+  margin: 2.5rem 0;
+}
+.docs-page blockquote {
+  border-inline-start: 3px solid var(--border);
+  padding-inline-start: 1rem;
+  color: var(--muted-foreground);
+  margin: 0 0 1rem;
+}

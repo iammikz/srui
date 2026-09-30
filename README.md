@@ -12,7 +12,7 @@ are the product; consumers don't edit the source.
 |---|---|
 | `packages/react` | The library, published as `@srui/react` |
 | `apps/demo` | Vite showcase app for local development (all components, preset switcher) |
-| `apps/docs` | Documentation & component-library site (Next.js + Fumadocs) |
+| `apps/docs` | Documentation & component-library site (Vite + React Router + `vite-react-ssg`, dogfooding `@srui/react`) |
 
 ## Getting started
 
@@ -44,9 +44,20 @@ intentional visual change with
 ## Development notes
 
 - **After editing `packages/react/src`, run `pnpm build`** — the demo and
-  docs consume the built `dist/`. The docs dev server (Turbopack) caches the
-  linked package aggressively; restart it (`rm -rf apps/docs/.next`) if it
-  serves stale components.
+  docs consume the built `dist/`; restart their dev servers if they serve
+  stale components.
+- The docs site builds to static HTML per route
+  (`vite-react-ssg build`, `dirStyle: "nested"` → `dist/**/index.html`);
+  plain `vite` dev has no prerendering, matching the tech-stack plan.
+- `vite preview` only serves nested pages with a trailing slash
+  (`/components/card/`, not `/components/card`) — real static hosts map
+  both; the visual suite uses the trailing-slash form.
+- The visual suite screenshots the prerendered artifact with script
+  requests blocked (deterministic, no hydration race); interactive
+  behavior is covered by the a11y suite against the demo app.
+- **Deferred backlog (from `docs-site-tech-stack-plan.md` §5):** the docs
+  site has no full-text search yet (Fumadocs used to bundle one). Planned:
+  a client-side index over the static build, e.g. Pagefind.
 - The demo/docs Tailwind setups include an `@source` line pointing at the
   package build — Tailwind v4 skips `node_modules` by default, and on
   Windows the scanner can't traverse pnpm's junction via deep `..` paths

@@ -64,27 +64,31 @@ export function UIProvider({
   defaultStyle = "flat",
   defaultScheme = "system",
 }: UIProviderProps) {
-  // Prefer whatever the no-flash script already applied to <html>, so the
-  // first client render agrees with the pre-paint state.
-  const [style, setStyleState] = useState<UIStyle>(() => {
-    if (typeof document === "undefined") return defaultStyle;
+  // First render ALWAYS uses the defaults so server-rendered (SSG/SSR)
+  // markup and the first client render match — persisted choices and the
+  // no-flash script's pre-paint state are synced in the mount effect
+  // below (localStorage reads are deliberately deferred, never in the
+  // useState initializers, or hydration mismatches).
+  const [style, setStyleState] = useState<UIStyle>(defaultStyle);
+  const [scheme, setSchemeState] = useState<UIScheme>(defaultScheme);
+  const [systemDark, setSystemDark] = useState(false);
+
+  // After mount, adopt whatever the no-flash script applied pre-paint
+  // (dataset.style, from the same persisted keys) and the persisted scheme
+  // — keeping the settled state aligned with the user's choice without
+  // leaking it into the first render.
+  useEffect(() => {
     const attr = document.documentElement.dataset.style;
-    return isUIStyle(attr) ? attr : defaultStyle;
-  });
-  const [scheme, setSchemeState] = useState<UIScheme>(() => {
-    if (typeof window === "undefined") return defaultScheme;
+    if (isUIStyle(attr) && attr !== style) setStyleState(attr);
     try {
       const stored = localStorage.getItem(SCHEME_STORAGE_KEY);
-      if (isUIScheme(stored)) return stored;
+      if (isUIScheme(stored) && stored !== scheme) setSchemeState(stored);
     } catch {
       /* storage unavailable */
     }
-    return defaultScheme;
-  });
-  const [systemDark, setSystemDark] = useState<boolean>(() => {
-    if (typeof window === "undefined") return false;
-    return window.matchMedia("(prefers-color-scheme: dark)").matches;
-  });
+    setSystemDark(window.matchMedia("(prefers-color-scheme: dark)").matches);
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, []);
 
   useEffect(() => {
     const mq = window.matchMedia("(prefers-color-scheme: dark)");

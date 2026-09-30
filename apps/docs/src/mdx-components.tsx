@@ -1,0 +1,206 @@
+import type { ComponentPropsWithoutRef } from "react";
+import { Link } from "react-router-dom";
+import { MDXProvider } from "@mdx-js/react";
+import {
+  Accordion,
+  AccordionContent,
+  AccordionItem,
+  AccordionTrigger,
+  Avatar,
+  AvatarFallback,
+  AvatarImage,
+  Badge,
+  Button,
+  Card,
+  CardAction,
+  CardContent,
+  CardDescription,
+  CardFooter,
+  CardHeader,
+  CardTitle,
+  Checkbox,
+  Collapsible,
+  CollapsibleContent,
+  CollapsibleTrigger,
+  Combobox,
+  Dialog,
+  DialogClose,
+  DialogContent,
+  DialogDescription,
+  DialogFooter,
+  DialogHeader,
+  DialogTitle,
+  DialogTrigger,
+  DonutChart,
+  DotsLoader,
+  FormField,
+  Input,
+  Label,
+  LineChart,
+  BarChart,
+  LoadingOverlay,
+  Popover,
+  PopoverAnchor,
+  PopoverContent,
+  PopoverTrigger,
+  RadioGroup,
+  RadioGroupItem,
+  Select,
+  SelectContent,
+  SelectGroup,
+  SelectItem,
+  SelectLabel,
+  SelectSeparator,
+  SelectTrigger,
+  SelectValue,
+  Separator,
+  Skeleton,
+  Sparkline,
+  Spinner,
+  StatCard,
+  Switch,
+  Tabs,
+  TabsContent,
+  TabsList,
+  TabsTrigger,
+  Textarea,
+  Toast,
+  ToastAction,
+  ToastDescription,
+  ToastTitle,
+  ToastViewport,
+  Tooltip,
+  TooltipContent,
+  TooltipProvider,
+  TooltipTrigger,
+} from "@srui/react";
+import { Callout } from "./components/callout";
+import { LivePreview } from "./components/live-preview";
+import { PresetGrid } from "./components/preset-grid";
+import { TokenPlayground } from "./components/token-playground";
+import { AppShellDemo } from "./components/app-shell-demo";
+import { ChartCardDemo } from "./components/chart-card-demo";
+import { CheckboxDemo } from "./components/checkbox-demo";
+import { CollapsibleDemo } from "./components/collapsible-demo";
+import { ComboboxDemo } from "./components/combobox-demo";
+import { CommandPaletteDemo } from "./components/command-palette-demo";
+import { DataTableDemo } from "./components/data-table-demo";
+import { FormBuilderDemo } from "./components/form-builder-demo";
+import { LoadingOverlayDemo } from "./components/loading-overlay-demo";
+import { NotificationCenterDemo } from "./components/notification-center-demo";
+import { StatCardDemo } from "./components/stat-card-demo";
+import { ToastDemo, ToastVariantsDemo } from "./components/toast-demo";
+import { WizardDemo } from "./components/wizard-demo";
+
+/** Internal links become real react-router <Link>s (Phase 2.2). */
+function MdxLink({ href, children, ...props }: ComponentPropsWithoutRef<"a">) {
+  if (href && href.startsWith("/") && !href.startsWith("//")) {
+    return (
+      <Link to={href} {...props}>
+        {children}
+      </Link>
+    );
+  }
+  return (
+    <a href={href} {...props}>
+      {children}
+    </a>
+  );
+}
+
+const mdxComponents = {
+  Accordion,
+  AccordionContent,
+  AccordionItem,
+  AccordionTrigger,
+  Avatar,
+  AvatarFallback,
+  AvatarImage,
+  Badge,
+  Button,
+  Callout,
+  Card,
+  CardAction,
+  CardContent,
+  CardDescription,
+  CardFooter,
+  CardHeader,
+  CardTitle,
+  Checkbox,
+  Collapsible,
+  CollapsibleContent,
+  CollapsibleTrigger,
+  Combobox,
+  Dialog,
+  DialogClose,
+  DialogContent,
+  DialogDescription,
+  DialogFooter,
+  DialogHeader,
+  DialogTitle,
+  DialogTrigger,
+  DonutChart,
+  DotsLoader,
+  FormField,
+  Input,
+  Label,
+  LineChart,
+  BarChart,
+  LivePreview,
+  LoadingOverlay,
+  LoadingOverlayDemo,
+  Popover,
+  PopoverAnchor,
+  PopoverContent,
+  PopoverTrigger,
+  PresetGrid,
+  RadioGroup,
+  RadioGroupItem,
+  Select,
+  SelectContent,
+  SelectGroup,
+  SelectItem,
+  SelectLabel,
+  SelectSeparator,
+  SelectTrigger,
+  SelectValue,
+  Separator,
+  Skeleton,
+  Sparkline,
+  Spinner,
+  StatCard,
+  StatCardDemo,
+  Switch,
+  Tabs,
+  TabsContent,
+  TabsList,
+  TabsTrigger,
+  Textarea,
+  Toast,
+  ToastAction,
+  ToastDescription,
+  ToastTitle,
+  ToastViewport,
+  TokenPlayground,
+  Tooltip,
+  TooltipContent,
+  TooltipProvider,
+  TooltipTrigger,
+  AppShellDemo,
+  ChartCardDemo,
+  CheckboxDemo,
+  CollapsibleDemo,
+  ComboboxDemo,
+  CommandPaletteDemo,
+  DataTableDemo,
+  FormBuilderDemo,
+  NotificationCenterDemo,
+  ToastDemo,
+  ToastVariantsDemo,
+  WizardDemo,
+  a: MdxLink,
+};
+
+export function MdxProvider({ children }: { children: React.ReactNode }) {
+  return <MDXProvider components={mdxComponents}>{children}</MDXProvider>;
+}

@@ -7,7 +7,7 @@ srui is a regular npm package. You need React 18+ and Tailwind CSS v4.
 
 ## 1. Install the package
 
-<Tabs items={['pnpm', 'npm', 'yarn']}>
+<Tabs defaultValue="pnpm">
 
 <TabsContent value="pnpm">
 
@@ -108,49 +108,39 @@ can't collide with your own classes):
 Skip the `@source` line in this setup — there is nothing for Tailwind to
 scan.
 
-## Framework notes
+## Vite setup walkthrough
 
-<Tabs items={['Vite', 'Next.js']}>
+Vite is this project's own supported consumer path. Assuming a standard
+`npm create vite` React+TS app:
 
-<TabsContent value="Vite">
-
-Works as shown above. Put the `@source` line in the same CSS file as the
-`@import`s; no plugin beyond `@tailwindcss/vite` is needed.
-
-</TabsContent>
-
-<TabsContent value="Next.js">
-
-srui's components ship the `"use client"` directive, so they work in Server
-Components out of the box — but any file that *uses* them with state must
-itself be a client component.
-
-For the no-flash script use `next/script` with `beforeInteractive` (or an
-inline `<script>` in the root layout's `<head>`):
-
-```tsx title="app/layout.tsx"
-import Script from "next/script";
+```tsx title="src/main.tsx"
+import { createRoot } from "react-dom/client";
 import { UIProvider, noFlashScript } from "@srui/react";
+import App from "./App";
 
-export default function RootLayout({ children }: { children: React.ReactNode }) {
-  return (
-    <html lang="en" suppressHydrationWarning>
-      <head>
-        <Script id="srui-noflash" strategy="beforeInteractive">
-          {noFlashScript()}
-        </Script>
-      </head>
-      <body>
-        <UIProvider>{children}</UIProvider>
-      </body>
-    </html>
-  );
-}
+createRoot(document.getElementById("root")!).render(
+  <UIProvider>
+    <App />
+  </UIProvider>,
+);
 ```
 
-`suppressHydrationWarning` on `<html>` is required because the script
-mutates `data-style` / `class` before React hydrates.
+Add the plugin and point Tailwind at your CSS entry:
 
-</TabsContent>
+```ts title="vite.config.ts"
+import { defineConfig } from "vite";
+import react from "@vitejs/plugin-react";
+import tailwindcss from "@tailwindcss/vite";
 
-</Tabs>
+export default defineConfig({
+  plugins: [react(), tailwindcss()],
+});
+```
+
+And the no-flash script inline in `index.html`'s `<head>`:
+
+```js
+(function(){try{var s=localStorage.getItem('srui-style');var c=localStorage.getItem('srui-scheme');var sv=(s==='glass'||s==='neumorphic'||s==='skeuomorphic'||s==='flat')?s:'flat';var cv=(c==='light'||c==='dark'||c==='system')?c:'system';var dark=cv==='dark'||(cv==='system'&&window.matchMedia('(prefers-color-scheme: dark)').matches);var e=document.documentElement;e.setAttribute('data-style',sv);e.classList.toggle('dark',dark);e.style.colorScheme=dark?'dark':'light';}catch(err){}})();
+```
+
+That's the whole setup — the same recipe this site's own `apps/docs` uses.
