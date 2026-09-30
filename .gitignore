@@ -155,3 +155,4 @@ vite.config.ts.timestamp-*
 # Editor / OS
 .DS_Store
 Thumbs.db
+packages/react/dist-storybook/
