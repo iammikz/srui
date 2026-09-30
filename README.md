@@ -55,9 +55,16 @@ intentional visual change with
 - The visual suite screenshots the prerendered artifact with script
   requests blocked (deterministic, no hydration race); interactive
   behavior is covered by the a11y suite against the demo app.
-- **Deferred backlog (from `docs-site-tech-stack-plan.md` §5):** the docs
-  site has no full-text search yet (Fumadocs used to bundle one). Planned:
-  a client-side index over the static build, e.g. Pagefind.
+- **Docs search** is Pagefind over the static build (`pnpm build:docs` runs
+  the index step); the topbar search works on the built/preview site, not in
+  `vite dev` (no index exists there).
+- **Storybook** (§7.2): `pnpm --filter @srui/react storybook` (dev, port
+  6006) / `build-storybook`. Stories live next to each component
+  (`src/**/*.stories.tsx`), with a preset switcher in the toolbar.
+- **Docs blocks** (Phase 8): Dashboard / Auth / Settings / Pricing under
+  `/blocks/*`, plus a Theme Builder at `/theming/theme-builder`.
+- Still deferred (Phase 8, needs publishing first): `examples/` framework
+  templates installed from the registry; RTL (`dir="rtl"`) visual pass.
 - The demo/docs Tailwind setups include an `@source` line pointing at the
   package build — Tailwind v4 skips `node_modules` by default, and on
   Windows the scanner can't traverse pnpm's junction via deep `..` paths

@@ -91,6 +91,8 @@ import { NotificationCenterDemo } from "./components/notification-center-demo";
 import { StatCardDemo } from "./components/stat-card-demo";
 import { ToastDemo, ToastVariantsDemo } from "./components/toast-demo";
 import { WizardDemo } from "./components/wizard-demo";
+import { AuthBlock, DashboardBlock, SettingsBlock } from "./components/blocks/dashboard-block";
+import { ThemeBuilder } from "./components/blocks/theme-builder";
 
 /** Internal links become real react-router <Link>s (Phase 2.2). */
 function MdxLink({ href, children, ...props }: ComponentPropsWithoutRef<"a">) {
@@ -198,6 +200,10 @@ const mdxComponents = {
   ToastDemo,
   ToastVariantsDemo,
   WizardDemo,
+  DashboardBlock,
+  AuthBlock,
+  SettingsBlock,
+  ThemeBuilder,
   a: MdxLink,
 };
 

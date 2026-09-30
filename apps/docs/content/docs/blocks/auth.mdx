@@ -1,0 +1,32 @@
+---
+title: Auth
+description: "A sign-in screen built from FormBuilder inside a Card."
+---
+
+The Auth block is a `FormBuilder` in a `Card`: Zod validation, a pending
+submit state, and a footer slot for the "forgot password" link — all preset-
+aware with no extra code.
+
+<AuthBlock />
+
+## Composition
+
+```tsx
+<Card className="max-w-md">
+  <CardHeader>
+    <CardTitle>Welcome back</CardTitle>
+    <CardDescription>Sign in to your workspace.</CardDescription>
+  </CardHeader>
+  <CardContent>
+    <FormBuilder
+      schema={z.object({ email: z.string().email(), password: z.string().min(8) })}
+      fields={[
+        { name: "email", label: "Email", type: "email" },
+        { name: "password", label: "Password", type: "password" },
+      ]}
+      submitLabel="Sign in"
+      onSubmit={signIn}
+    />
+  </CardContent>
+</Card>
+```

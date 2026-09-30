@@ -16,6 +16,11 @@ import * as Intro from "../content/docs/index.mdx";
 import * as Installation from "../content/docs/installation.mdx";
 import * as Theming from "../content/docs/theming.mdx";
 import * as Presets from "../content/docs/theming/presets.mdx";
+import * as ThemeBuilder from "../content/docs/theming/theme-builder.mdx";
+import * as BlockDashboard from "../content/docs/blocks/dashboard.mdx";
+import * as BlockAuth from "../content/docs/blocks/auth.mdx";
+import * as BlockSettings from "../content/docs/blocks/settings.mdx";
+import * as BlockPricing from "../content/docs/blocks/pricing.mdx";
 import * as Button from "../content/docs/components/button.mdx";
 import * as Card from "../content/docs/components/card.mdx";
 import * as Input from "../content/docs/components/input.mdx";
@@ -105,6 +110,11 @@ export const routes: RouteRecord[] = [
       { path: "installation", element: <DocsPage mod={Installation} /> },
       { path: "theming", element: <DocsPage mod={Theming} /> },
       { path: "theming/presets", element: <DocsPage mod={Presets} /> },
+      { path: "theming/theme-builder", element: <DocsPage mod={ThemeBuilder} /> },
+      { path: "blocks/dashboard", element: <DocsPage mod={BlockDashboard} /> },
+      { path: "blocks/auth", element: <DocsPage mod={BlockAuth} /> },
+      { path: "blocks/settings", element: <DocsPage mod={BlockSettings} /> },
+      { path: "blocks/pricing", element: <DocsPage mod={BlockPricing} /> },
       { path: "components/button", element: <DocsPage mod={Button} /> },
       { path: "components/card", element: <DocsPage mod={Card} /> },
       { path: "components/input", element: <DocsPage mod={Input} /> },

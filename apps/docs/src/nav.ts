@@ -25,6 +25,7 @@ export const nav: NavSection[] = [
     items: [
       { label: "Theming", href: "/theming" },
       { label: "Presets", href: "/theming/presets" },
+      { label: "Theme Builder", href: "/theming/theme-builder" },
     ],
   },
   {
@@ -60,6 +61,15 @@ export const nav: NavSection[] = [
       { label: "Command Palette", href: "/components/command-palette" },
       { label: "Notification Center", href: "/components/notification-center" },
       { label: "Wizard", href: "/components/wizard" },
+    ],
+  },
+  {
+    section: "Blocks",
+    items: [
+      { label: "Dashboard", href: "/blocks/dashboard" },
+      { label: "Auth", href: "/blocks/auth" },
+      { label: "Settings", href: "/blocks/settings" },
+      { label: "Pricing", href: "/blocks/pricing" },
     ],
   },
 ];

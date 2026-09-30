@@ -1,0 +1,27 @@
+---
+title: Theme Builder
+description: "Pick tokens, watch the preview re-theme, copy the CSS — the token playground as a full tool."
+---
+
+The Theme Builder expands the [Theming](/theming) page's playground into a
+complete tool: color pickers for the core palette, the radius slider, a live
+preview that re-themes as you type, and a generated CSS override block you
+can copy straight into your global stylesheet after the `@import`s.
+
+<ThemeBuilder />
+
+## How the copied CSS is meant to be used
+
+Paste it after the srui `@import`s in your global CSS — last definition
+wins, so it overrides the preset defaults for your whole app:
+
+```css
+@import "tailwindcss";
+@import "@srui/react/theme.css";
+@import "@srui/react/presets/flat.css";
+
+/* paste the generated block here */
+```
+
+Every token the builder emits is part of the canonical token contract — no
+invented variables.

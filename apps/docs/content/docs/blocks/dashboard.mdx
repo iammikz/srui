@@ -1,0 +1,21 @@
+---
+title: Dashboard
+description: "AppShell + StatCard + ChartCard + DataTable — a full analytics page composed from srui super-components."
+---
+
+The Dashboard block composes the super-components into a complete analytics
+page. Everything on it — the shell, the KPI tiles, the range-switching
+chart, the filterable table — is stock `@srui/react`, restyled live by the
+preset switcher in the top nav.
+
+<DashboardBlock />
+
+## Composition
+
+```tsx
+<AppShell sidebar={nav} topbar={title}>
+  <StatCard label="Monthly revenue" value={48219} formatValue={fmt} delta={{ value: 12.4, direction: "up" }} />
+  <ChartCard chart="line" area labels={months} series={series} timeRanges={["7d", "30d", "90d"]} />
+  <DataTable columns={columns} data={people} filterable pinColumns pageSize={5} />
+</AppShell>
+```

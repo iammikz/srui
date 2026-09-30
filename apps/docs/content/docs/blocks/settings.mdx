@@ -1,0 +1,23 @@
+---
+title: Settings
+description: "Tabs + FormBuilder — sectioned settings with per-section validation."
+---
+
+The Settings block nests a `FormBuilder` per `Tabs` panel, so each section
+validates and submits independently.
+
+<SettingsBlock />
+
+## Composition
+
+```tsx
+<Tabs defaultValue="profile">
+  <TabsList>
+    <TabsTrigger value="profile">Profile</TabsTrigger>
+    <TabsTrigger value="notifications">Notifications</TabsTrigger>
+  </TabsList>
+  <TabsContent value="profile">
+    <FormBuilder schema={profileSchema} fields={profileFields} onSubmit={save} />
+  </TabsContent>
+</Tabs>
+```

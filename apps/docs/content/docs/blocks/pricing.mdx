@@ -1,0 +1,71 @@
+---
+title: Pricing
+description: "A three-tier pricing grid built from Card."
+---
+
+The Pricing block is a responsive `Card` grid — the simplest block, and the
+one that shows how far the `surface` recipe alone carries a page in each
+preset.
+
+<div className="my-6 grid gap-6 md:grid-cols-3">
+  <Card>
+    <CardHeader>
+      <CardTitle>Starter</CardTitle>
+      <CardDescription>For side projects.</CardDescription>
+    </CardHeader>
+    <CardContent className="grid gap-2 text-sm">
+      <span className="text-3xl font-semibold">$0<span className="text-base font-normal text-muted-foreground">/mo</span></span>
+      <ul className="grid list-disc gap-1 pl-4 text-muted-foreground">
+        <li>3 projects</li>
+        <li>Community support</li>
+      </ul>
+    </CardContent>
+    <CardFooter>
+      <Button variant="outline" className="w-full">Get started</Button>
+    </CardFooter>
+  </Card>
+  <Card className="border-primary/50">
+    <CardHeader>
+      <CardTitle>Pro</CardTitle>
+      <CardDescription>For growing teams.</CardDescription>
+      <CardAction><Badge>Popular</Badge></CardAction>
+    </CardHeader>
+    <CardContent className="grid gap-2 text-sm">
+      <span className="text-3xl font-semibold">$24<span className="text-base font-normal text-muted-foreground">/mo</span></span>
+      <ul className="grid list-disc gap-1 pl-4 text-muted-foreground">
+        <li>Unlimited projects</li>
+        <li>Priority support</li>
+        <li>SSO</li>
+      </ul>
+    </CardContent>
+    <CardFooter>
+      <Button className="w-full">Upgrade</Button>
+    </CardFooter>
+  </Card>
+  <Card>
+    <CardHeader>
+      <CardTitle>Enterprise</CardTitle>
+      <CardDescription>For organizations.</CardDescription>
+    </CardHeader>
+    <CardContent className="grid gap-2 text-sm">
+      <span className="text-3xl font-semibold">Custom</span>
+      <ul className="grid list-disc gap-1 pl-4 text-muted-foreground">
+        <li>Dedicated support</li>
+        <li>On-prem presets</li>
+      </ul>
+    </CardContent>
+    <CardFooter>
+      <Button variant="outline" className="w-full">Talk to us</Button>
+    </CardFooter>
+  </Card>
+</div>
+
+## Composition
+
+```tsx
+<div className="grid gap-6 md:grid-cols-3">
+  <Card>…price, features, CTA…</Card>
+  <Card className="border-primary/50">…highlighted tier…</Card>
+  <Card>…</Card>
+</div>
+```

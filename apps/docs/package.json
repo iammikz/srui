@@ -5,7 +5,7 @@
   "type": "module",
   "scripts": {
     "dev": "vite",
-    "build": "vite-react-ssg build",
+    "build": "vite-react-ssg build && pagefind --site dist",
     "preview": "vite preview"
   },
   "dependencies": {
@@ -24,7 +24,9 @@
     "@types/react": "^19.1.0",
     "@types/react-dom": "^19.1.0",
     "@vitejs/plugin-react": "^4.4.1",
+    "pagefind": "^1.5.2",
     "remark-frontmatter": "^5.0.0",
+    "remark-gfm": "^4.0.1",
     "remark-mdx-frontmatter": "^5.0.0",
     "tailwindcss": "^4.1.4",
     "typescript": "^5.8.3",

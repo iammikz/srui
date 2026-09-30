@@ -10,6 +10,7 @@ import {
   cn,
 } from "@srui/react";
 import { nav } from "./nav";
+import { SiteSearch } from "./components/site-search";
 import { StyleSwitcher } from "./components/style-switcher";
 
 /**
@@ -78,6 +79,7 @@ export function DocsLayout({ children }: { children: React.ReactNode }) {
             slots={{
               topbarEnd: (
                 <div className="flex items-center gap-2">
+                  <SiteSearch />
                   <StyleSwitcher />
                   <Separator orientation="vertical" className="h-6" />
                   <Button
