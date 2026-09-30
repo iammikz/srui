@@ -7,7 +7,12 @@ on:
 
 jobs:
   build-and-test:
-    runs-on: ubuntu-latest
+    # Windows runner: the visual-regression baselines are committed with the
+    # -win32 platform suffix and pixel rendering differs per OS. Pin the OS
+    # so the committed baselines are comparable; if you switch runners,
+    # regenerate baselines on the new OS with
+    # `playwright test -c playwright.visual.config.ts --update-snapshots`.
+    runs-on: windows-latest
     steps:
       - uses: actions/checkout@v4
 
