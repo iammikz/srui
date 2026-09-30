@@ -1,7 +1,7 @@
 "use client";
 
 import * as React from "react";
-import { Button, CommandPalette } from "@srui/react";
+import { Button, CommandPalette } from "@iammikz/srui";
 
 /** Interactive CommandPalette demo for the docs page. */
 export function CommandPaletteDemo() {

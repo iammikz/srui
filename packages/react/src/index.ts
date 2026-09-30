@@ -1,5 +1,5 @@
 /**
- * @srui/react — public API surface. Every export goes through here; Radix
+ * @iammikz/srui — public API surface. Every export goes through here; Radix
  * and other underlying primitives are wrapped, never re-exported directly
  * (standing decision: keep the underlying library swappable).
  */

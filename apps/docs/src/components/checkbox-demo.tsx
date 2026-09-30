@@ -1,7 +1,7 @@
 "use client";
 
 import * as React from "react";
-import { Checkbox } from "@srui/react";
+import { Checkbox } from "@iammikz/srui";
 
 /** Controlled checkbox demo. */
 export function CheckboxDemo() {

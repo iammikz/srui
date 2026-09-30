@@ -2,7 +2,7 @@
 
 import * as React from "react";
 import type { ColumnDef } from "@tanstack/react-table";
-import { Badge, Button, DataTable } from "@srui/react";
+import { Badge, Button, DataTable } from "@iammikz/srui";
 
 type Person = { id: number; name: string; email: string; role: string; status: string };
 

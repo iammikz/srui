@@ -19,7 +19,7 @@
  *    Those aliases are token-based srui names (bg-primary, surface, …) that
  *    a non-Tailwind host has no competing definitions for.
  *
- * Result: importing ONLY "@srui/react/styles.css" in a plain page (no
+ * Result: importing ONLY "@iammikz/srui/styles.css" in a plain page (no
  * Tailwind at all) renders srui components with correct colors and the
  * working `surface` recipe.
  */

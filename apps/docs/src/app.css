@@ -1,13 +1,13 @@
 @import "tailwindcss";
-@import "@srui/react/theme.css";
-@import "@srui/react/animations.css";
-@import "@srui/react/presets/flat.css";
-@import "@srui/react/presets/glass.css";
-@import "@srui/react/presets/neumorphic.css";
-@import "@srui/react/presets/skeuomorphic.css";
+@import "@iammikz/srui/theme.css";
+@import "@iammikz/srui/animations.css";
+@import "@iammikz/srui/presets/flat.css";
+@import "@iammikz/srui/presets/glass.css";
+@import "@iammikz/srui/presets/neumorphic.css";
+@import "@iammikz/srui/presets/skeuomorphic.css";
 /* One level up, with "./"-style relative form: the scanner does not
    traverse pnpm's workspace junction via deeper ".." paths. */
-@source "../node_modules/@srui/react/dist";
+@source "../node_modules/@iammikz/srui/dist";
 
 /* Docs prose typography — written against srui's own tokens. */
 .docs-page {

@@ -73,7 +73,7 @@ import {
   TooltipContent,
   TooltipProvider,
   TooltipTrigger,
-} from "@srui/react";
+} from "@iammikz/srui";
 import { Callout } from "./components/callout";
 import { LivePreview } from "./components/live-preview";
 import { PresetGrid } from "./components/preset-grid";

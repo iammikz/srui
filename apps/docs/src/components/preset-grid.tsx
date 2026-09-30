@@ -11,7 +11,7 @@ import {
   Input,
   UI_STYLES,
   type UIStyle,
-} from "@srui/react";
+} from "@iammikz/srui";
 
 export interface PresetGridProps {
   /** Custom demo content; defaults to a Card with an input and buttons. */

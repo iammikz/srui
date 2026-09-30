@@ -40,7 +40,7 @@ import {
   TooltipTrigger,
   Button,
   useToast,
-} from "@srui/react";
+} from "@iammikz/srui";
 
 export function Section({
   id,

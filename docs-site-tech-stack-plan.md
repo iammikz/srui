@@ -2,7 +2,7 @@
 
 Companion document to `implementation-plan.md`. That plan's Phase 2 now
 states the *outcome* of this review (Vite + React + React Router, no
-Next.js, dogfooding `@srui/react`); this document is the *why*, plus the
+Next.js, dogfooding `@iammikz/srui`); this document is the *why*, plus the
 concrete steps to get from nothing (or from an already-started Next.js
 attempt) to that outcome.
 
@@ -13,7 +13,7 @@ the documentation site. Two decisions changed that:
 1. **Next.js is out.** The project should not take on a server framework
    just to host documentation.
 2. **The docs site should showcase srui by being built with it** — its own
-   nav, sidebar, tabs, cards, and callouts should be real `@srui/react`
+   nav, sidebar, tabs, cards, and callouts should be real `@iammikz/srui`
    components, not framework-provided or hand-rolled equivalents.
 
 Fumadocs is a Next.js-specific docs framework — dropping Next.js means
@@ -29,7 +29,7 @@ sidebar generation, dark mode, search) need to be sourced individually.
 | MDX content pages | Every page in Phase 2 (Introduction, Installation, Theming, Presets, one per component) is authored as prose + live examples; hand-writing each as a `.tsx` file would be far slower to author and review than Markdown-with-embedded-JSX |
 | Multi-page routing with a persistent sidebar | Same shape as ui.shadcn.com/docs |
 | Live, interactive component previews | The entire point of the site — static screenshots aren't acceptable per Phase 2's Definitions of Done |
-| The site's own UI built from `@srui/react` | The dogfooding requirement — nav, sidebar, tabs, cards, callouts are real library components |
+| The site's own UI built from `@iammikz/srui` | The dogfooding requirement — nav, sidebar, tabs, cards, callouts are real library components |
 | Reasonably fast first paint, crawlable by search engines | It's a public docs site; a blank `<div id="root">` until JS loads is a real regression from what Next.js gave for free |
 | Fits the existing pnpm workspace | `apps/docs` alongside `apps/demo`, same `pnpm install`/`pnpm dev` flow |
 
@@ -78,7 +78,7 @@ React components are opted into individually as interactive "islands."
 - **Pros:** excellent default performance, first-class MDX support.
 - **Cons:** trades "no Next.js" for "a different framework with its own
   routing, config, and content-collection conventions to learn" — doesn't
-  satisfy "stays plain React," and the docs site's `@srui/react` chrome
+  satisfy "stays plain React," and the docs site's `@iammikz/srui` chrome
   would need explicit `client:` hydration directives throughout, adding
   friction to the exact dogfooding goal this phase cares about.
 
@@ -125,7 +125,7 @@ pnpm --filter docs remove next fumadocs-ui fumadocs-core fumadocs-mdx
 
 Add:
 ```bash
-pnpm --filter docs add react react-dom react-router-dom @srui/react
+pnpm --filter docs add react react-dom react-router-dom @iammikz/srui
 pnpm --filter docs add -D vite @vitejs/plugin-react @tailwindcss/vite \
   tailwindcss @mdx-js/rollup vite-react-ssg typescript \
   @types/react @types/react-dom

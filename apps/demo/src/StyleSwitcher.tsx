@@ -1,5 +1,5 @@
 import { Monitor, Moon, Sun } from "lucide-react";
-import { UI_STYLES, useUIStyle, cn } from "@srui/react";
+import { UI_STYLES, useUIStyle, cn } from "@iammikz/srui";
 
 /**
  * Segmented control for the four presets + light/dark/system toggle.

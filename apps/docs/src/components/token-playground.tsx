@@ -9,7 +9,7 @@ import {
   CardHeader,
   CardTitle,
   Input,
-} from "@srui/react";
+} from "@iammikz/srui";
 
 /**
  * The live "token playground" from the Theming page (implementation plan

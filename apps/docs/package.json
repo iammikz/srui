@@ -1,7 +1,7 @@
 {
   "name": "docs",
   "private": true,
-  "version": "0.0.0",
+  "version": "0.0.1",
   "type": "module",
   "scripts": {
     "dev": "vite",
@@ -10,7 +10,7 @@
   },
   "dependencies": {
     "@mdx-js/react": "^3.1.0",
-    "@srui/react": "workspace:*",
+    "@iammikz/srui": "workspace:*",
     "@tanstack/react-table": "^8.21.2",
     "lucide-react": "^0.487.0",
     "react": "^19.1.0",

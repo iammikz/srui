@@ -1,7 +1,7 @@
 # srui accessibility notes
 
 This file records the Phase 6 (accessibility and motion hardening) state of
-`@srui/react`. Regenerate the contrast numbers with
+`@iammikz/srui`. Regenerate the contrast numbers with
 `node scripts/contrast-check.mjs` from `packages/react`.
 
 ## 6.1 Automated axe checks

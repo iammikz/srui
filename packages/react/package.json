@@ -1,7 +1,7 @@
 {
-  "name": "@srui/react",
-  "version": "0.1.0",
-  "description": "Supercomponent React UI \u2014 four runtime-switchable visual presets on shadcn-style tokens, for Tailwind v4.",
+  "name": "@iammikz/srui",
+  "version": "1.0.0",
+  "description": "Supercomponent React UI — four runtime-switchable visual presets on shadcn-style tokens, for Tailwind v4.",
   "license": "MIT",
   "type": "module",
   "sideEffects": false,

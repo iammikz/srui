@@ -1,7 +1,7 @@
 "use client";
 
 import * as React from "react";
-import { StatCard } from "@srui/react";
+import { StatCard } from "@iammikz/srui";
 
 /**
  * Interactive StatCard demo. Lives in a client component because the

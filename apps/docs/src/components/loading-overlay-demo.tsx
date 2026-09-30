@@ -1,7 +1,7 @@
 "use client";
 
 import * as React from "react";
-import { Button, LoadingOverlay } from "@srui/react";
+import { Button, LoadingOverlay } from "@iammikz/srui";
 
 /** Interactive LoadingOverlay demo for the Loader docs page. */
 export function LoadingOverlayDemo() {

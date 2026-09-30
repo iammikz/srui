@@ -13,7 +13,7 @@ import {
   Input,
   Label,
   useToast,
-} from "@srui/react";
+} from "@iammikz/srui";
 
 /**
  * Phase 8 "Theme builder": the Theming page's token playground expanded

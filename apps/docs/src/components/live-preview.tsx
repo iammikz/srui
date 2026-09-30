@@ -2,7 +2,7 @@
 
 import * as React from "react";
 import { Code, Eye } from "lucide-react";
-import { Button, Card, CardContent } from "@srui/react";
+import { Button, Card, CardContent } from "@iammikz/srui";
 
 export interface LivePreviewProps {
   children: React.ReactNode;

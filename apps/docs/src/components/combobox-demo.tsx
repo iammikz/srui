@@ -1,7 +1,7 @@
 "use client";
 
 import * as React from "react";
-import { Combobox } from "@srui/react";
+import { Combobox } from "@iammikz/srui";
 
 const options = [
   { value: "react", label: "React" },

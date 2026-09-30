@@ -1,20 +1,20 @@
-# @srui/react
+# @iammikz/srui
 
 srui = Supercomponent React UI. React + Tailwind v4 component library with
 four runtime-switchable visual presets (flat, glass, neumorphic,
 skeuomorphic) on shadcn-style design tokens. Install as an npm package;
 components are the product (no copy-in).
 
-Install: `pnpm add @srui/react` · React 18/19 · Tailwind CSS v4 required
-(or use the precompiled `@srui/react/styles.css`).
+Install: `pnpm add @iammikz/srui` · React 18/19 · Tailwind CSS v4 required
+(or use the precompiled `@iammikz/srui/styles.css`).
 
 CSS setup (Tailwind hosts):
 ```css
 @import "tailwindcss";
-@import "@srui/react/theme.css";
-@import "@srui/react/animations.css";
-@import "@srui/react/presets/flat.css";   /* + glass, neumorphic, skeuomorphic as needed */
-@source "../node_modules/@srui/react/dist";
+@import "@iammikz/srui/theme.css";
+@import "@iammikz/srui/animations.css";
+@import "@iammikz/srui/presets/flat.css";   /* + glass, neumorphic, skeuomorphic as needed */
+@source "../node_modules/@iammikz/srui/dist";
 ```
 Wrap the app: `<UIProvider>` (sets `data-style` + `dark` class on <html>,
 persists to localStorage keys `srui-style` / `srui-scheme`). Inline the

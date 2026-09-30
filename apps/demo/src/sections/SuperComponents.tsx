@@ -16,7 +16,7 @@ import {
   NotificationCenter,
   Sparkline,
   Wizard,
-} from "@srui/react";
+} from "@iammikz/srui";
 import { Section } from "./Primitives";
 
 type Person = { id: number; name: string; email: string; role: string; status: string };

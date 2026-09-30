@@ -23,7 +23,7 @@ import {
   StatCard,
   LineChart,
   BarChart,
-} from "@srui/react";
+} from "@iammikz/srui";
 import { StyleSwitcher } from "./StyleSwitcher";
 import { Primitives, Section } from "./sections/Primitives";
 import { SuperComponents } from "./sections/SuperComponents";

@@ -1,5 +1,5 @@
 "use client";
-import { Button, Collapsible, CollapsibleContent, CollapsibleTrigger } from "@srui/react";
+import { Button, Collapsible, CollapsibleContent, CollapsibleTrigger } from "@iammikz/srui";
 
 /** Interactive Collapsible demo for the docs page. */
 export function CollapsibleDemo() {

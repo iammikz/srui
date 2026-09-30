@@ -1,7 +1,7 @@
 "use client";
 
 import * as React from "react";
-import { NotificationCenter } from "@srui/react";
+import { NotificationCenter } from "@iammikz/srui";
 
 /** Interactive NotificationCenter demo for the docs page. */
 export function NotificationCenterDemo() {

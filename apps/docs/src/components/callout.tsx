@@ -1,6 +1,6 @@
 import { Info } from "lucide-react";
-import { Card, CardContent } from "@srui/react";
-import { cn } from "@srui/react";
+import { Card, CardContent } from "@iammikz/srui";
+import { cn } from "@iammikz/srui";
 
 export interface CalloutProps {
   title?: string;

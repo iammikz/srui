@@ -1,5 +1,5 @@
 "use client";
-import { Button, ToastProvider, useToast } from "@srui/react";
+import { Button, ToastProvider, useToast } from "@iammikz/srui";
 
 function FireBasic() {
   const { toast } = useToast();

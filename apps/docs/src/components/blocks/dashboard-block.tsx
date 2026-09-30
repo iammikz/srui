@@ -21,7 +21,7 @@ import {
   TabsContent,
   TabsList,
   TabsTrigger,
-} from "@srui/react";
+} from "@iammikz/srui";
 
 /** Phase 8 "Dashboard" block: AppShell + StatCard + ChartCard + DataTable. */
 type Person = { id: number; name: string; email: string; role: string; status: string };

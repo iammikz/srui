@@ -1,5 +1,5 @@
 "use client";
-import { Input, Wizard } from "@srui/react";
+import { Input, Wizard } from "@iammikz/srui";
 
 /** Interactive Wizard demo for the docs page. */
 export function WizardDemo() {

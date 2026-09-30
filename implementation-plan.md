@@ -3,7 +3,7 @@
 **srui** = **S**upercomponent **R**eact **UI**. A React + Tailwind v4
 super-component library with four runtime-switchable visual presets (flat,
 glass, neumorphic, skeuomorphic), shadcn-style design tokens, and animated
-charts/loaders. Distributed as an npm package (`@srui/react`), not a
+charts/loaders. Distributed as an npm package (`@iammikz/srui`), not a
 copy-in CLI — components are the product; consumers don't edit the source.
 
 The project ships as three things: the library package, a documentation
@@ -72,7 +72,7 @@ srui/
 ├─ .gitignore
 ├─ README.md
 ├─ packages/
-│  └─ react/                     # the library package, published as @srui/react
+│  └─ react/                     # the library package, published as @iammikz/srui
 │     ├─ package.json
 │     ├─ tsconfig.json
 │     └─ src/
@@ -123,7 +123,7 @@ srui/
 │           ├─ NotificationCenter.tsx # Phase 5
 │           └─ Wizard.tsx        # Phase 5
 └─ apps/
-   ├─ demo/                      # Vite showcase app, consumes @srui/react like any external app
+   ├─ demo/                      # Vite showcase app, consumes @iammikz/srui like any external app
    │  ├─ package.json
    │  ├─ vite.config.ts
    │  ├─ tsconfig.json
@@ -257,7 +257,7 @@ Build every item below before starting Phase 1 — everything after this
 phase assumes these files exist and pass their Definition of Done. Start
 by scaffolding the repository exactly as shown in **Canonical repository
 structure** above (`srui/` root, `packages/react`, `apps/demo`), with
-`packages/react/package.json` named `"@srui/react"` from the start.
+`packages/react/package.json` named `"@iammikz/srui"` from the start.
 (`apps/docs` is built in Phase 2 — skip it for now.)
 
 - [ ] `packages/react/src/styles/theme.css` — full token contract (every
@@ -298,7 +298,7 @@ structure** above (`srui/` root, `packages/react`, `apps/demo`), with
 
 **Definition of done:**
 - [ ] `pnpm install` at the repo root completes with no errors
-- [ ] `pnpm --filter @srui/react build` produces `dist/index.js` and
+- [ ] `pnpm --filter @iammikz/srui build` produces `dist/index.js` and
       `dist/index.d.ts`
 - [ ] `pnpm dev` starts the demo app and its style switcher flips cleanly
       between all four presets, with dark mode working in each
@@ -311,7 +311,7 @@ structure** above (`srui/` root, `packages/react`, `apps/demo`), with
 
 - **File:** `packages/react/package.json` (already has the `build` script:
   `tsup src/index.ts --format esm --dts --external react`)
-- **Command:** `pnpm --filter @srui/react build`
+- **Command:** `pnpm --filter @iammikz/srui build`
 - **Expected output:** `packages/react/dist/index.js` and
   `packages/react/dist/index.d.ts` are created and non-empty
 - **Definition of done:**
@@ -334,12 +334,12 @@ The `exports` map in `packages/react/package.json` should read:
 ```
 - **Command to verify each path resolves:**
   ```bash
-  node -e "console.log(require.resolve('@srui/react'))"
+  node -e "console.log(require.resolve('@iammikz/srui'))"
   ```
   (run from `apps/demo`, where the package is linked via the workspace)
 - **Definition of done:**
   - [ ] The command above prints a path ending in `dist/index.js`
-  - [ ] `apps/demo/src/app.css`'s four `@import "@srui/react/..."` lines
+  - [ ] `apps/demo/src/app.css`'s four `@import "@iammikz/srui/..."` lines
         resolve with no Vite warning about a missing module
 
 ### 1.3 Verify Tailwind `@source` in a project outside the monorepo
@@ -361,9 +361,9 @@ npm install /absolute/path/to/srui/packages/react   # local install to simulate 
 In `src/index.css`:
 ```css
 @import "tailwindcss";
-@import "@srui/react/theme.css";
-@import "@srui/react/presets/flat.css";
-@source "../node_modules/@srui/react/dist";
+@import "@iammikz/srui/theme.css";
+@import "@iammikz/srui/presets/flat.css";
+@source "../node_modules/@iammikz/srui/dist";
 ```
 - **Definition of done:**
   - [ ] A `<button className="bg-primary text-primary-foreground rounded-lg px-4 py-2">Test</button>`
@@ -391,10 +391,10 @@ pnpm add -D -w @changesets/cli
 pnpm changeset init
 pnpm changeset            # describe the 0.1.0 release
 pnpm changeset version
-pnpm --filter @srui/react publish --access public   # or a private registry
+pnpm --filter @iammikz/srui publish --access public   # or a private registry
 ```
 - **Definition of done:**
-  - [ ] `@srui/react@0.1.0` is installable by version number from your
+  - [ ] `@iammikz/srui@0.1.0` is installable by version number from your
         chosen registry, not just via `workspace:*`
 
 ---
@@ -416,7 +416,7 @@ fast and crawlable without adopting a server framework — see
 full comparison of options and why this combination was chosen.
 
 **Dogfooding principle — read this before building anything in this
-phase:** the docs site's own UI chrome is built using `@srui/react`
+phase:** the docs site's own UI chrome is built using `@iammikz/srui`
 itself, not plain unstyled `<div>`s. The top nav's style switcher is a row
 of `Button`s. The sidebar is rendered inside `AppShell`. Framework-specific
 snippets use `Tabs`. Callouts and the live-preview box use `Card`. A
@@ -431,7 +431,7 @@ for a plain HTML element as a workaround.
 mkdir -p apps/docs/src apps/docs/content/docs
 cd apps/docs
 pnpm init
-pnpm add react react-dom react-router-dom @srui/react
+pnpm add react react-dom react-router-dom @iammikz/srui
 pnpm add -D vite @vitejs/plugin-react @tailwindcss/vite tailwindcss \
   @mdx-js/rollup vite-react-ssg typescript @types/react @types/react-dom
 ```
@@ -472,7 +472,7 @@ export default defineConfig({
   route objects (`{ path, element }`), one per page. No file-based routing
   convention to learn — every route is an explicit line in this file
 - **File:** `apps/docs/src/DocsLayout.tsx` — the shared page shell, built
-  from `AppShell` (imported from `@srui/react`, built in Phase 5 — until
+  from `AppShell` (imported from `@iammikz/srui`, built in Phase 5 — until
   Phase 5 lands, use a minimal flex layout and swap in `AppShell` once it
   exists; do not build a second, throwaway shell component to avoid this
   ordering issue). Wraps everything in `<UIProvider>` so every live
@@ -526,7 +526,7 @@ export default defineConfig({
   - What srui is (Supercomponent React UI) and the one-paragraph pitch:
     shadcn-style tokens, four runtime-switchable presets, Tailwind v4,
     distributed as an npm package rather than copy-in source
-  - A line noting that this site is itself built with `@srui/react` — the
+  - A line noting that this site is itself built with `@iammikz/srui` — the
     dogfooding point from this phase's intro, stated for the reader
   - A short "why four presets" explainer with one live side-by-side
     preview of the same `Card` rendered in all four presets — build this
@@ -547,8 +547,8 @@ export default defineConfig({
 - **File:** `apps/docs/content/docs/installation.mdx`, routed at
   `/installation`
 - **Required content, in this order:**
-  1. `pnpm add @srui/react` (with npm/yarn equivalents shown in a `Tabs`
-     component from `@srui/react`, not a Markdown code-fence switcher)
+  1. `pnpm add @iammikz/srui` (with npm/yarn equivalents shown in a `Tabs`
+     component from `@iammikz/srui`, not a Markdown code-fence switcher)
   2. The three `@import` lines plus the `@source` line from Phase 1.3,
      with a callout (a `Card` with `variant="outline"`-style treatment)
      explaining why `@source` is required (Tailwind v4 skips
@@ -579,7 +579,7 @@ export default defineConfig({
   - How dark mode works: the `.dark` class, toggled by `UIProvider`'s
     `scheme` state
   - A live "token playground": text/color inputs (rendered with `Input`
-    from `@srui/react`) bound to `--primary`, `--radius`, and
+    from `@iammikz/srui`) bound to `--primary`, `--radius`, and
     `--background`, applied to a preview `Card` in real time (a small
     component under `apps/docs/src/components/TokenPlayground.tsx`,
     imported into the MDX file; no persistence needed)
@@ -619,7 +619,7 @@ One-sentence description of what it's for.
 ## Installation
 
 \`\`\`tsx
-import { ComponentName } from "@srui/react";
+import { ComponentName } from "@iammikz/srui";
 \`\`\`
 
 ## Usage
@@ -653,7 +653,7 @@ specific to this component)
   `<LivePreview>` component referenced above (a plain component, globally
   available to MDX via the `providerImportSource`/MDX provider set up in
   `vite.config.ts`); renders its children inside a bordered `Card` (from
-  `@srui/react`) that reflects the current `UIProvider` style/scheme, plus
+  `@iammikz/srui`) that reflects the current `UIProvider` style/scheme, plus
   a "view code" `Button` that toggles the matching code block
 - **Definition of done:**
   - [ ] `_template.mdx` exists but has no entry in `nav.ts` and no route
@@ -679,7 +679,7 @@ point on, a component task is not complete until its docs page exists
       same `useUIStyle` hook as `apps/demo`, not a second, separate
       implementation of style state
 - [ ] Every piece of the site's own chrome (nav, sidebar, callouts,
-      framework tabs, the live-preview box) is built from `@srui/react`
+      framework tabs, the live-preview box) is built from `@iammikz/srui`
       components — a quick audit: `grep -rn "<div" apps/docs/src` should
       turn up layout wrappers only, not buttons/cards/tabs reimplemented
       by hand
@@ -700,12 +700,12 @@ each entry below also gets a docs page before it counts as done.
 Each entry below: file, exact dependency to install, prop interface, and
 Definition of Done. Install all Phase 3 dependencies at once:
 ```bash
-pnpm --filter @srui/react add @radix-ui/react-select @radix-ui/react-tabs \
+pnpm --filter @iammikz/srui add @radix-ui/react-select @radix-ui/react-tabs \
   @radix-ui/react-tooltip @radix-ui/react-popover @radix-ui/react-toast \
   @radix-ui/react-checkbox @radix-ui/react-radio-group @radix-ui/react-switch \
   @radix-ui/react-avatar @radix-ui/react-separator @radix-ui/react-accordion \
   @radix-ui/react-collapsible @radix-ui/react-label
-pnpm --filter @srui/react add cmdk
+pnpm --filter @iammikz/srui add cmdk
 ```
 
 ### Select
@@ -1100,7 +1100,7 @@ pnpm dlx storybook@latest init --type react-vite
 - [ ] Framework templates: a minimal working example per bundler/framework
       the library is meant to support (Vite is the only one documented as
       of Phase 2 — add others here only once they're actually verified) in
-      `examples/`, each importing `@srui/react` from the registry (not via
+      `examples/`, each importing `@iammikz/srui` from the registry (not via
       `workspace:*`); link them from the Installation page (Phase 2.3)
 
 ---
@@ -1109,7 +1109,7 @@ pnpm dlx storybook@latest init --type react-vite
 
 | Decision | Choice | Why |
 |---|---|---|
-| Name | `srui` (Supercomponent React UI), package `@srui/react` | — |
+| Name | `srui` (Supercomponent React UI), package `@iammikz/srui` | — |
 | Distribution | npm package (not copy-in CLI) | Super-components are the product; consumers shouldn't need to edit source |
 | Token naming | shadcn/ui convention (`background`, `card`, `primary`, `muted`, …) | Familiar mental model, portable themes |
 | Token values / presets | Ours | The four-preset system is the differentiator |
@@ -1121,7 +1121,7 @@ pnpm dlx storybook@latest init --type react-vite
 | Forms | `react-hook-form` + `zod` | Matches `FormBuilder`'s schema-driven design |
 | Tables | `@tanstack/react-table` + `@tanstack/react-virtual` | Headless, matches the three-tier API pattern |
 | Docs site | Vite + React + React Router + `vite-react-ssg`, in `apps/docs`; MDX via `@mdx-js/rollup`; no Next.js | Stays "just React," matches the ui.shadcn.com/docs shape without adopting a server framework; see `docs-site-tech-stack-plan.md` for the option comparison |
-| Docs site UI | Built from `@srui/react` itself (dogfooding) | The site doubles as a live, production showcase of the library it documents |
+| Docs site UI | Built from `@iammikz/srui` itself (dogfooding) | The site doubles as a live, production showcase of the library it documents |
 
 ## Known gotchas (checked in relevant Definitions of Done above, listed together for reference)
 
@@ -1139,11 +1139,11 @@ pnpm dlx storybook@latest init --type react-vite
   a line stuck mid-draw.
 - **Tailwind v4 skips `node_modules` by default.** Consumers need an
   explicit `@source` pointing at the package's `dist/` folder (see 1.3).
-- **If you ever rename `@srui/react` itself, pnpm's workspace symlinks go
+- **If you ever rename `@iammikz/srui` itself, pnpm's workspace symlinks go
   stale** and produce "Failed to resolve entry for package" — delete
   `node_modules` and `pnpm-lock.yaml`, then `pnpm install` again.
 - **Radix packages must be wrapped, never re-exported.** Re-exporting
-  `@radix-ui/react-dialog` directly from `@srui/react` would make swapping
+  `@radix-ui/react-dialog` directly from `@iammikz/srui` would make swapping
   the underlying primitives library later a breaking change for every
   consumer.
 - **A single `data-style` on `<html>` styles the whole page, not one

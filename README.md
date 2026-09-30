@@ -3,16 +3,16 @@
 **srui** = **S**upercomponent **R**eact **UI**. A React + Tailwind v4
 super-component library with four runtime-switchable visual presets (flat,
 glass, neumorphic, skeuomorphic), shadcn-style design tokens, and animated
-charts/loaders. Distributed as an npm package (`@srui/react`) — components
+charts/loaders. Distributed as an npm package (`@iammikz/srui`) — components
 are the product; consumers don't edit the source.
 
 ## Repository layout
 
 | Path | What it is |
 |---|---|
-| `packages/react` | The library, published as `@srui/react` |
+| `packages/react` | The library, published as `@iammikz/srui` |
 | `apps/demo` | Vite showcase app for local development (all components, preset switcher) |
-| `apps/docs` | Documentation & component-library site (Vite + React Router + `vite-react-ssg`, dogfooding `@srui/react`) |
+| `apps/docs` | Documentation & component-library site (Vite + React Router + `vite-react-ssg`, dogfooding `@iammikz/srui`) |
 
 ## Getting started
 
@@ -21,7 +21,7 @@ version from `packageManager`).
 
 ```bash
 pnpm install            # at the repo root
-pnpm build              # build @srui/react (dist + types + srui.css)
+pnpm build              # build @iammikz/srui (dist + types + srui.css)
 pnpm dev                # run the demo app (port 5199)
 pnpm dev:docs           # run the docs site (port 5211)
 ```
@@ -58,7 +58,7 @@ intentional visual change with
 - **Docs search** is Pagefind over the static build (`pnpm build:docs` runs
   the index step); the topbar search works on the built/preview site, not in
   `vite dev` (no index exists there).
-- **Storybook** (§7.2): `pnpm --filter @srui/react storybook` (dev, port
+- **Storybook** (§7.2): `pnpm --filter @iammikz/srui storybook` (dev, port
   6006) / `build-storybook`. Stories live next to each component
   (`src/**/*.stories.tsx`), with a preset switcher in the toolbar.
 - **Docs blocks** (Phase 8): Dashboard / Auth / Settings / Pricing under
@@ -68,9 +68,9 @@ intentional visual change with
 - The demo/docs Tailwind setups include an `@source` line pointing at the
   package build — Tailwind v4 skips `node_modules` by default, and on
   Windows the scanner can't traverse pnpm's junction via deep `..` paths
-  (use the one-level-up `../node_modules/@srui/react/dist` form).
+  (use the one-level-up `../node_modules/@iammikz/srui/dist` form).
 - Publishing: changesets are configured; `pnpm changeset version` +
-  `pnpm --filter @srui/react publish` when registry credentials exist —
+  `pnpm --filter @iammikz/srui publish` when registry credentials exist —
   see [`publish-package.md`](./publish-package.md) for the full step-by-step.
 
 See `implementation-plan.md` for the full project contract and

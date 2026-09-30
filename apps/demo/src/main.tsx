@@ -6,7 +6,7 @@ import {
   TooltipProvider,
   type UIScheme,
   type UIStyle,
-} from "@srui/react";
+} from "@iammikz/srui";
 import { App } from "./App";
 import "./app.css";
 

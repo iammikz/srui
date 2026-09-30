@@ -1,23 +1,21 @@
-# Publishing `@srui/react`
+# Publishing `@iammikz/srui`
 
 How to publish the library package from this monorepo. The changesets
-workflow is already initialized (`.changeset/`) and the package is versioned
-at `0.1.0`, so the one-time work is npm-scope ownership and login.
+workflow is already initialized (`.changeset/`) and the package is currently
+versioned at `1.0.0`, so the one-time work is an npm account and login.
 
 ## One-time setup
 
-### 1. Own the npm scope
+### 1. Prerequisite: an npm account (no org needed)
 
-The package publishes as `@srui/react`, which requires the `srui` scope on
-[npmjs.com](https://www.npmjs.com) to be yours:
+The package publishes as `@iammikz/srui` — a **personal user scope**. npm
+grants every user automatic publish rights under their own `@username/*`
+scope, so unlike an org scope there is nothing to create or claim: sign up
+at [npmjs.com](https://www.npmjs.com) and you're done.
 
-1. Create an npm account.
-2. Create (or claim) an **organization named `srui`** (npm → Add Organization).
-
-If the scope is taken, the package must be renamed — and per the
-implementation plan's gotcha table, renaming `@srui/react` means deleting
-`node_modules` and `pnpm-lock.yaml` and running `pnpm install` again,
-because pnpm's workspace links go stale.
+(If the package is ever renamed again, per the implementation plan's gotcha
+table that means deleting `node_modules` and `pnpm-lock.yaml` and running
+`pnpm install` again, because pnpm's workspace links go stale.)
 
 ### 2. Log in from the terminal
 
@@ -46,11 +44,11 @@ Sanity-check that all four publish artifacts exist and are non-empty:
 
 ### 4. Set the version
 
-The first release (`0.1.0`) is already versioned — its changeset was
-consumed by `pnpm changeset version`. For every release after that:
+The current version (`1.0.0`) is already set via a consumed changeset. For
+every release after it:
 
 ```bash
-pnpm changeset           # interactive: pick @srui/react, bump type, describe it
+pnpm changeset           # interactive: pick @iammikz/srui, bump type, describe it
 pnpm changeset version   # consumes .changeset/*.md, bumps version + CHANGELOG.md
 git add -A && git commit -m "chore: version package"
 ```
@@ -59,7 +57,7 @@ git add -A && git commit -m "chore: version package"
 
 ```bash
 cd packages/react
-pnpm pack --dry-run
+pnpm pack dry-run
 ```
 
 The tarball must contain `dist/`, `src/styles/`, `llms.txt`,
@@ -69,7 +67,7 @@ this).
 
 ### 6. Publish
 
-From `packages/react` (or add `--filter @srui/react` from the root):
+From `packages/react` (or add `--filter @iammikz/srui` from the root):
 
 ```bash
 pnpm publish --access public --no-git-checks
@@ -84,10 +82,10 @@ pnpm publish --access public --no-git-checks
 ### 7. Verify from the outside world
 
 ```bash
-npm view @srui/react version     # should print the version just published
+npm view @iammikz/srui version     # should print the version just published
 
 mkdir /tmp/smoke && cd /tmp/smoke && npm init -y
-npm install @srui/react@0.1.0 tailwindcss @tailwindcss/vite
+npm install @iammikz/srui@0.1.0 tailwindcss @tailwindcss/vite
 ```
 
 Then follow the [Installation page](http://localhost:5211/docs/installation)

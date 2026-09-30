@@ -2,7 +2,7 @@
 
 import * as React from "react";
 import { useNavigate } from "react-router-dom";
-import { Button, Input, Popover, PopoverAnchor, PopoverContent } from "@srui/react";
+import { Button, Input, Popover, PopoverAnchor, PopoverContent } from "@iammikz/srui";
 
 interface PagefindResult {
   results: {

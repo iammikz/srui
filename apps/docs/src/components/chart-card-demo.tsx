@@ -1,7 +1,7 @@
 "use client";
 
 import * as React from "react";
-import { Button, ChartCard } from "@srui/react";
+import { Button, ChartCard } from "@iammikz/srui";
 
 const months = ["Jan", "Feb", "Mar", "Apr", "May", "Jun", "Jul"];
 const ranges: Record<string, number[]> = {

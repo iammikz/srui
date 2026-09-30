@@ -1,6 +1,6 @@
 ---
 title: Installation
-description: Add @srui/react to a Tailwind v4 project.
+description: Add @iammikz/srui to a Tailwind v4 project.
 ---
 
 srui is a regular npm package. You need React 18+ and Tailwind CSS v4.
@@ -12,7 +12,7 @@ srui is a regular npm package. You need React 18+ and Tailwind CSS v4.
 <TabsContent value="pnpm">
 
 ```bash
-pnpm add @srui/react
+pnpm add @iammikz/srui
 ```
 
 </TabsContent>
@@ -20,7 +20,7 @@ pnpm add @srui/react
 <TabsContent value="npm">
 
 ```bash
-npm install @srui/react
+npm install @iammikz/srui
 ```
 
 </TabsContent>
@@ -28,7 +28,7 @@ npm install @srui/react
 <TabsContent value="yarn">
 
 ```bash
-yarn add @srui/react
+yarn add @iammikz/srui
 ```
 
 </TabsContent>
@@ -42,19 +42,19 @@ token contract, its animations, and **every preset you want available**:
 
 ```css title="src/index.css"
 @import "tailwindcss";
-@import "@srui/react/theme.css";
-@import "@srui/react/animations.css";
-@import "@srui/react/presets/flat.css";
-@import "@srui/react/presets/glass.css";
-@import "@srui/react/presets/neumorphic.css";
-@import "@srui/react/presets/skeuomorphic.css";
-@source "../node_modules/@srui/react/dist";
+@import "@iammikz/srui/theme.css";
+@import "@iammikz/srui/animations.css";
+@import "@iammikz/srui/presets/flat.css";
+@import "@iammikz/srui/presets/glass.css";
+@import "@iammikz/srui/presets/neumorphic.css";
+@import "@iammikz/srui/presets/skeuomorphic.css";
+@source "../node_modules/@iammikz/srui/dist";
 ```
 
 <Callout title="Why is @source required?">
   Tailwind v4 automatically scans your project for class names but **skips
   `node_modules` by default**. srui's component classes live inside
-  `node_modules/@srui/react/dist`, so without the explicit `@source` line
+  `node_modules/@iammikz/srui/dist`, so without the explicit `@source` line
   the utilities those components rely on (`bg-primary`, `surface`, …) are
   never generated and everything renders unstyled.
 </Callout>
@@ -69,7 +69,7 @@ exported `noFlashScript()` into your document head:
 
 ```tsx title="src/main.tsx"
 import { createRoot } from "react-dom/client";
-import { UIProvider, noFlashScript } from "@srui/react";
+import { UIProvider, noFlashScript } from "@iammikz/srui";
 import App from "./App";
 
 createRoot(document.getElementById("root")!).render(
@@ -102,7 +102,7 @@ and every utility srui's components use (compiled with `prefix(srui)` so it
 can't collide with your own classes):
 
 ```css
-@import "@srui/react/styles.css";
+@import "@iammikz/srui/styles.css";
 ```
 
 Skip the `@source` line in this setup — there is nothing for Tailwind to
@@ -115,7 +115,7 @@ Vite is this project's own supported consumer path. Assuming a standard
 
 ```tsx title="src/main.tsx"
 import { createRoot } from "react-dom/client";
-import { UIProvider, noFlashScript } from "@srui/react";
+import { UIProvider, noFlashScript } from "@iammikz/srui";
 import App from "./App";
 
 createRoot(document.getElementById("root")!).render(

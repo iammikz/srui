@@ -8,7 +8,7 @@ import {
   TooltipProvider,
   UIProvider,
   cn,
-} from "@srui/react";
+} from "@iammikz/srui";
 import { nav } from "./nav";
 import { SiteSearch } from "./components/site-search";
 import { StyleSwitcher } from "./components/style-switcher";

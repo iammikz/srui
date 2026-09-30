@@ -1,5 +1,5 @@
 "use client";
-import { AppShell, Badge, Card, CardContent } from "@srui/react";
+import { AppShell, Badge, Card, CardContent } from "@iammikz/srui";
 
 /** Bounded AppShell demo for the docs page (the real one is full-viewport). */
 export function AppShellDemo() {

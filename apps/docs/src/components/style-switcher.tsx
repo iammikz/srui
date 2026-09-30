@@ -1,6 +1,6 @@
 "use client";
 import { Monitor, Moon, Sun } from "lucide-react";
-import { Button, UI_STYLES, useUIStyle } from "@srui/react";
+import { Button, UI_STYLES, useUIStyle } from "@iammikz/srui";
 
 /**
  * Style/dark-mode switcher for the docs top nav — a row of `Button`s per

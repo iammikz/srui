@@ -1,7 +1,7 @@
 "use client";
 
 import { z } from "zod";
-import { FormBuilder } from "@srui/react";
+import { FormBuilder } from "@iammikz/srui";
 
 const schema = z.object({
   name: z.string().min(2, "Name must be at least 2 characters."),
