@@ -100,37 +100,21 @@ That satisfies the implementation plan §1.6 Definition of Done:
 - `"publishConfig": { "access": "public" }` — bakes the access flag in so a
   bare `pnpm publish` works.
 
-## Publishing from CI — tokenless (already wired)
+## Updating the package (the manual path)
 
-`.github/workflows/release.yml` publishes via the
-[changesets/action](https://github.com/changesets/action) using npm
-**trusted publishing** (OIDC) — no npm token secret is stored anywhere.
-The flow:
+This is the only publish path — there is no release workflow. From the
+repo root:
 
-1. **One-time npm-side registration** (no secrets): on npmjs.com, open
-   **@iammikz/srui → Settings → Trusted Publisher** and add a publisher
-   with repository owner `iammikz`, repository name `srui`, workflow
-   `.github/workflows/release.yml`, and the environment field left empty.
-2. Describe a release from your branch: `pnpm changeset` (pick
-   `@iammikz/srui`, bump type, message), commit the new `.changeset/*.md`,
-   push.
-3. On merge to `main`, the workflow opens/updates a **"chore: version
-   packages"** PR containing the version bump + CHANGELOG entry.
-4. Merge that PR — the workflow builds the library, publishes with
-   `npm publish` (npm exchanges GitHub's OIDC token for one-time publish
-   credentials after matching the trusted publisher), tags the version,
-   and opens a GitHub release.
+```bash
+pnpm changeset           # describe the bump (patch/minor/major)
+pnpm changeset version   # apply it: version + CHANGELOG
+git add -A && git commit -m "chore: version packages" && git push
+pnpm release             # build + pnpm --filter @iammikz/srui publish
+```
 
-**Private repository:** this all works from a private repo — the workflow
-publishes with `--no-provenance`, because npm provenance requires a public
-source repository. The only thing lost is the provenance badge on the
-package page; remove the flag if the repo ever becomes public.
-
-The workflow uses GitHub's automatic `GITHUB_TOKEN` (built into every
-run, nothing to configure) for the PR/commit chores. If you ever prefer
-the classic token path instead, an npm *Automation* token in an
-`NPM_TOKEN` secret plus an auth-config step restores it — trusted
-publishing is the recommended default.
+`pnpm release` requires an npm login locally (`npm login`) — the same
+flow as the first publish. The package README (`packages/react/README.md`)
+ships automatically with every publish.
 
 ## Caveat
 

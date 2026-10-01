@@ -69,11 +69,10 @@ intentional visual change with
   package build — Tailwind v4 skips `node_modules` by default, and on
   Windows the scanner can't traverse pnpm's junction via deep `..` paths
   (use the one-level-up `../node_modules/@iammikz/srui/dist` form).
-- Publishing: manually via [`publish-package.md`](./publish-package.md), or
-  from CI — `.github/workflows/release.yml` opens a Version Packages PR per
-  changeset and publishes on merge, **tokenless** via npm trusted publishing
-  (one-time registration on the package's npm Settings page; no
-  `NPM_TOKEN` secret).
+- Publishing: manual via `pnpm release` (build + publish; see
+  [`publish-package.md`](./publish-package.md)) — no release workflow by
+  choice. The npm-facing README lives at
+  `packages/react/README.md` and ships with every publish.
 
 See `implementation-plan.md` for the full project contract and
 `packages/react/ACCESSIBILITY.md` for the accessibility state.
