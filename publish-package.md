@@ -100,27 +100,33 @@ That satisfies the implementation plan §1.6 Definition of Done:
 - `"publishConfig": { "access": "public" }` — bakes the access flag in so a
   bare `pnpm publish` works.
 
-## Alternative: publish from CI (already wired)
+## Publishing from CI — tokenless (already wired)
 
 `.github/workflows/release.yml` publishes via the
-[changesets/action](https://github.com/changesets/action). The flow:
+[changesets/action](https://github.com/changesets/action) using npm
+**trusted publishing** (OIDC) — no npm token secret is stored anywhere.
+The flow:
 
-1. **One-time:** create an npm token — either an *Automation* token
-   (npmjs.com → Access Tokens) or a granular token with **Packages: Read
-   and write** — and add it as the repository secret **`NPM_TOKEN`**
-   (repo Settings → Secrets and variables → Actions).
+1. **One-time npm-side registration** (no secrets): on npmjs.com, open
+   **@iammikz/srui → Settings → Trusted Publisher** and add a publisher
+   with repository owner `iammikz`, repository name `srui`, workflow
+   `.github/workflows/release.yml`, and the environment field left empty.
 2. Describe a release from your branch: `pnpm changeset` (pick
    `@iammikz/srui`, bump type, message), commit the new `.changeset/*.md`,
    push.
 3. On merge to `main`, the workflow opens/updates a **"chore: version
    packages"** PR containing the version bump + CHANGELOG entry.
-4. Merge that PR — the workflow runs `pnpm run release` (library build,
-   then `pnpm --filter @iammikz/srui publish --access public`), tags the
-   version, and opens a GitHub release.
+4. Merge that PR — the workflow builds the library, publishes with
+   `npm publish --provenance` (npm exchanges GitHub's OIDC token for
+   one-time publish credentials after matching the trusted publisher),
+   tags the version, and opens a GitHub release. The package page shows a
+   provenance badge linking back to the exact workflow run.
 
-Steps 3–4 replace step 4 onward of the manual flow above; everything the
-tarball ships (`dist/`, `src/styles/`, `llms.txt`, `ACCESSIBILITY.md`) is
-identical.
+The workflow uses GitHub's automatic `GITHUB_TOKEN` (built into every
+run, nothing to configure) for the PR/commit chores. If you ever prefer
+the classic token path instead, an npm *Automation* token in an
+`NPM_TOKEN` secret plus an auth-config step restores it — trusted
+publishing is the recommended default.
 
 ## Caveat
 

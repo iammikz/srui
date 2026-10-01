@@ -71,7 +71,9 @@ intentional visual change with
   (use the one-level-up `../node_modules/@iammikz/srui/dist` form).
 - Publishing: manually via [`publish-package.md`](./publish-package.md), or
   from CI — `.github/workflows/release.yml` opens a Version Packages PR per
-  changeset and publishes on merge (needs the `NPM_TOKEN` repo secret).
+  changeset and publishes on merge, **tokenless** via npm trusted publishing
+  (one-time registration on the package's npm Settings page; no
+  `NPM_TOKEN` secret).
 
 See `implementation-plan.md` for the full project contract and
 `packages/react/ACCESSIBILITY.md` for the accessibility state.

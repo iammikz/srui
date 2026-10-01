@@ -1,15 +1,21 @@
 name: Release
 
-# Changesets-driven publishing (see publish-package.md):
-#   1. You land changes on main that include a changeset
-#      (`pnpm changeset` describes the bump).
-#   2. This workflow opens/updates a "chore: version packages" PR with the
-#      version bump + CHANGELOG entry.
-#   3. Merging that PR publishes @iammikz/srui to npm and tags a GitHub
-#      release. No other manual steps.
+# Tokenless changesets-driven publishing via npm **trusted publishing**
+# (OIDC). No NPM_TOKEN secret is stored: at publish time GitHub issues a
+# short-lived OIDC token that npm exchanges for one-time publish
+# credentials, after matching it against the trusted publisher registered
+# on the @iammikz/srui package settings page.
 #
-# One-time setup: add an npm **automation** token (or a granular token with
-# Packages: Read and write) as the repository secret `NPM_TOKEN`.
+# One-time npm-side setup (no secrets involved):
+#   npmjs.com → @iammikz/srui → Settings → Trusted Publisher → add:
+#     repository owner: iammikz
+#     repository name:  srui
+#     workflow:         .github/workflows/release.yml
+#     environment:      (leave empty)
+#
+# Flow after that: `pnpm changeset` on a branch → merge to main → this
+# workflow opens/updates a "chore: version packages" PR → merging that PR
+# publishes to npm (with provenance) and tags a GitHub release.
 
 on:
   push:
@@ -22,6 +28,7 @@ concurrency:
 permissions:
   contents: write # Version Packages commits, tags, releases
   pull-requests: write # Version Packages PR
+  id-token: write # OIDC token for npm trusted publishing
 
 jobs:
   release:
@@ -41,28 +48,22 @@ jobs:
           corepack enable
           corepack prepare pnpm@9.12.0 --activate
 
+      # npm's CLI performs the OIDC exchange for trusted publishing; make
+      # sure it's new enough (support shipped in recent npm releases).
+      - name: Use latest npm CLI
+        run: npm install -g npm@latest
+
       - name: Install dependencies
         run: pnpm install --frozen-lockfile
-
-      - name: Check NPM_TOKEN secret
-        if: ${{ secrets.NPM_TOKEN == '' }}
-        run: >
-          echo "::error::NPM_TOKEN secret is missing. Add an npm automation
-          token as the NPM_TOKEN repository secret, otherwise merging the
-          Version Packages PR will fail to publish."
-
-      # pnpm reads the user-level npm config this writes.
-      - name: Configure npm auth
-        if: ${{ secrets.NPM_TOKEN != '' }}
-        run: npm config set //registry.npmjs.org/:_authToken ${{ secrets.NPM_TOKEN }}
 
       - uses: changesets/action@v1
         with:
           version: pnpm changeset version
-          # Builds the library (dist ships in the tarball), then publishes.
-          publish: pnpm run release
+          # pnpm builds the library (dist ships in the tarball); npm then
+          # publishes — pnpm's publish doesn't do the OIDC exchange, npm's
+          # does. --provenance attests the workflow that built the package.
+          publish: pnpm build && npm publish packages/react --access public --provenance
           commit: "chore: version packages"
           title: "chore: version packages"
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-          NPM_TOKEN: ${{ secrets.NPM_TOKEN }}
