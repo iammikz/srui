@@ -69,10 +69,59 @@ intentional visual change with
   package build — Tailwind v4 skips `node_modules` by default, and on
   Windows the scanner can't traverse pnpm's junction via deep `..` paths
   (use the one-level-up `../node_modules/@iammikz/srui/dist` form).
-- Publishing: manual via `pnpm release` (build + publish; see
-  [`publish-package.md`](./docs/publish-package.md)) — no release workflow by
-  choice. The npm-facing README lives at
-  `packages/react/README.md` and ships with every publish.
+- Publishing: manual via `pnpm release` (build + publish; no release
+  workflow by choice). The npm-facing README lives at
+  `packages/react/README.md` and ships with every publish — full details in
+  [`docs/publish-package.md`](./docs/publish-package.md).
+
+## Releasing
+
+Every user-facing change to `packages/react` ships through a changeset.
+The full procedure after updating the package:
+
+```bash
+pnpm changeset           # 1. describe the bump (see format below)
+git add .changeset/ && git commit -m "chore: changeset" && git push
+
+pnpm changeset version   # 2. when releasing: applies the bump
+                         #    (package.json + CHANGELOG.md) and consumes
+                         #    the changeset files
+git add -A && git commit -m "chore: version packages"
+
+pnpm release             # 3. builds the library and publishes
+                         #    @iammikz/srui to npm (requires `npm login`)
+
+npm view @iammikz/srui version   # 4. verify
+```
+
+### Changeset standard format
+
+A changeset is a markdown file created under `.changeset/` (by
+`pnpm changeset` or by hand) with YAML frontmatter naming the package and
+its bump type, followed by a release-note body:
+
+```md
+---
+"@iammikz/srui": minor
+---
+
+Add `Combobox` component with client-side filtering.
+```
+
+- **Bump types** — `patch`: bug fixes, no new API; `minor`: new
+  components/props/features, backwards compatible; `major`: breaking
+  changes to props, tokens, or exports.
+- **Body** — one line per change, imperative mood, written for the
+  CHANGELOG (it is copied verbatim). If a single PR makes both a feature
+  and a fix, either two changesets or one at the higher bump.
+- **Filename** — anything (`pnpm changeset` generates a random name);
+  it is consumed and deleted by `pnpm changeset version`.
+- Multiple pending changesets are **accumulated and released together**
+  at the next `pnpm changeset version` — bump types combine to the
+  highest.
+
+See [`docs/publish-package.md`](./docs/publish-package.md) for the full
+publish walkthrough, including dry-running the tarball.
 
 See [`docs/implementation-plan.md`](./docs/implementation-plan.md) for the full project contract and
 `packages/react/ACCESSIBILITY.md` for the accessibility state.

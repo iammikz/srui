@@ -53,6 +53,9 @@ pnpm changeset version   # consumes .changeset/*.md, bumps version + CHANGELOG.m
 git add -A && git commit -m "chore: version package"
 ```
 
+(The changeset file format — frontmatter, bump types, release-note body —
+is documented in the root README's "Changeset standard format" section.)
+
 ### 5. Dry-run the tarball
 
 ```bash
