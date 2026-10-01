@@ -70,9 +70,9 @@ intentional visual change with
   Windows the scanner can't traverse pnpm's junction via deep `..` paths
   (use the one-level-up `../node_modules/@iammikz/srui/dist` form).
 - Publishing: manual via `pnpm release` (build + publish; see
-  [`publish-package.md`](./publish-package.md)) — no release workflow by
+  [`publish-package.md`](./docs/publish-package.md)) — no release workflow by
   choice. The npm-facing README lives at
   `packages/react/README.md` and ships with every publish.
 
-See `implementation-plan.md` for the full project contract and
+See [`docs/implementation-plan.md`](./docs/implementation-plan.md) for the full project contract and
 `packages/react/ACCESSIBILITY.md` for the accessibility state.
