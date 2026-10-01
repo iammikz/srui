@@ -61,8 +61,13 @@ jobs:
           version: pnpm changeset version
           # pnpm builds the library (dist ships in the tarball); npm then
           # publishes — pnpm's publish doesn't do the OIDC exchange, npm's
-          # does. --provenance attests the workflow that built the package.
-          publish: pnpm build && npm publish packages/react --access public --provenance
+          # does. --no-provenance: npm provenance requires a PUBLIC source
+          # repository (the attestation links to public repo/workflow
+          # metadata), and this repo stays private. Tokenless trusted
+          # publishing itself works fine from private repos; only the
+          # provenance badge is given up. Flip to --provenance if the repo
+          # ever goes public.
+          publish: pnpm build && npm publish packages/react --access public --no-provenance
           commit: "chore: version packages"
           title: "chore: version packages"
         env:

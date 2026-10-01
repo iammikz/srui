@@ -117,10 +117,14 @@ The flow:
 3. On merge to `main`, the workflow opens/updates a **"chore: version
    packages"** PR containing the version bump + CHANGELOG entry.
 4. Merge that PR — the workflow builds the library, publishes with
-   `npm publish --provenance` (npm exchanges GitHub's OIDC token for
-   one-time publish credentials after matching the trusted publisher),
-   tags the version, and opens a GitHub release. The package page shows a
-   provenance badge linking back to the exact workflow run.
+   `npm publish` (npm exchanges GitHub's OIDC token for one-time publish
+   credentials after matching the trusted publisher), tags the version,
+   and opens a GitHub release.
+
+**Private repository:** this all works from a private repo — the workflow
+publishes with `--no-provenance`, because npm provenance requires a public
+source repository. The only thing lost is the provenance badge on the
+package page; remove the flag if the repo ever becomes public.
 
 The workflow uses GitHub's automatic `GITHUB_TOKEN` (built into every
 run, nothing to configure) for the PR/commit chores. If you ever prefer
