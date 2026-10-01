@@ -87,7 +87,7 @@ export function DocsLayout({ children }: { children: React.ReactNode }) {
                     size="icon"
                     aria-label="GitHub repository"
                     onClick={() =>
-                      window.open("https://github.com/srui-ui/srui", "_blank", "noopener")
+                      window.open("https://github.com/iammikz/srui", "_blank", "noopener")
                     }
                   >
                     <Github />
