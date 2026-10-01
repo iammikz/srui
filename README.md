@@ -69,9 +69,9 @@ intentional visual change with
   package build — Tailwind v4 skips `node_modules` by default, and on
   Windows the scanner can't traverse pnpm's junction via deep `..` paths
   (use the one-level-up `../node_modules/@iammikz/srui/dist` form).
-- Publishing: changesets are configured; `pnpm changeset version` +
-  `pnpm --filter @iammikz/srui publish` when registry credentials exist —
-  see [`publish-package.md`](./publish-package.md) for the full step-by-step.
+- Publishing: manually via [`publish-package.md`](./publish-package.md), or
+  from CI — `.github/workflows/release.yml` opens a Version Packages PR per
+  changeset and publishes on merge (needs the `NPM_TOKEN` repo secret).
 
 See `implementation-plan.md` for the full project contract and
 `packages/react/ACCESSIBILITY.md` for the accessibility state.

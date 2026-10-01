@@ -100,17 +100,27 @@ That satisfies the implementation plan §1.6 Definition of Done:
 - `"publishConfig": { "access": "public" }` — bakes the access flag in so a
   bare `pnpm publish` works.
 
-## Alternative: publish from CI
+## Alternative: publish from CI (already wired)
 
-Instead of publishing from a workstation, use the
-[changesets/action](https://github.com/changesets/action) in GitHub Actions:
+`.github/workflows/release.yml` publishes via the
+[changesets/action](https://github.com/changesets/action). The flow:
 
-1. Create an npm **automation/granular token** with publish rights on the
-   `@iammikz` user scope.
-2. Add it as the `NPM_TOKEN` repository secret.
-3. Add a workflow step (can live in `.github/workflows/ci.yml`) that runs
-   `changesets/action` — it opens a "Version Packages" PR whenever
-   changesets exist and publishes automatically when that PR merges.
+1. **One-time:** create an npm token — either an *Automation* token
+   (npmjs.com → Access Tokens) or a granular token with **Packages: Read
+   and write** — and add it as the repository secret **`NPM_TOKEN`**
+   (repo Settings → Secrets and variables → Actions).
+2. Describe a release from your branch: `pnpm changeset` (pick
+   `@iammikz/srui`, bump type, message), commit the new `.changeset/*.md`,
+   push.
+3. On merge to `main`, the workflow opens/updates a **"chore: version
+   packages"** PR containing the version bump + CHANGELOG entry.
+4. Merge that PR — the workflow runs `pnpm run release` (library build,
+   then `pnpm --filter @iammikz/srui publish --access public`), tags the
+   version, and opens a GitHub release.
+
+Steps 3–4 replace step 4 onward of the manual flow above; everything the
+tarball ships (`dist/`, `src/styles/`, `llms.txt`, `ACCESSIBILITY.md`) is
+identical.
 
 ## Caveat
 
