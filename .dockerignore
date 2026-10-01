@@ -1,0 +1,10 @@
+**/node_modules
+.git
+.github
+**/dist
+packages/react/dist-storybook
+packages/react/tests/.playwright
+packages/react/tests/.playwright-visual
+packages/react/tests/visual.spec.ts-snapshots
+**/*.tsbuildinfo
+*.tgz
