@@ -13,6 +13,7 @@ import {
   Input,
   Label,
   useToast,
+  useUIStyle,
 } from "@iammikz/srui";
 
 /**
@@ -32,6 +33,33 @@ const COLORS: { token: string; label: string }[] = [
 
 const hex = (v: string) => (v.startsWith("#") ? v : "#4f46e5");
 
+function hexToRgb(v: string): [number, number, number] {
+  const h = v.slice(1);
+  const n = Number.parseInt(h.length === 3 ? h.replace(/./g, (c) => c + c) : h, 16);
+  return [(n >> 16) & 255, (n >> 8) & 255, n & 255];
+}
+
+/** WCAG relative luminance, used to decide which foreground stays readable. */
+function luminance(v: string): number {
+  const channel = (c: number) => {
+    const s = c / 255;
+    return s <= 0.03928 ? s / 12.92 : ((s + 0.055) / 1.055) ** 2.4;
+  };
+  const [r, g, b] = hexToRgb(v);
+  return 0.2126 * channel(r) + 0.7152 * channel(g) + 0.0722 * channel(b);
+}
+
+/** Text color that stays readable on top of `v` (e.g. dark on #f4f4f5). */
+function contrastForeground(v: string): string {
+  return luminance(v) > 0.35 ? "oklch(35% 0 0)" : "oklch(98% 0 0)";
+}
+
+/** Dark-mode surface derived from a picked background so the preview follows the page scheme. */
+function darken(v: string): string {
+  const [r, g, b] = hexToRgb(v).map((c) => Math.round(c * 0.08));
+  return `#${((1 << 24) | (r << 16) | (g << 8) | b).toString(16).slice(1)}`;
+}
+
 export function ThemeBuilder() {
   const { toast } = useToast();
   const [colors, setColors] = React.useState<Record<string, string>>({
@@ -43,18 +71,28 @@ export function ThemeBuilder() {
     "--background": "#ffffff",
   });
   const [radius, setRadius] = React.useState("0.5rem");
+  const { resolvedScheme } = useUIStyle();
+  const dark = resolvedScheme === "dark";
 
   const style = React.useMemo(() => {
     const out: Record<string, string> = {};
-    for (const { token } of COLORS) out[token] = hex(colors[token]);
+    for (const { token } of COLORS) {
+      const value = hex(colors[token]);
+      out[token] = token === "--background" && dark ? darken(value) : value;
+      // Every palette token pairs with a *-foreground the builder must derive
+      // too, or it leaks from the page theme (near-white in dark mode →
+      // unreadable text on light picks like #f4f4f5).
+      if (token !== "--background") out[`${token}-foreground`] = contrastForeground(value);
+    }
     out["--radius"] = radius;
     return out;
-  }, [colors, radius]);
+  }, [colors, radius, dark]);
 
   const css = React.useMemo(() => {
-    const lines = Object.entries(style).map(([k, v]) => `  ${k}: ${v};`);
-    return `:root {\n${lines.join("\n")}\n}\n\n.dark {\n  /* add dark-mode overrides here */\n}`;
-  }, [style]);
+    const light = Object.entries(style).map(([k, v]) => `  ${k}: ${v};`);
+    const darkLines = [`  /* background darkened from the light pick */`, `  --background: ${darken(hex(colors["--background"]))};`];
+    return `:root {\n${light.join("\n")}\n}\n\n.dark {\n${darkLines.join("\n")}\n}`;
+  }, [style, colors]);
 
   return (
     <div className="my-6 grid gap-6 lg:grid-cols-2">
