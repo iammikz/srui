@@ -21,6 +21,7 @@ import { cn } from "../lib/cn";
 import { Button } from "./Button";
 import { Checkbox } from "./Checkbox";
 import { Input } from "./Input";
+import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "./Select";
 
 /** Virtualization kicks in automatically above this many rows (no pageSize). */
 export const DATA_TABLE_VIRTUALIZE_THRESHOLD = 200;
@@ -46,7 +47,7 @@ export interface DataTableProps<T> {
   selectable?: boolean;
   pageSize?: number;
   onRowSelectionChange?: (rows: T[]) => void;
-  /** Per-column text filter row (columns can opt out via enableColumnFilter). */
+  /** Global search input above the columns; filters every column at once. */
   filterable?: boolean;
   /** Sticky first/last columns via CSS position: sticky. */
   pinColumns?: boolean;
@@ -83,19 +84,22 @@ export function useDataTable<T>({
 }: UseDataTableConfig<T>): TableInstance<T> {
   const [sorting, setSorting] = React.useState<SortingState>([]);
   const [columnFilters, setColumnFilters] = React.useState<ColumnFiltersState>([]);
+  const [globalFilter, setGlobalFilter] = React.useState("");
   const [rowSelection, setRowSelection] = React.useState<RowSelectionState>({});
 
   const table = useReactTable({
     data,
     columns,
-    state: { sorting, columnFilters, rowSelection },
+    state: { sorting, columnFilters, globalFilter, rowSelection },
     onSortingChange: setSorting,
     onColumnFiltersChange: setColumnFilters,
+    onGlobalFilterChange: setGlobalFilter,
     onRowSelectionChange: setRowSelection,
     getCoreRowModel: getCoreRowModel(),
     getSortedRowModel: sortable ? getSortedRowModel() : undefined,
     getFilteredRowModel: getFilteredRowModel(),
     getPaginationRowModel: pageSize ? getPaginationRowModel() : undefined,
+    globalFilterFn: "includesString",
     enableSorting: sortable,
     enableRowSelection: selectable,
     initialState: pageSize ? { pagination: { pageSize } } : undefined,
@@ -189,6 +193,7 @@ export function DataTable<T>({
       id: "__select",
       enableSorting: false,
       enableColumnFilter: false,
+      enableGlobalFilter: false,
       header: ({ table }) => (
         <Checkbox
           aria-label="Select all rows on this page"
@@ -239,7 +244,6 @@ export function DataTable<T>({
       : "";
 
   const Toolbar = slots?.toolbar;
-  const leafColumns = table.getVisibleLeafColumns();
 
   return (
     <div
@@ -249,9 +253,24 @@ export function DataTable<T>({
       )}
     >
       <div className="flex flex-wrap items-center justify-between gap-2 px-3 py-2">
-        <span className="text-xs text-muted-foreground" aria-live="polite">
-          {table.getFilteredRowModel().rows.length} rows
-        </span>
+        <div className="flex min-w-0 flex-1 items-center gap-2">
+          {filterable ? (
+            <Input
+              type="search"
+              value={(table.getState().globalFilter as string) ?? ""}
+              onChange={(e) => table.setGlobalFilter(e.target.value)}
+              placeholder="Search all columns…"
+              aria-label="Search all columns"
+              className="h-8 w-full max-w-56 text-xs"
+            />
+          ) : null}
+          <span
+            className="whitespace-nowrap text-xs text-muted-foreground"
+            aria-live="polite"
+          >
+            {table.getFilteredRowModel().rows.length} rows
+          </span>
+        </div>
         <div className="flex items-center gap-2">
           {Toolbar ? <Toolbar table={table} /> : null}
           {csvExport ? (
@@ -291,27 +310,6 @@ export function DataTable<T>({
                 ))}
               </tr>
             ))}
-            {filterable ? (
-              <tr className="border-b border-border">
-                {leafColumns.map((c, i) => (
-                  <th
-                    key={c.id}
-                    scope="col"
-                    className={cn("px-2 pb-2", pinned(i, leafColumns.length))}
-                  >
-                    {c.getCanFilter() ? (
-                      <Input
-                        value={(c.getFilterValue() as string) ?? ""}
-                        onChange={(e) => c.setFilterValue(e.target.value)}
-                        placeholder={`Filter…`}
-                        aria-label={`Filter by ${c.id}`}
-                        className="h-8 w-full min-w-24 text-xs"
-                      />
-                    ) : null}
-                  </th>
-                ))}
-              </tr>
-            ) : null}
           </thead>
 
           <tbody>
@@ -381,8 +379,33 @@ export function DataTable<T>({
       </div>
 
       {pageSize ? (
-        <div className="flex items-center justify-end gap-2 border-t border-border px-3 py-2">
-          <span className="mr-auto text-xs text-muted-foreground">
+        <div className="flex flex-wrap items-center justify-end gap-2 border-t border-border px-3 py-2">
+          <div className="mr-auto flex items-center gap-2">
+            <span className="whitespace-nowrap text-xs text-muted-foreground">
+              Rows per page
+            </span>
+            <Select
+              value={String(table.getState().pagination.pageSize)}
+              onValueChange={(v) => table.setPageSize(Number(v))}
+            >
+              <SelectTrigger
+                aria-label="Rows per page"
+                className="h-7 w-[4.25rem] text-xs"
+              >
+                <SelectValue />
+              </SelectTrigger>
+              <SelectContent>
+                {[...new Set([pageSize, 10, 20, 30, 50])]
+                  .sort((a, b) => a - b)
+                  .map((size) => (
+                    <SelectItem key={size} value={String(size)} className="text-xs">
+                      {size}
+                    </SelectItem>
+                  ))}
+              </SelectContent>
+            </Select>
+          </div>
+          <span className="text-xs text-muted-foreground">
             Page {table.getState().pagination.pageIndex + 1} of{" "}
             {Math.max(1, table.getPageCount())}
           </span>

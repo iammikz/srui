@@ -4,11 +4,12 @@ description: Sortable, filterable, paginated, selectable table with virtualizati
 ---
 
 `DataTable` is the Tier 1 face of a TanStack Table configuration: sort by
-clicking headers, per-column text filters, pagination with `Button` controls,
-a `Checkbox` selection column, sticky first/last column pinning, automatic
-virtualization above ~200 rows, and client-side CSV export of the visible
-columns. Sort → filter → paginate compose through TanStack's row pipeline,
-so any order of operations gives the same result.
+clicking headers, a global search input above the columns that filters every
+column at once, pagination with a rows-per-page selector and `Button`
+controls, a `Checkbox` selection column, sticky first/last column pinning,
+automatic virtualization above ~200 rows, and client-side CSV export of the
+visible columns. Sort → filter → paginate compose through TanStack's row
+pipeline, so any order of operations gives the same result.
 
 ## Installation
 
@@ -45,9 +46,9 @@ const columns: ColumnDef<Person, unknown>[] = [
 | `data` | `T[]` | — | Row data |
 | `sortable` | `boolean` | `true` | Header-click sorting (`aria-sort` included) |
 | `selectable` | `boolean` | `false` | Checkbox column (select-all-page included) |
-| `pageSize` | `number` | — | Enables the paginated footer with Prev/Next `Button`s |
+| `pageSize` | `number` | — | Enables the paginated footer: rows-per-page selector plus Prev/Next `Button`s |
 | `onRowSelectionChange` | `(rows: T[]) => void` | — | Called with selected row objects |
-| `filterable` | `boolean` | `false` | Per-column text filter row |
+| `filterable` | `boolean` | `false` | Global search input above the columns (case-insensitive, matches any column) |
 | `pinColumns` | `boolean` | `false` | Sticky first/last columns (`position: sticky`) |
 | `csvExport` | `boolean` | `true` | Client-side "Export CSV" button |
 
@@ -84,7 +85,7 @@ table.getRowModel().rows.map((row) => …);
 
 - Sort buttons expose `aria-sort` (`ascending`/`descending`); screen-reader
   labels cover the select-all and per-row checkboxes.
-- The filter row labels each input (`Filter by <column>`), and the row count
-  is an `aria-live` region so filtering announcements happen without focus
-  moves.
+- The global search input is labelled (`Search all columns`), and the row
+  count is an `aria-live` region so filtering announcements happen without
+  focus moves. The rows-per-page trigger is labelled for screen readers.
 - Virtualized rows keep native table semantics (`table`/`thead`/`tbody`).
