@@ -1,5 +1,12 @@
 # demo
 
+## 0.0.6
+
+### Patch Changes
+
+- Updated dependencies [a2d72fd]
+  - @iammikz/srui@1.3.0
+
 ## 0.0.5
 
 ### Patch Changes

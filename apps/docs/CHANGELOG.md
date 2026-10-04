@@ -1,5 +1,12 @@
 # docs
 
+## 0.0.5
+
+### Patch Changes
+
+- Updated dependencies [a2d72fd]
+  - @iammikz/srui@1.3.0
+
 ## 0.0.4
 
 ### Patch Changes
