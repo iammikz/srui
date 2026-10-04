@@ -1,5 +1,12 @@
 # demo
 
+## 0.0.5
+
+### Patch Changes
+
+- Updated dependencies [d3ca815]
+  - @iammikz/srui@1.2.0
+
 ## 0.0.4
 
 ### Patch Changes
