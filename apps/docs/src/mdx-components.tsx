@@ -154,10 +154,14 @@ import {
   TimeRangeDemo,
 } from "./components/date-time-demo";
 import {
+  ColorPickerAlphaDemo,
+  ColorPickerDemo,
   ConfirmDialogDemo,
   FileUploadDemo,
   ModalDemo,
   PaginationDemo,
+  SliderDemo,
+  SliderRangeDemo,
   TagInputDemo,
   TreeViewDemo,
 } from "./components/input-demo";
@@ -340,6 +344,10 @@ const mdxComponents = {
   TagInputDemo,
   TreeViewDemo,
   ConfirmDialogDemo,
+  ColorPickerDemo,
+  ColorPickerAlphaDemo,
+  SliderDemo,
+  SliderRangeDemo,
   a: MdxLink,
 };
 

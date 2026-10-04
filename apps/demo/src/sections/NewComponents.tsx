@@ -10,6 +10,7 @@ import {
   BreadcrumbSeparator,
   Button,
   Calendar,
+  ColorPicker,
   ConfirmDialog,
   DatePicker,
   DateRangePicker,
@@ -38,6 +39,7 @@ import {
   PaginationPrevious,
   Progress,
   ScrollArea,
+  Slider,
   TagInput,
   TimePicker,
   TimeRangePicker,
@@ -76,6 +78,8 @@ export function NewComponents() {
   const [page, setPage] = useState(5);
   const [confirmOpen, setConfirmOpen] = useState(false);
   const pageRange = usePaginationRange(page, 12);
+  const [opacity, setOpacity] = useState([60]);
+  const [brand, setBrand] = useState("#2563EB");
 
   return (
     <>
@@ -149,6 +153,26 @@ export function NewComponents() {
             maxSizeBytes={2 * 1024 * 1024}
             prompt="Drop report files"
           />
+          <div className="flex flex-col gap-3">
+            <div className="flex items-center gap-3">
+              <span className="w-16 text-xs text-muted-foreground">Opacity</span>
+              <Slider
+                value={opacity}
+                onValueChange={setOpacity}
+                aria-label="Overlay opacity"
+                className="flex-1"
+              />
+              <span className="w-8 text-right text-xs text-muted-foreground">{opacity[0]}%</span>
+            </div>
+            <div className="flex items-center gap-3">
+              <span className="w-16 text-xs text-muted-foreground">Brand</span>
+              <ColorPicker value={brand} onChange={setBrand} ariaLabel="Brand color" className="flex-1" />
+            </div>
+            <div
+              className="h-10 rounded-md border border-border"
+              style={{ backgroundColor: brand, opacity: opacity[0] / 100 }}
+            />
+          </div>
         </div>
       </Section>
 

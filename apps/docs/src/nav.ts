@@ -48,6 +48,8 @@ export const nav: NavSection[] = [
       { label: "Radio Group", href: "/components/radio-group" },
       { label: "Switch", href: "/components/switch" },
       { label: "Textarea", href: "/components/textarea" },
+      { label: "Slider", href: "/components/slider" },
+      { label: "Color Picker", href: "/components/color-picker" },
       { label: "Form Field", href: "/components/form-field" },
       { label: "Avatar", href: "/components/avatar" },
       { label: "Badge", href: "/components/badge" },

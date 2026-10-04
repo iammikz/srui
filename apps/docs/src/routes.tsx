@@ -63,6 +63,8 @@ import * as TreeView from "../content/docs/components/tree-view.mdx";
 import * as Timeline from "../content/docs/components/timeline.mdx";
 import * as AlertDialog from "../content/docs/components/alert-dialog.mdx";
 import * as Pagination from "../content/docs/components/pagination.mdx";
+import * as Slider from "../content/docs/components/slider.mdx";
+import * as ColorPicker from "../content/docs/components/color-picker.mdx";
 import * as AppShell from "../content/docs/components/app-shell.mdx";
 import * as DataTable from "../content/docs/components/data-table.mdx";
 import * as ChartCard from "../content/docs/components/chart-card.mdx";
@@ -176,6 +178,8 @@ export const routes: RouteRecord[] = [
       { path: "components/timeline", element: <DocsPage mod={Timeline} /> },
       { path: "components/alert-dialog", element: <DocsPage mod={AlertDialog} /> },
       { path: "components/pagination", element: <DocsPage mod={Pagination} /> },
+      { path: "components/slider", element: <DocsPage mod={Slider} /> },
+      { path: "components/color-picker", element: <DocsPage mod={ColorPicker} /> },
       { path: "components/app-shell", element: <DocsPage mod={AppShell} /> },
       { path: "components/data-table", element: <DocsPage mod={DataTable} /> },
       { path: "components/chart-card", element: <DocsPage mod={ChartCard} /> },

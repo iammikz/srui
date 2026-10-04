@@ -1,0 +1,69 @@
+---
+title: Color Picker
+description: Swatch trigger over a color panel — SV square, hue/alpha sliders, typed hex commit, presets, eyedropper.
+---
+
+`ColorPicker` is a swatch trigger opening an anchored color panel: a
+saturation/value square, a hue slider, an optional alpha slider, a hex field
+where typed input commits (`f09`, `#FF6600`, `rgba(37,99,235,.8)` all
+parse), preset swatches, and the screen eyedropper where the browser
+supports it. Values are normalized hex keys — `#RRGGBB`, or `#RRGGBBAA`
+with `alpha`.
+
+## Installation
+
+```tsx
+import { ColorPicker } from "@iammikz/srui";
+```
+
+## Usage
+
+<LivePreview code={`const [color, setColor] = useState("#2563EB");
+
+<ColorPicker value={color} onChange={setColor} ariaLabel="Brand color" />`}>
+  <ColorPickerDemo />
+</LivePreview>
+
+## Props
+
+| Prop | Type | Default | Description |
+|---|---|---|---|
+| `value` | `string` | — | `'#RRGGBB'`, or `'#RRGGBBAA'` with `alpha` (controlled) |
+| `defaultValue` | `string` | — | Initial color |
+| `onChange` | `(color: string) => void` | — | Fires live with the normalized hex key |
+| `alpha` | `boolean` | `false` | Alpha slider + 8-digit hex values |
+| `presets` | `string[]` | — | Swatch row inside the panel |
+| `eyedropper` | `boolean` | `true` | Screen eyedropper button where supported |
+| `placeholder` / `ariaLabel` / `disabled` / `invalid` / `clearable` | — | — | Usual field props |
+| `format` | `(color: string) => string` | — | Custom trigger display |
+| `name` | `string` | — | Hidden input for native form posts |
+
+## Examples
+
+### Alpha + presets
+
+<LivePreview code={`<ColorPicker
+  value={color} onChange={setColor} alpha
+  presets={["#000000", "#64748B", "#DC2626", "#F59E0B", "#10B981", "#2563EB", "#7C3AED"]}
+  ariaLabel="Overlay tint"
+/>`}>
+  <ColorPickerAlphaDemo />
+</LivePreview>
+
+## Accessibility
+
+- Combobox trigger semantics over a `role="dialog"` panel; Escape and
+  outside clicks close and refocus.
+- The SV square is a focusable `role="slider"` labelled "Saturation and
+  brightness" announcing the live color; arrow keys nudge saturation and
+  brightness (Shift = 5×). Hue and alpha are full Radix sliders.
+- Preset swatches announce their hex; the eyedropper button is labelled
+  and simply hidden on browsers without the EyeDropper API.
+
+## Edge cases
+
+- Typed input only commits when fully parseable; blur reverts bad drafts.
+- `toCssString('#2563EBCC')` → `rgba(37, 99, 235, 0.8)` — use it when
+  feeding CSS directly; the value itself always stays a hex key.
+- Color math helpers (`hexToRgb`, `rgbToHsv`, `parseColorInput`, …) are
+  exported from the package root, same as the date helpers.

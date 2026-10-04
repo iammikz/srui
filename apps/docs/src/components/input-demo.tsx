@@ -3,6 +3,7 @@
 import * as React from "react";
 import {
   Button,
+  ColorPicker,
   ConfirmDialog,
   FileUpload,
   Modal,
@@ -13,11 +14,53 @@ import {
   PaginationLink,
   PaginationNext,
   PaginationPrevious,
+  Slider,
   TagInput,
   TreeView,
   usePaginationRange,
   type TreeItemData,
 } from "@iammikz/srui";
+
+export function SliderDemo() {
+  const [value, setValue] = React.useState([50]);
+  return (
+    <div className="flex w-64 flex-col gap-2">
+      <Slider value={value} onValueChange={setValue} aria-label="Opacity" />
+      <span className="text-right text-xs text-muted-foreground">{value[0]}%</span>
+    </div>
+  );
+}
+
+export function SliderRangeDemo() {
+  const [value, setValue] = React.useState([25, 75]);
+  return (
+    <div className="flex w-64 flex-col gap-2">
+      <Slider value={value} onValueChange={setValue} min={0} max={100} step={5} aria-label="Price span" />
+      <span className="text-right text-xs text-muted-foreground">
+        ${value[0]} – ${value[1]}
+      </span>
+    </div>
+  );
+}
+
+export function ColorPickerDemo() {
+  const [color, setColor] = React.useState("#2563EB");
+  return <ColorPicker value={color} onChange={setColor} ariaLabel="Brand color" className="w-44" />;
+}
+
+export function ColorPickerAlphaDemo() {
+  const [color, setColor] = React.useState("#10B981CC");
+  return (
+    <ColorPicker
+      value={color}
+      onChange={setColor}
+      alpha
+      presets={["#000000", "#64748B", "#DC2626", "#F59E0B", "#10B981", "#2563EB", "#7C3AED"]}
+      ariaLabel="Overlay tint"
+      className="w-44"
+    />
+  );
+}
 
 export function ConfirmDialogDemo() {
   const [open, setOpen] = React.useState(false);

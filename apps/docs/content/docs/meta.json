@@ -48,6 +48,8 @@
     "components/timeline",
     "components/alert-dialog",
     "components/pagination",
+    "components/slider",
+    "components/color-picker",
     "components/app-shell",
     "components/data-table",
     "components/chart-card",

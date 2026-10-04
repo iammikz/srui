@@ -60,6 +60,8 @@ const PAGES: Record<string, string> = {
   timeline: "/components/timeline/",
   "alert-dialog": "/components/alert-dialog/",
   pagination: "/components/pagination/",
+  slider: "/components/slider/",
+  "color-picker": "/components/color-picker/",
 };
 
 for (const preset of PRESETS) {

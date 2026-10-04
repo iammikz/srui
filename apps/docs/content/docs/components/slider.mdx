@@ -1,0 +1,57 @@
+---
+title: Slider
+description: Range input on Radix Slider — single values or spans, keyboard-complete, one element.
+---
+
+`Slider` is the range input: one thumb picks a value, two pick a span.
+Thumbs render from `value`/`defaultValue` (`number[]`), so there's nothing
+to compose — pass `min`/`max`/`step` and read changes off `onValueChange`.
+
+## Installation
+
+```tsx
+import { Slider } from "@iammikz/srui";
+```
+
+## Usage
+
+<LivePreview code={`const [value, setValue] = useState([50]);
+
+<Slider value={value} onValueChange={setValue} aria-label="Opacity" />`}>
+  <SliderDemo />
+</LivePreview>
+
+## Props
+
+Radix Slider root props (`min`, `max`, `step`, `value`, `defaultValue`,
+`onValueChange`, `onValueCommit`, `disabled`, `orientation`, `inverted`,
+`minStepsBetweenThumbs`, …) plus:
+
+| Prop | Type | Default | Description |
+|---|---|---|---|
+| `invalid` | `boolean` | — | Destructive track/thumb treatment |
+| `thumbClassName` / `thumbStyle` | — | — | Applied to every thumb |
+| `trackClassName` / `trackStyle` | — | — | Track overrides (e.g. gradient tracks) |
+| `rangeClassName` | `string` | — | Filled-range override (transparent over gradients) |
+
+## Examples
+
+### Range (two thumbs)
+
+<LivePreview code={`const [value, setValue] = useState([25, 75]);
+
+<Slider value={value} onValueChange={setValue} min={0} max={100} step={5} aria-label="Price span" />`}>
+  <SliderRangeDemo />
+</LivePreview>
+
+## Accessibility
+
+Radix semantics: each thumb is a `role="slider"` with
+`aria-valuenow/min/max` and a text alternative; arrows move by `step`,
+Shift+arrows by 10×, PageUp/PageDown by a page, Home/End jump the bounds.
+Label the control with `aria-label` (or a bound visible label).
+
+## Composition
+
+`ColorPicker` builds its hue and alpha sliders on this component with
+`trackClassName` gradients and a `bg-transparent` range fill.

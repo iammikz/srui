@@ -218,6 +218,11 @@ export {
   usePaginationRange,
 } from "./components/Pagination";
 export type { PaginationLinkProps } from "./components/Pagination";
+export { Slider } from "./components/Slider";
+export type { SliderProps } from "./components/Slider";
+export { ColorPicker } from "./components/ColorPicker";
+export type { ColorPickerProps } from "./components/ColorPicker";
+export * from "./lib/color";
 
 // Phase 5 super-components
 export { AppShell, APP_SHELL_BREAKPOINT, useAppShell } from "./components/AppShell";
