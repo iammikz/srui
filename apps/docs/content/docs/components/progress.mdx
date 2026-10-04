@@ -1,0 +1,51 @@
+---
+title: Progress
+description: Determinate or indeterminate progress bar with role="progressbar" semantics and status tones.
+---
+
+`Progress` communicates completion of a known or unknown amount: pass a
+`value` for determinate mode (with an optional percentage readout), or omit
+it for the indeterminate sweep.
+
+## Installation
+
+```tsx
+import { Progress } from "@iammikz/srui";
+```
+
+## Usage
+
+<LivePreview code={`<Progress value={62} label="Uploading build" showValue />`}>
+  <div className="w-full max-w-sm">
+    <Progress value={62} label="Uploading build" showValue />
+  </div>
+</LivePreview>
+
+Indeterminate — for work of unknown length:
+
+<LivePreview code={`<Progress label="Syncing" showValue />`}>
+  <div className="w-full max-w-sm">
+    <Progress label="Syncing" showValue />
+  </div>
+</LivePreview>
+
+## Props
+
+| Prop | Type | Default | Description |
+|---|---|---|---|
+| `value` | `number \| null` | — | 0–100; omit/null for indeterminate |
+| `max` | `number` | `100` | Upper bound; value is normalized against it |
+| `label` | `string` | — | Announced label (+ rendered when `showValue`) |
+| `showValue` | `boolean` | `false` | Percentage readout above the bar |
+| `size` | `"sm" \| "md"` | `"md"` | Height preset |
+| `variant` | `"default" \| "success" \| "warning" \| "destructive"` | `"default"` | Bar tone |
+
+## Accessibility
+
+`role="progressbar"` with `aria-valuemin`/`aria-valuemax`/`aria-valuenow` and
+a `aria-valuetext` percentage in determinate mode; indeterminate mode omits
+the value attributes per the ARIA pattern. The readout span is `aria-hidden`
+(the attributes already announce it).
+
+Upgrades over the PRUI original: `max` normalization, status tones, and the
+value readout.

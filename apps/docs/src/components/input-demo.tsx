@@ -1,0 +1,140 @@
+"use client";
+
+import * as React from "react";
+import {
+  Button,
+  ConfirmDialog,
+  FileUpload,
+  Modal,
+  Pagination,
+  PaginationContent,
+  PaginationEllipsis,
+  PaginationItem,
+  PaginationLink,
+  PaginationNext,
+  PaginationPrevious,
+  TagInput,
+  TreeView,
+  usePaginationRange,
+  type TreeItemData,
+} from "@iammikz/srui";
+
+export function ConfirmDialogDemo() {
+  const [open, setOpen] = React.useState(false);
+  return (
+    <>
+      <Button variant="destructive" onClick={() => setOpen(true)}>
+        Delete account
+      </Button>
+      <ConfirmDialog
+        open={open}
+        onOpenChange={setOpen}
+        title="Delete this account?"
+        description="This permanently removes the account and all of its data. This action cannot be undone."
+        confirmLabel="Delete"
+        tone="destructive"
+        onConfirm={() => setOpen(false)}
+      />
+    </>
+  );
+}
+
+export function PaginationDemo({ total = 12, initial = 5 }: { total?: number; initial?: number }) {
+  const [page, setPage] = React.useState(initial);
+  const range = usePaginationRange(page, total);
+  return (
+    <Pagination className="w-full">
+      <PaginationContent>
+        <PaginationItem>
+          <PaginationPrevious
+            onClick={() => setPage((p) => Math.max(1, p - 1))}
+            disabled={page === 1}
+          />
+        </PaginationItem>
+        {range.map((item) => (
+          <PaginationItem key={item}>
+            {item === "ellipsis-start" || item === "ellipsis-end" ? (
+              <PaginationEllipsis />
+            ) : (
+              <PaginationLink isActive={item === page} onClick={() => setPage(item)}>
+                {item}
+              </PaginationLink>
+            )}
+          </PaginationItem>
+        ))}
+        <PaginationItem>
+          <PaginationNext
+            onClick={() => setPage((p) => Math.min(total, p + 1))}
+            disabled={page === total}
+          />
+        </PaginationItem>
+      </PaginationContent>
+    </Pagination>
+  );
+}
+
+export function TagInputDemo() {
+  const [tags, setTags] = React.useState(["react", "typescript"]);
+  return <TagInput value={tags} onChange={setTags} placeholder="Add tag…" className="w-80" />;
+}
+
+export function FileUploadDemo() {
+  const [files, setFiles] = React.useState<File[]>([]);
+  return (
+    <FileUpload
+      value={files}
+      onChange={setFiles}
+      accept=".pdf,image/*"
+      maxSizeBytes={2 * 1024 * 1024}
+      className="w-full max-w-sm"
+    />
+  );
+}
+
+const TREE: TreeItemData[] = [
+  {
+    id: "src",
+    label: "src",
+    defaultExpanded: true,
+    children: [
+      { id: "components", label: "components", children: [{ id: "button", label: "Button.tsx" }] },
+      { id: "lib", label: "lib", children: [{ id: "date", label: "date.ts" }] },
+    ],
+  },
+  { id: "tests", label: "tests", children: [{ id: "visual", label: "visual.spec.ts" }] },
+  { id: "package", label: "package.json" },
+];
+
+export function TreeViewDemo() {
+  const [selected, setSelected] = React.useState("button");
+  return (
+    <TreeView items={TREE} selectedId={selected} onSelect={setSelected} aria-label="Project files" />
+  );
+}
+
+export function ModalDemo() {
+  const [open, setOpen] = React.useState(false);
+  return (
+    <>
+      <Button variant="destructive" onClick={() => setOpen(true)}>
+        Delete project
+      </Button>
+      <Modal
+        open={open}
+        onOpenChange={setOpen}
+        title="Delete project?"
+        description="This removes all environments and deployments. There is no undo."
+        footer={
+          <>
+            <Button variant="outline" onClick={() => setOpen(false)}>
+              Cancel
+            </Button>
+            <Button variant="destructive" onClick={() => setOpen(false)}>
+              Delete
+            </Button>
+          </>
+        }
+      />
+    </>
+  );
+}

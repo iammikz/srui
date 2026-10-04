@@ -34,6 +34,10 @@ const SECTIONS: Record<string, string> = {
   CommandPalette: "#command-palette",
   NotificationCenter: "#notifications",
   Wizard: "#wizard",
+  "Calendar/DatePicker/TimePicker family": "#date-time-pickers",
+  "Alert/Progress/Timeline/Breadcrumb/TagInput/TreeView/ScrollArea/FileUpload":
+    "#new-primitives",
+  "DropdownMenu/Drawer": "#menus-overlays",
 };
 
 const SERIOUS_OR_CRITICAL = (v: { impact: string | null }) =>
@@ -219,5 +223,37 @@ test.describe("keyboard interactions (§6.4)", () => {
     await input.fill("buttons");
     await page.keyboard.press("Enter");
     await expect(dialog).toBeHidden();
+  });
+
+  test("DatePicker: typed input commits, grid arrows + Enter pick a day", async ({ page }) => {
+    await page.goto("/?style=flat&scheme=light");
+    const trigger = page.getByRole("combobox", { name: "Due date" });
+
+    // Typed input commits the wire format directly.
+    await trigger.click();
+    await trigger.fill("2026-10-04");
+    await page.keyboard.press("Enter");
+    await expect(trigger).toHaveValue("Oct 4, 2026");
+
+    // ArrowDown opens the panel and dives into the grid; arrows move focus;
+    // Enter picks; a completed pick closes the panel.
+    await trigger.focus();
+    await page.keyboard.press("ArrowDown");
+    const grid = page.getByRole("grid", { name: "Calendar", exact: true });
+    await expect(grid).toBeVisible();
+    const selected = page.locator("[role=gridcell][aria-selected=true] button");
+    await expect(selected).toBeFocused();
+    await page.keyboard.press("ArrowRight");
+    await page.keyboard.press("Enter");
+    await expect(trigger).toHaveValue("Oct 5, 2026");
+    await expect(grid).toBeHidden();
+
+    // Escape closes and refocuses the trigger.
+    await trigger.focus();
+    await page.keyboard.press("ArrowDown");
+    await grid.waitFor();
+    await page.keyboard.press("Escape");
+    await expect(grid).toBeHidden();
+    await expect(trigger).toBeFocused();
   });
 });

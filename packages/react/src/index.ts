@@ -17,6 +17,7 @@ export type { UIStyle, UIScheme, UIProviderProps, UIContextValue } from "./UIPro
 
 // utilities
 export { cn } from "./lib/cn";
+export * from "./lib/date";
 
 // Phase 0 components
 export { Button, buttonStyles } from "./components/Button";
@@ -115,6 +116,108 @@ export {
   CollapsibleTrigger,
   CollapsibleContent,
 } from "./components/Collapsible";
+
+// Phase 6 components — date/time pickers and expanded primitives
+export { Calendar } from "./components/Calendar";
+export type { CalendarProps, CalendarRangeHighlight } from "./components/Calendar";
+export { TimePanel, TimePicker } from "./components/TimePicker";
+export type { TimePanelProps, TimePickerProps } from "./components/TimePicker";
+export { DatePicker } from "./components/DatePicker";
+export type { DatePickerProps } from "./components/DatePicker";
+export { DateRangePicker } from "./components/DateRangePicker";
+export type {
+  DateRangePickerProps,
+  DateRange,
+  DateRangeMaxSpan,
+} from "./components/DateRangePicker";
+export { TimeRangePicker } from "./components/TimeRangePicker";
+export type { TimeRangePickerProps, TimeRange } from "./components/TimeRangePicker";
+export {
+  DropdownMenu,
+  DropdownMenuTrigger,
+  DropdownMenuContent,
+  DropdownMenuItem,
+  DropdownMenuCheckboxItem,
+  DropdownMenuRadioGroup,
+  DropdownMenuRadioItem,
+  DropdownMenuLabel,
+  DropdownMenuSeparator,
+  DropdownMenuShortcut,
+  DropdownMenuGroup,
+  DropdownMenuSub,
+  DropdownMenuSubTrigger,
+  DropdownMenuSubContent,
+} from "./components/DropdownMenu";
+export { Alert } from "./components/Alert";
+export type { AlertProps, AlertVariant } from "./components/Alert";
+export { Progress } from "./components/Progress";
+export type { ProgressProps } from "./components/Progress";
+export {
+  Sheet,
+  SheetTrigger,
+  SheetClose,
+  SheetContent,
+  SheetHeader,
+  SheetTitle,
+  SheetDescription,
+  SheetFooter,
+} from "./components/Sheet";
+export type { SheetSide } from "./components/Sheet";
+export {
+  Drawer,
+  DrawerTrigger,
+  DrawerClose,
+  DrawerContent,
+  DrawerHeader,
+  DrawerTitle,
+  DrawerDescription,
+  DrawerFooter,
+} from "./components/Drawer";
+export type { DrawerContentProps } from "./components/Drawer";
+export { Modal } from "./components/Modal";
+export type { ModalProps } from "./components/Modal";
+export { TagInput } from "./components/TagInput";
+export type { TagInputProps } from "./components/TagInput";
+export { ScrollArea, ScrollBar, ScrollViewport } from "./components/ScrollArea";
+export { FileUpload } from "./components/FileUpload";
+export type { FileUploadProps, FileRejection } from "./components/FileUpload";
+export {
+  Breadcrumb,
+  BreadcrumbList,
+  BreadcrumbItem,
+  BreadcrumbLink,
+  BreadcrumbPage,
+  BreadcrumbSeparator,
+  BreadcrumbEllipsis,
+} from "./components/Breadcrumb";
+export { TreeView } from "./components/TreeView";
+export type { TreeViewProps, TreeItemData } from "./components/TreeView";
+export { Timeline, TimelineItem } from "./components/Timeline";
+export type { TimelineItemProps, TimelineVariant } from "./components/Timeline";
+export {
+  AlertDialog,
+  AlertDialogTrigger,
+  AlertDialogContent,
+  AlertDialogHeader,
+  AlertDialogTitle,
+  AlertDialogDescription,
+  AlertDialogFooter,
+  AlertDialogAction,
+  AlertDialogCancel,
+  ConfirmDialog,
+} from "./components/AlertDialog";
+export type { ConfirmDialogProps } from "./components/AlertDialog";
+export {
+  Pagination,
+  PaginationContent,
+  PaginationItem,
+  PaginationLink,
+  PaginationPrevious,
+  PaginationNext,
+  PaginationEllipsis,
+  usePaginationRange,
+} from "./components/Pagination";
+export type { PaginationLinkProps } from "./components/Pagination";
 
 // Phase 5 super-components
 export { AppShell, APP_SHELL_BREAKPOINT, useAppShell } from "./components/AppShell";

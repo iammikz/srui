@@ -1,0 +1,48 @@
+---
+title: Timeline
+description: Vertical activity feed — markers on a spine, tone per event, timestamp column.
+---
+
+`Timeline` is the activity feed: one item per event, a status marker on a
+connecting spine, and a right-aligned timestamp slot. Purely
+presentational — feed it ordered data and it stays an ordered list.
+
+## Installation
+
+```tsx
+import { Timeline, TimelineItem } from "@iammikz/srui";
+```
+
+## Usage
+
+<LivePreview code={`<Timeline>
+  <TimelineItem title="Deployed" time="12:04" description="Build 128 is live." variant="success" />
+  <TimelineItem title="Tests passed" time="12:01" description="412 tests, 0 failures." />
+  <TimelineItem title="Rollback" time="09:30" description="Error spike." variant="destructive" />
+</Timeline>`}>
+  <Timeline className="w-full max-w-sm">
+    <TimelineItem title="Deployed" time="12:04" description="Build 128 is live on production." variant="success" />
+    <TimelineItem title="Tests passed" time="12:01" description="412 tests, 0 failures." />
+    <TimelineItem title="Build queued" time="11:58" description="main @ a92e86b" variant="info" />
+    <TimelineItem title="Rollback" time="09:30" description="Build 127 rolled back after error spike." variant="destructive" />
+  </Timeline>
+</LivePreview>
+
+## Props
+
+`Timeline` accepts `ol` props. `TimelineItem`:
+
+| Prop | Type | Default | Description |
+|---|---|---|---|
+| `title` | `ReactNode` | — | The event (bold first line) |
+| `description` | `ReactNode` | — | Body copy |
+| `time` | `ReactNode` | — | Right-aligned timestamp |
+| `icon` | `ReactNode` | — | Custom marker instead of the dot |
+| `variant` | `"default" \| "info" \| "success" \| "warning" \| "destructive"` | `"default"` | Dot tone |
+
+## Accessibility
+
+An `ol`/`li` list — screen readers announce the event order; the spine and
+dots are decorative.
+
+Upgrades over the PRUI original: the timestamp slot and per-item markers.

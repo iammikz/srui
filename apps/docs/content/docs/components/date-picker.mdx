@@ -1,0 +1,75 @@
+---
+title: DatePicker
+description: Text trigger over an anchored calendar — typed input commits, optional built-in time panel.
+---
+
+`DatePicker` is a text trigger opening an anchored `Calendar` popover: click
+or ArrowDown opens (ArrowDown dives straight into the grid), a day commits,
+Escape and outside clicks close and refocus, and typing a full date commits
+it too. With `timepicker`, a time panel rides along and values become
+`YYYY-MM-DD HH:mm(:ss)`.
+
+## Installation
+
+```tsx
+import { DatePicker } from "@iammikz/srui";
+```
+
+## Usage
+
+<LivePreview code={`const [value, setValue] = useState("");
+
+<DatePicker value={value} onChange={setValue} ariaLabel="Due date" />`}>
+  <DatePickerDemo />
+</LivePreview>
+
+## Props
+
+| Prop | Type | Default | Description |
+|---|---|---|---|
+| `value` | `string` | — | `YYYY-MM-DD`, or with time when `timepicker` is on |
+| `defaultValue` | `string` | — | Initial value |
+| `onChange` | `(value: string) => void` | — | Fires with the wire-format value |
+| `min` / `max` | `string` (`YYYY-MM-DD`) | — | Bounds; clip typing and the grid |
+| `timepicker` | `boolean` | `false` | Attach the time panel |
+| `seconds` | `boolean` | `false` | Seconds precision in the time panel |
+| `minuteStep` | `number` | `1` | Minute grid step |
+| `hour12` | `boolean` | `true` | 12-hour time display vs 24-hour |
+| `placeholder` | `string` | `"Pick a date"` | Empty trigger text |
+| `ariaLabel` | `string` | `"Date"` | Trigger label |
+| `disabled` / `invalid` | `boolean` | — | Usual field states |
+| `clearable` | `boolean` | `true` | Trailing clear button |
+| `format` | `(value: string) => string` | — | Custom trigger display |
+| `name` | `string` | — | Renders a hidden input for native form posts |
+
+## Examples
+
+### Date + time (`timepicker`)
+
+The panel stays open after picking the day so the time can be refined;
+values carry `HH:mm`.
+
+<LivePreview code={`<DatePicker timepicker value={at} onChange={setAt} ariaLabel="Starts at" />
+// value: '2026-09-12 14:30'`}>
+  <DateTimePickerDemo />
+</LivePreview>
+
+## Accessibility
+
+- Combobox trigger semantics (`aria-expanded`/`aria-haspopup`) over a
+  `role="dialog"` panel.
+- Escape closes and refocuses the input; clicking outside dismisses; the
+  calendar keeps its grid keyboard map. ArrowDown opens the panel and moves
+  focus onto the selected day, so the whole flow is keyboard-only.
+- With `timepicker`, the time columns are listboxes with arrow navigation.
+
+## Edge cases
+
+- `timepicker={false}` closes the panel after the day is picked;
+  `timepicker` keeps it open for refinement.
+- Typed values outside `min`/`max` are clipped onto the boundary day.
+- Refining the time before picking a day is staged — the chosen time lands
+  when the day is picked.
+
+Upgrades over the PRUI original: a clear button, custom `format`, a `name`
+hidden input for form posts, and pre-day time staging.

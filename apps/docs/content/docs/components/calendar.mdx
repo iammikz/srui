@@ -1,0 +1,67 @@
+---
+title: Calendar
+description: Month-grid calendar engine with full keyboard control — the core behind every srui date picker.
+---
+
+`Calendar` is the inline month grid: day/week arrows, Home/End week jumps,
+PageUp/PageDown month navigation, and `aria-current` today marking. Values
+are plain `YYYY-MM-DD` strings — no Date objects, no date library.
+
+## Installation
+
+```tsx
+import { Calendar } from "@iammikz/srui";
+```
+
+## Usage
+
+<LivePreview code={`const [value, setValue] = useState(todayKey());
+
+<Calendar value={value} onSelect={setValue} aria-label="Due date" />`}>
+  <CalendarDemo />
+</LivePreview>
+
+## Props
+
+| Prop | Type | Default | Description |
+|---|---|---|---|
+| `value` | `string` (`YYYY-MM-DD`) | — | Selected day (controlled) |
+| `defaultValue` | `string` | — | Initial selected day |
+| `onSelect` | `(date: string) => void` | — | Fires on day pick |
+| `month` | `string` (`YYYY-MM`) | selection or today | Viewed month (controlled) |
+| `defaultMonth` | `string` | — | Initial viewed month |
+| `onMonthChange` | `(month: string) => void` | — | Fires on header navigation |
+| `min` / `max` | `string` | — | Selectable day bounds |
+| `disabledDates` | `(date: string) => boolean` | — | Arbitrary day disabling (holidays, closed days) |
+| `weekStartsOn` | `0 \| 1` | `0` | Sunday-first (default) or Monday-first |
+| `showToday` | `boolean` | `true` | Today shortcut under the grid |
+| `selectedRange` | `{ from?, to?, hover? }` | — | Range overlay (driven by `DateRangePicker`) |
+
+## Examples
+
+### Bounded + Monday-first
+
+<LivePreview code={`<Calendar
+  min={todayKey()}
+  max={addDays(todayKey(), 40)}
+  weekStartsOn={1}
+  aria-label="Bounded calendar"
+/>`}>
+  <CalendarBoundedDemo />
+</LivePreview>
+
+## Accessibility
+
+- `role="grid"` / `row` / `gridcell` with `aria-selected`, `aria-current="date"`
+  for today, `aria-disabled` for unreachable days.
+- Keyboard: arrows move by day/week; Home/End jump to week edges;
+  PageUp/PageDown change months; Enter/Space select. `min`/`max` clamp
+  keyboard focus too.
+- The month label is `aria-live="polite"`, so month navigation is announced.
+- The grid always renders 6 rows; out-of-month cells are blank.
+
+## Composition
+
+`Calendar` is the engine inside `DatePicker` and `DateRangePicker`; use it
+bare for inline/always-visible date UIs. Date arithmetic helpers
+(`addDays`, `addMonths`, `todayKey`, …) are exported from the package root.

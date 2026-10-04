@@ -1,0 +1,96 @@
+---
+title: Alert Dialog
+description: The interruption-level confirm — assertive dialog semantics, explicit action required, no accidental dismissal.
+---
+
+`AlertDialog` is for confirmations that must not be missed: it announces as
+`role="alertdialog"`, traps focus, and **cannot be dismissed by clicking the
+overlay or pressing Escape** — the user explicitly picks Action or Cancel.
+Use `Dialog` for generic panels and `Modal`/`ConfirmDialog` for softer flows.
+
+## Installation
+
+```tsx
+import {
+  AlertDialog, AlertDialogTrigger, AlertDialogContent, AlertDialogHeader,
+  AlertDialogTitle, AlertDialogDescription, AlertDialogFooter,
+  AlertDialogAction, AlertDialogCancel, ConfirmDialog,
+} from "@iammikz/srui";
+```
+
+## Usage
+
+<LivePreview code={`<AlertDialog>
+  <AlertDialogTrigger asChild>
+    <Button variant="destructive">Delete account</Button>
+  </AlertDialogTrigger>
+  <AlertDialogContent>
+    <AlertDialogHeader>
+      <AlertDialogTitle>Delete this account?</AlertDialogTitle>
+      <AlertDialogDescription>
+        This permanently removes the account and all of its data. This action cannot be undone.
+      </AlertDialogDescription>
+    </AlertDialogHeader>
+    <AlertDialogFooter>
+      <AlertDialogCancel>Cancel</AlertDialogCancel>
+      <AlertDialogAction variant="destructive">Delete</AlertDialogAction>
+    </AlertDialogFooter>
+  </AlertDialogContent>
+</AlertDialog>`}>
+  <AlertDialog>
+    <AlertDialogTrigger asChild>
+      <Button variant="destructive">Delete account</Button>
+    </AlertDialogTrigger>
+    <AlertDialogContent>
+      <AlertDialogHeader>
+        <AlertDialogTitle>Delete this account?</AlertDialogTitle>
+        <AlertDialogDescription>
+          This permanently removes the account and all of its data. This
+          action cannot be undone.
+        </AlertDialogDescription>
+      </AlertDialogHeader>
+      <AlertDialogFooter>
+        <AlertDialogCancel>Cancel</AlertDialogCancel>
+        <AlertDialogAction variant="destructive">Delete</AlertDialogAction>
+      </AlertDialogFooter>
+    </AlertDialogContent>
+  </AlertDialog>
+</LivePreview>
+
+## ConfirmDialog — the one-prop form
+
+<LivePreview code={`<ConfirmDialog
+  open={open} onOpenChange={setOpen}
+  title="Delete this account?"
+  description="This permanently removes the account and all of its data."
+  confirmLabel="Delete"
+  tone="destructive"
+  onConfirm={remove}
+/>`}>
+  <ConfirmDialogDemo />
+</LivePreview>
+
+## Exports
+
+| Export | Notes |
+|---|---|
+| `AlertDialog` | Root; `open`/`onOpenChange` for controlled use |
+| `AlertDialogTrigger` | The toggle target (`asChild` supported) |
+| `AlertDialogContent` | The panel (role="alertdialog") |
+| `AlertDialogHeader` / `AlertDialogTitle` / `AlertDialogDescription` | Structure; Title/Description are required by ARIA |
+| `AlertDialogFooter` / `AlertDialogAction` / `AlertDialogCancel` | Action row; Action takes `variant="destructive"`, both close the dialog |
+| `ConfirmDialog` | One-prop form: `open, onOpenChange, title, description?, confirmLabel?, cancelLabel?, onConfirm?, tone?, size?` |
+
+## Accessibility
+
+- `role="alertdialog"` with a required labelled title and description;
+  focus moves into the dialog and is trapped while open.
+- Unlike `Dialog`, overlay clicks and Escape do **not** dismiss —
+  cancellation must be an explicit choice (WAI-ARIA alertdialog pattern).
+- Action and Cancel are real buttons; focus returns to the trigger on close.
+
+## When to use which
+
+`Dialog` → generic modal panels. `Modal` → one-prop soft confirms.
+`AlertDialog`/`ConfirmDialog` → destructive or irreversible actions where an
+accidental click-away must be impossible.

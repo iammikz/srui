@@ -1,0 +1,53 @@
+---
+title: Alert
+description: Inline callout for statuses and problems — four tones, dismiss button, icon overrides.
+---
+
+`Alert` is a static, inline callout: it communicates without interrupting
+(unlike `Toast` or `Dialog`). Four tones map to the semantic tokens, and
+`warning`/`destructive` tones announce as `role="alert"`.
+
+## Installation
+
+```tsx
+import { Alert } from "@iammikz/srui";
+```
+
+## Usage
+
+<LivePreview code={`<Alert variant="info" title="Heads up">
+  Scheduled maintenance Sunday 02:00–03:00 UTC.
+</Alert>`}>
+  <div className="flex w-full max-w-md flex-col gap-3">
+    <Alert variant="info" title="Heads up">
+      Scheduled maintenance Sunday 02:00–03:00 UTC.
+    </Alert>
+    <Alert variant="success" title="Deployed">
+      Build 128 is live on all regions.
+    </Alert>
+    <Alert variant="warning" title="Approaching limit">
+      85% of the monthly build minutes are used.
+    </Alert>
+    <Alert variant="destructive" title="Payment failed">
+      Update your card to avoid suspension.
+    </Alert>
+  </div>
+</LivePreview>
+
+## Props
+
+| Prop | Type | Default | Description |
+|---|---|---|---|
+| `variant` | `"info" \| "success" \| "warning" \| "destructive"` | `"info"` | Tone + icon + role |
+| `title` | `ReactNode` | — | Bold first line |
+| `children` | `ReactNode` | — | Body copy |
+| `icon` | `LucideIcon \| null` | variant default | Override or disable the icon |
+| `onDismiss` | `() => void` | — | Renders a dismiss button |
+
+## Accessibility
+
+`info`/`success` render `role="status"` (polite); `warning`/`destructive`
+render `role="alert"` (assertive). The dismiss button is labelled, and the
+icon is decorative (`aria-hidden`).
+
+Upgrades over the PRUI original: a dismiss affordance and icon override.

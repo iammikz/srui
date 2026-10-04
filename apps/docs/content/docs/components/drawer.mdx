@@ -1,0 +1,74 @@
+---
+title: Drawer
+description: Bottom sheet with a grab handle and pointer drag-to-dismiss on Dialog primitives.
+---
+
+`Drawer` is a bottom sheet: a grab handle, a rounded top edge, and pointer
+drag-to-dismiss — the sheet tracks the finger and closes past
+`dismissThreshold`. Keyboard and Escape dismissal always work (Dialog
+primitives underneath).
+
+## Installation
+
+```tsx
+import {
+  Drawer, DrawerTrigger, DrawerClose, DrawerContent,
+  DrawerHeader, DrawerTitle, DrawerDescription, DrawerFooter,
+} from "@iammikz/srui";
+```
+
+## Usage
+
+<LivePreview code={`<Drawer>
+  <DrawerTrigger asChild>
+    <Button variant="outline">Open drawer</Button>
+  </DrawerTrigger>
+  <DrawerContent>
+    <DrawerHeader>
+      <DrawerTitle>Review order</DrawerTitle>
+      <DrawerDescription>Swipe down or press Escape to dismiss.</DrawerDescription>
+    </DrawerHeader>
+    <DrawerFooter>
+      <DrawerClose asChild><Button variant="outline">Keep shopping</Button></DrawerClose>
+      <DrawerClose asChild><Button>Checkout</Button></DrawerClose>
+    </DrawerFooter>
+  </DrawerContent>
+</Drawer>`}>
+  <Drawer>
+    <DrawerTrigger asChild>
+      <Button variant="outline">Open drawer</Button>
+    </DrawerTrigger>
+    <DrawerContent>
+      <DrawerHeader>
+        <DrawerTitle>Review order</DrawerTitle>
+        <DrawerDescription>Swipe down or press Escape to dismiss.</DrawerDescription>
+      </DrawerHeader>
+      <DrawerFooter>
+        <DrawerClose asChild>
+          <Button variant="outline">Keep shopping</Button>
+        </DrawerClose>
+        <DrawerClose asChild>
+          <Button>Checkout</Button>
+        </DrawerClose>
+      </DrawerFooter>
+    </DrawerContent>
+  </Drawer>
+</LivePreview>
+
+## Exports
+
+| Export | Notes |
+|---|---|
+| `Drawer` | Root; `open`/`onOpenChange` for controlled use |
+| `DrawerTrigger` / `DrawerClose` | Toggle/target closes |
+| `DrawerContent` | The sheet; `dismissThreshold` (default `0.33`) |
+| `DrawerHeader` / `DrawerTitle` / `DrawerDescription` / `DrawerFooter` | Structure |
+
+## Accessibility
+
+Dialog semantics: labelled sheet, focus trap, Escape/overlay dismissal.
+The drag handle is `aria-hidden` — dragging is a pointer convenience, never
+the only way out.
+
+Upgrades over the PRUI original: real pointer drag-to-dismiss with a
+configurable threshold (no extra dependency).

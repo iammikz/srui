@@ -2,7 +2,7 @@
  * srui animation utilities — keyframes registered as Tailwind theme tokens,
  * usable as plain classes: animate-draw, animate-grow-y, animate-grow-x,
  * animate-shimmer, animate-spin-slow, animate-count-fade, animate-scale-in,
- * animate-fade-in.
+ * animate-fade-in, animate-slide-in-*, animate-progress-indeterminate.
  *
  * Pair every usage with motion-safe: (or a motion-reduce: override) so
  * reduced-motion users never see a stuck mid-animation state — see the
@@ -17,6 +17,11 @@
   --animate-count-fade: count-fade var(--dur-slow) var(--ease-out) both;
   --animate-scale-in: scale-in var(--dur-base) var(--ease-spring) both;
   --animate-fade-in: fade-in var(--dur-base) var(--ease-out) both;
+  --animate-slide-in-right: slide-in-right var(--dur-base) var(--ease-out) both;
+  --animate-slide-in-left: slide-in-left var(--dur-base) var(--ease-out) both;
+  --animate-slide-in-top: slide-in-top var(--dur-base) var(--ease-out) both;
+  --animate-slide-in-bottom: slide-in-bottom var(--dur-base) var(--ease-out) both;
+  --animate-progress-indeterminate: progress-indeterminate 1.4s ease-in-out infinite;
 
   @keyframes draw {
     from {
@@ -61,6 +66,35 @@
   @keyframes fade-in {
     from {
       opacity: 0;
+    }
+  }
+  @keyframes slide-in-right {
+    from {
+      transform: translateX(100%);
+    }
+  }
+  @keyframes slide-in-left {
+    from {
+      transform: translateX(-100%);
+    }
+  }
+  @keyframes slide-in-top {
+    from {
+      transform: translateY(-100%);
+    }
+  }
+  @keyframes slide-in-bottom {
+    from {
+      transform: translateY(100%);
+    }
+  }
+  @keyframes progress-indeterminate {
+    0% {
+      inset-inline-start: -35%;
+    }
+    60%,
+    100% {
+      inset-inline-start: 100%;
     }
   }
 }

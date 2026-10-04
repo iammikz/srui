@@ -1,0 +1,50 @@
+---
+title: Modal
+description: Opinionated one-prop confirm dialog — title/description/footer slots over the Dialog primitives.
+---
+
+`Modal` is the common case of `Dialog` with zero composition: `open` +
+`onOpenChange` + `title`/`description`/`footer` slots and a width preset.
+Confirmation flows, quick forms, and notices all fit in one element.
+
+## Installation
+
+```tsx
+import { Modal } from "@iammikz/srui";
+```
+
+## Usage
+
+<LivePreview code={`const [open, setOpen] = useState(false);
+
+<Button variant="destructive" onClick={() => setOpen(true)}>Delete project</Button>
+<Modal
+  open={open}
+  onOpenChange={setOpen}
+  title="Delete project?"
+  description="This removes all environments and deployments. There is no undo."
+  footer={<><Button variant="outline">Cancel</Button><Button variant="destructive">Delete</Button></>}
+/>`}>
+  <ModalDemo />
+</LivePreview>
+
+## Props
+
+| Prop | Type | Default | Description |
+|---|---|---|---|
+| `open` | `boolean` | — | Controlled open state |
+| `onOpenChange` | `(open: boolean) => void` | — | Close requests (Escape, overlay, ×) |
+| `title` | `ReactNode` | — | Heading (required for a11y) |
+| `description` | `ReactNode` | — | Muted subheading |
+| `children` | `ReactNode` | — | Body |
+| `footer` | `ReactNode` | — | Right-aligned action row |
+| `size` | `"sm" \| "md" \| "lg" \| "xl"` | `"md"` | Width preset |
+| `showCloseButton` | `boolean` | `true` | Hide the corner × |
+
+## Accessibility
+
+Everything `Dialog` provides: labelled dialog, focus trap, Escape and
+overlay dismissal with focus restoration.
+
+Upgrades over the PRUI original: `size` presets and the `showCloseButton`
+escape hatch.

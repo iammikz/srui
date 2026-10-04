@@ -1,0 +1,61 @@
+---
+title: TimeRangePicker
+description: From–to time span on side-by-side column pairs — inverted ranges are unbuildable.
+---
+
+`TimeRangePicker` is a from–to time span on side-by-side column pairs: pick
+the start, then the end — the To panel constrains itself to after the start
+so an inverted range can't be built. Clear/apply footer, bounds, and stepped
+minutes included.
+
+## Installation
+
+```tsx
+import { TimeRangePicker } from "@iammikz/srui";
+```
+
+## Usage
+
+<LivePreview code={`const [range, setRange] = useState<TimeRange>({});
+
+<TimeRangePicker
+  value={range}
+  onChange={setRange}
+  min="08:00"
+  max="18:00"
+  minuteStep={30}
+  hour12={false}
+  ariaLabel="Shift window"
+/>`}>
+  <TimeRangeDemo />
+</LivePreview>
+
+## Props
+
+| Prop | Type | Default | Description |
+|---|---|---|---|
+| `value` | `{ from?: string, to?: string }` | — | Range in `HH:mm(:ss)` (controlled) |
+| `defaultValue` | `TimeRange` | `{}` | Initial range |
+| `onChange` | `(range: TimeRange) => void` | — | Fires live on every pick |
+| `minuteStep` | `number` | `1` | Minute grid step |
+| `seconds` | `boolean` | `false` | Seconds columns |
+| `hour12` | `boolean` | `true` | 12-hour display |
+| `min` / `max` | `string` (`HH:mm`) | — | Business-window bounds |
+| `placeholder` / `ariaLabel` / `disabled` / `clearable` | — | — | Usual field props |
+
+## Accessibility
+
+Two labelled grid groups (From/To) with the `TimePicker` column semantics.
+The To panel disables times before From; invalid states are unbuildable,
+not just rejected. Escape/outside click dismiss; clear and apply are
+labelled buttons.
+
+## Edge cases
+
+- Changing From past the current To invalidates To (it clears) rather than
+  silently swapping.
+- Overnight spans (22:00–06:00) are out of scope — day-crossing needs your
+  own modeling; use `DateRangePicker` with `timepicker` for that.
+
+Upgrades over the PRUI original: live `onChange` on every pick and a clear
+button on the trigger.

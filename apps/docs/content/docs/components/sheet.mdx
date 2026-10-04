@@ -1,0 +1,73 @@
+---
+title: Sheet
+description: Edge-anchored sliding panel (left/right/top/bottom) on Dialog primitives.
+---
+
+`Sheet` is a panel that slides in from any screen edge — filters, detail
+panes, navigation drawers. It rides the Dialog primitives (focus trap,
+Escape/overlay dismissal) with directional slide-in animations.
+
+## Installation
+
+```tsx
+import {
+  Sheet, SheetTrigger, SheetClose, SheetContent,
+  SheetHeader, SheetTitle, SheetDescription, SheetFooter,
+} from "@iammikz/srui";
+```
+
+## Usage
+
+<LivePreview code={`<Sheet>
+  <SheetTrigger asChild>
+    <Button variant="outline">Open sheet</Button>
+  </SheetTrigger>
+  <SheetContent>
+    <SheetHeader>
+      <SheetTitle>Edit profile</SheetTitle>
+      <SheetDescription>Changes save when you apply them.</SheetDescription>
+    </SheetHeader>
+    <SheetFooter>
+      <SheetClose asChild><Button variant="outline">Cancel</Button></SheetClose>
+      <SheetClose asChild><Button>Save</Button></SheetClose>
+    </SheetFooter>
+  </SheetContent>
+</Sheet>`}>
+  <Sheet>
+    <SheetTrigger asChild>
+      <Button variant="outline">Open sheet (right)</Button>
+    </SheetTrigger>
+    <SheetContent>
+      <SheetHeader>
+        <SheetTitle>Edit profile</SheetTitle>
+        <SheetDescription>Changes save when you apply them.</SheetDescription>
+      </SheetHeader>
+      <SheetFooter>
+        <SheetClose asChild>
+          <Button variant="outline">Cancel</Button>
+        </SheetClose>
+        <SheetClose asChild>
+          <Button>Save</Button>
+        </SheetClose>
+      </SheetFooter>
+    </SheetContent>
+  </Sheet>
+</LivePreview>
+
+## Exports
+
+| Export | Notes |
+|---|---|
+| `Sheet` | Root; `open`/`onOpenChange` for controlled use |
+| `SheetTrigger` / `SheetClose` | Toggle/target closes (`asChild` supported) |
+| `SheetContent` | The panel; `side` (`"right"` default), `showCloseButton` |
+| `SheetHeader` / `SheetTitle` / `SheetDescription` / `SheetFooter` | Structure |
+
+## Accessibility
+
+Full Dialog semantics: `role="dialog"` with labelled title/description,
+initial focus trap, Escape and overlay dismissal returning focus to the
+trigger.
+
+Upgrades over the PRUI original: all four edges in one `side` prop and a
+`showCloseButton` escape hatch when the footer owns dismissal.

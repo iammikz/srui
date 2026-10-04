@@ -1,0 +1,73 @@
+---
+title: Dropdown Menu
+description: Radix-powered action menu with destructive items, checkbox/radio selection, submenus, and shortcuts.
+---
+
+`DropdownMenu` wraps `@radix-ui/react-dropdown-menu`: a trigger opening an
+anchored action menu with typeahead, roving focus, and full menu semantics.
+Compound exports cover items, checkbox/radio selection, submenus, labels,
+separators, and shortcut hints.
+
+## Installation
+
+```tsx
+import {
+  DropdownMenu, DropdownMenuTrigger, DropdownMenuContent, DropdownMenuItem,
+} from "@iammikz/srui";
+```
+
+## Usage
+
+<LivePreview code={`<DropdownMenu>
+  <DropdownMenuTrigger asChild>
+    <Button variant="outline">Open menu</Button>
+  </DropdownMenuTrigger>
+  <DropdownMenuContent align="start">
+    <DropdownMenuLabel>Actions</DropdownMenuLabel>
+    <DropdownMenuItem>
+      Edit <DropdownMenuShortcut>⌘E</DropdownMenuShortcut>
+    </DropdownMenuItem>
+    <DropdownMenuItem>Duplicate</DropdownMenuItem>
+    <DropdownMenuSeparator />
+    <DropdownMenuItem variant="destructive">Delete</DropdownMenuItem>
+  </DropdownMenuContent>
+</DropdownMenu>`}>
+  <div className="flex justify-center">
+    <DropdownMenu>
+      <DropdownMenuTrigger asChild>
+        <Button variant="outline">Open menu</Button>
+      </DropdownMenuTrigger>
+      <DropdownMenuContent align="start">
+        <DropdownMenuLabel>Actions</DropdownMenuLabel>
+        <DropdownMenuItem>
+          Edit <DropdownMenuShortcut>⌘E</DropdownMenuShortcut>
+        </DropdownMenuItem>
+        <DropdownMenuItem>Duplicate</DropdownMenuItem>
+        <DropdownMenuSeparator />
+        <DropdownMenuItem variant="destructive">Delete</DropdownMenuItem>
+      </DropdownMenuContent>
+    </DropdownMenu>
+  </div>
+</LivePreview>
+
+## Exports
+
+| Export | Notes |
+|---|---|
+| `DropdownMenu` | Root; `open`/`onOpenChange` for controlled use |
+| `DropdownMenuTrigger` | The toggle target (`asChild` supported) |
+| `DropdownMenuContent` | The panel; `align`, `sideOffset` |
+| `DropdownMenuItem` | Action row; `variant="destructive"`, `inset`, `disabled` |
+| `DropdownMenuCheckboxItem` / `DropdownMenuRadioGroup` / `DropdownMenuRadioItem` | Selection rows |
+| `DropdownMenuSub` / `DropdownMenuSubTrigger` / `DropdownMenuSubContent` | Submenus |
+| `DropdownMenuLabel` / `DropdownMenuSeparator` / `DropdownMenuShortcut` | Structure |
+
+## Accessibility
+
+Radix menu semantics: `role="menu"`/`menuitem`, arrow-key navigation,
+typeahead, `aria-checked` on selection items, Escape dismissal with focus
+restored to the trigger. `variant="destructive"` items keep their role but
+render the danger treatment.
+
+Upgrades over the PRUI original: the `destructive` item variant and the
+shortcut hint slot.

@@ -1,0 +1,74 @@
+---
+title: DateRangePicker
+description: Start–end selection on one calendar, span caps, preset chips, and optional from/to time panels.
+---
+
+`DateRangePicker` is start–end selection on one calendar: the first click
+anchors, the second completes, an earlier second click restarts. `maxRange`
+caps the span (`'3m'`, `'90d'`, `'12w'`, `'1y'`, or a day count) by disabling
+out-of-range days, and `timepicker` adds from/to time panels.
+
+## Installation
+
+```tsx
+import { DateRangePicker } from "@iammikz/srui";
+```
+
+## Usage
+
+<LivePreview code={`const [range, setRange] = useState<DateRange>({});
+
+<DateRangePicker value={range} onChange={setRange} ariaLabel="Report window" />`}>
+  <DateRangeDemo />
+</LivePreview>
+
+## Props
+
+| Prop | Type | Default | Description |
+|---|---|---|---|
+| `value` | `{ from?: string, to?: string }` | — | Range in `YYYY-MM-DD` (controlled) |
+| `defaultValue` | `DateRange` | `{}` | Initial range |
+| `onChange` | `(range: DateRange) => void` | — | Fires live on every pick |
+| `min` / `max` | `string` | — | Absolute day bounds |
+| `maxRange` | `number \| '7d' \| '30d' \| '90d' \| '12w' \| '3m' \| '6m' \| '1y'` | — | Caps the span length |
+| `timepicker` | `boolean` | `false` | From/to time panels |
+| `seconds` / `minuteStep` / `hour12` | — | `false` / `1` / `true` | Time panel controls |
+| `presets` | `{ label, getRange }[]` | — | Quick-span chips above the grid |
+| `placeholder` / `ariaLabel` / `disabled` / `clearable` | — | — | Usual field props |
+
+## Examples
+
+### Capped span (`maxRange="12w"`)
+
+Once a start is anchored, days beyond start + 12 weeks disable.
+
+<LivePreview code={`<DateRangePicker maxRange="12w" ariaLabel="Capped span" />`}>
+  <DateRangeCappedDemo />
+</LivePreview>
+
+### Preset chips
+
+<LivePreview code={`<DateRangePicker
+  presets={[
+    { label: "Last 7 days", getRange: () => ({ from: addDays(todayKey(), -7), to: todayKey() }) },
+    { label: "Last 30 days", getRange: () => ({ from: addDays(todayKey(), -30), to: todayKey() }) },
+  ]}
+/>`}>
+  <DateRangePresetsDemo />
+</LivePreview>
+
+## Accessibility
+
+Same combobox-over-dialog pattern as `DatePicker`; clear and apply are
+labelled buttons, out-of-cap days are `aria-disabled`, and the day count is
+announced politely. Escape and outside click dismiss and refocus the trigger.
+
+## Edge cases
+
+- Picking an end before the start restarts the range at that day.
+- `maxRange` bounds the span; `max` bounds absolute dates. Don't confuse them.
+- Every pick reports the staged range live; the footer's Apply closes the
+  panel (a completed range without `timepicker` auto-closes).
+
+Upgrades over the PRUI original: live `onChange` on every pick, preset
+chips, a live day-count readout, and hover range preview on the grid.

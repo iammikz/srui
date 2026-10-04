@@ -1,0 +1,47 @@
+---
+title: Tree View
+description: Single-select hierarchical tree with full tree semantics and the arrow-key map.
+---
+
+`TreeView` renders nested data as a selectable tree: `role="tree"` /
+`treeitem` / `group`, `aria-expanded`/`aria-level`/`aria-selected`, and the
+keyboard map — Down/Up walk visible rows, Right expands or dives, Left
+collapses or hops to the parent, Home/End jump the trail.
+
+## Installation
+
+```tsx
+import { TreeView } from "@iammikz/srui";
+```
+
+## Usage
+
+<LivePreview code={`const TREE = [
+  { id: "src", label: "src", defaultExpanded: true, children: [
+    { id: "components", label: "components", children: [{ id: "button", label: "Button.tsx" }] },
+  ]},
+  { id: "package", label: "package.json" },
+];
+
+<TreeView items={TREE} selectedId={selected} onSelect={setSelected} aria-label="Project files" />`}>
+  <TreeViewDemo />
+</LivePreview>
+
+## Props
+
+| Prop | Type | Default | Description |
+|---|---|---|---|
+| `items` | `TreeItemData[]` | — | The tree; `id`, `label`, `children`, `icon`, `defaultExpanded`, `disabled` |
+| `selectedId` | `string` | — | Selected row (controlled) |
+| `defaultSelectedId` | `string` | — | Initial selection |
+| `onSelect` | `(id: string) => void` | — | Fires on row activation |
+| `defaultExpandedIds` | `string[]` | — | Overrides per-item `defaultExpanded` |
+| `aria-label` | `string` | — | Required — the tree's accessible name |
+
+## Accessibility
+
+Roving tab index (only the selected row is tabbable), full arrow-key map,
+`aria-expanded` on branch rows, and Enter/Space activation. The chevron is
+decorative — clicking anywhere on the row selects it.
+
+Upgrades over the PRUI original: per-row icons and disabled rows.

@@ -1,0 +1,57 @@
+---
+title: TimePicker
+description: Hour/minute(/second)/AM-PM column picker with listbox semantics and typed-input commit.
+---
+
+`TimePicker` is a 12-hour-by-default time picker: hour/minute(/second)
+columns plus an AM/PM column, listbox semantics, arrow navigation, min/max
+bounds, and a stepped minute grid. `hour12={false}` switches to the 24-hour
+grid. Values are always wire-format `HH:mm` (`HH:mm:ss` with seconds) no
+matter the display.
+
+## Installation
+
+```tsx
+import { TimePicker, TimePanel } from "@iammikz/srui";
+```
+
+## Usage
+
+<LivePreview code={`const [value, setValue] = useState("09:30");
+
+<TimePicker value={value} onChange={setValue} ariaLabel="Meeting time" />`}>
+  <TimePickerDemo />
+</LivePreview>
+
+## Props
+
+| Prop | Type | Default | Description |
+|---|---|---|---|
+| `value` | `string` (`HH:mm(:ss)`) | — | Selected time (controlled) |
+| `defaultValue` | `string` | — | Initial time |
+| `onChange` | `(time: string) => void` | — | Always reports wire format |
+| `minuteStep` | `number` | `1` | Minute grid (15 → 00/15/30/45) |
+| `seconds` | `boolean` | `false` | Seconds column + `HH:mm:ss` values |
+| `hour12` | `boolean` | `true` | 12-hour display vs 24-hour grid |
+| `min` / `max` | `string` (`HH:mm`) | — | Business-window bounds |
+| `placeholder` / `ariaLabel` / `disabled` / `invalid` / `clearable` | — | — | Usual field props |
+
+`TimePanel` (the inline column grid) is exported for custom compositions —
+`DatePicker` and `TimeRangePicker` embed it.
+
+## Accessibility
+
+Each column is a `role="listbox"` with a labelled header; options carry
+`aria-selected`/`aria-disabled`. Arrow keys move within a column, Enter or
+Space picks, Escape closes and refocuses, Tab moves between columns, and
+ArrowDown from the trigger opens the panel onto the selected option.
+
+## Edge cases
+
+- Typing `9:3`, `09:30`, `9:30 am`, or `1430` all commit — snapped to
+  `minuteStep` and clamped into `min`/`max`.
+- `min`/`max` disable out-of-window options rather than hiding them; the
+  AM/PM column stays usable whenever any hour of that period is in range.
+
+Upgrades over the PRUI original: typed-input parsing on the trigger and a
+clear button.

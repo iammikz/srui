@@ -1,0 +1,65 @@
+---
+title: Pagination
+description: Standalone page navigation — nav + list semantics, current-page marking, and an ellipsis range hook.
+---
+
+`Pagination` navigates paged data outside `DataTable` (which has its own
+built-in): a labelled `nav` with an ordered list of page buttons, previous/
+next, and ellipsis collapse for long ranges via the `usePaginationRange` hook.
+
+## Installation
+
+```tsx
+import {
+  Pagination, PaginationContent, PaginationItem, PaginationLink,
+  PaginationPrevious, PaginationNext, PaginationEllipsis, usePaginationRange,
+} from "@iammikz/srui";
+```
+
+## Usage
+
+<LivePreview code={`const [page, setPage] = useState(5);
+const range = usePaginationRange(page, 12); // [1, "ellipsis-start", 4, 5, 6, "ellipsis-end", 12]
+
+<Pagination>
+  <PaginationContent>
+    <PaginationItem>
+      <PaginationPrevious disabled={page === 1} onClick={() => setPage(p => p - 1)} />
+    </PaginationItem>
+    {range.map((item) => (
+      <PaginationItem key={item}>
+        {item === "ellipsis-start" || item === "ellipsis-end" ? <PaginationEllipsis /> : (
+          <PaginationLink isActive={item === page} onClick={() => setPage(item)}>
+            {item}
+          </PaginationLink>
+        )}
+      </PaginationItem>
+    ))}
+    <PaginationItem>
+      <PaginationNext disabled={page === totalPages} onClick={() => setPage(p => p + 1)} />
+    </PaginationItem>
+  </PaginationContent>
+</Pagination>`}>
+  <PaginationDemo />
+</LivePreview>
+
+## Exports
+
+| Export | Notes |
+|---|---|
+| `Pagination` | `nav` wrapper, `aria-label="Pagination"` |
+| `PaginationContent` / `PaginationItem` | The `ol`/`li` structure |
+| `PaginationLink` | Page button; `isActive` sets `aria-current="page"` |
+| `PaginationPrevious` / `PaginationNext` | Edge buttons with chevrons; `disabled` at the bounds |
+| `PaginationEllipsis` | The `…` marker (hidden from assistive tech) |
+| `usePaginationRange(page, totalPages, siblings?)` | `1 … 4 5 6 … 12` window; first/last always shown, `siblings` (default 1) around the current page |
+
+## Accessibility
+
+The nav is labelled; the current page carries `aria-current="page"` plus the
+selected treatment; Previous/Next announce themselves and disable at the
+bounds; ellipses are decorative.
+
+Short ranges (≤ 6 pages with the default siblings) render every page with no
+ellipses. For tables, prefer `DataTable`'s built-in pagination — it already
+includes the rows-per-page selector and page count.

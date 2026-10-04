@@ -27,6 +27,7 @@ import {
 import { StyleSwitcher } from "./StyleSwitcher";
 import { Primitives, Section } from "./sections/Primitives";
 import { SuperComponents } from "./sections/SuperComponents";
+import { NewComponents } from "./sections/NewComponents";
 
 const revenue = [4200, 5100, 4800, 6100, 5900, 7200, 8100];
 const signups = [120, 180, 150, 210, 260, 240, 310];
@@ -219,6 +220,7 @@ export function App() {
 
         <Primitives />
         <SuperComponents />
+        <NewComponents />
       </main>
 
       <footer className="border-t border-border py-6 text-center text-xs text-muted-foreground">

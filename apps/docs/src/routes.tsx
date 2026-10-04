@@ -44,6 +44,25 @@ import * as Badge from "../content/docs/components/badge.mdx";
 import * as Separator from "../content/docs/components/separator.mdx";
 import * as Accordion from "../content/docs/components/accordion.mdx";
 import * as Collapsible from "../content/docs/components/collapsible.mdx";
+import * as Calendar from "../content/docs/components/calendar.mdx";
+import * as DatePicker from "../content/docs/components/date-picker.mdx";
+import * as DateRangePicker from "../content/docs/components/date-range-picker.mdx";
+import * as TimePicker from "../content/docs/components/time-picker.mdx";
+import * as TimeRangePicker from "../content/docs/components/time-range-picker.mdx";
+import * as DropdownMenu from "../content/docs/components/dropdown-menu.mdx";
+import * as Alert from "../content/docs/components/alert.mdx";
+import * as Progress from "../content/docs/components/progress.mdx";
+import * as Sheet from "../content/docs/components/sheet.mdx";
+import * as Drawer from "../content/docs/components/drawer.mdx";
+import * as Modal from "../content/docs/components/modal.mdx";
+import * as TagInput from "../content/docs/components/tag-input.mdx";
+import * as ScrollArea from "../content/docs/components/scroll-area.mdx";
+import * as FileUpload from "../content/docs/components/file-upload.mdx";
+import * as Breadcrumb from "../content/docs/components/breadcrumb.mdx";
+import * as TreeView from "../content/docs/components/tree-view.mdx";
+import * as Timeline from "../content/docs/components/timeline.mdx";
+import * as AlertDialog from "../content/docs/components/alert-dialog.mdx";
+import * as Pagination from "../content/docs/components/pagination.mdx";
 import * as AppShell from "../content/docs/components/app-shell.mdx";
 import * as DataTable from "../content/docs/components/data-table.mdx";
 import * as ChartCard from "../content/docs/components/chart-card.mdx";
@@ -138,6 +157,25 @@ export const routes: RouteRecord[] = [
       { path: "components/separator", element: <DocsPage mod={Separator} /> },
       { path: "components/accordion", element: <DocsPage mod={Accordion} /> },
       { path: "components/collapsible", element: <DocsPage mod={Collapsible} /> },
+      { path: "components/calendar", element: <DocsPage mod={Calendar} /> },
+      { path: "components/date-picker", element: <DocsPage mod={DatePicker} /> },
+      { path: "components/date-range-picker", element: <DocsPage mod={DateRangePicker} /> },
+      { path: "components/time-picker", element: <DocsPage mod={TimePicker} /> },
+      { path: "components/time-range-picker", element: <DocsPage mod={TimeRangePicker} /> },
+      { path: "components/dropdown-menu", element: <DocsPage mod={DropdownMenu} /> },
+      { path: "components/alert", element: <DocsPage mod={Alert} /> },
+      { path: "components/progress", element: <DocsPage mod={Progress} /> },
+      { path: "components/sheet", element: <DocsPage mod={Sheet} /> },
+      { path: "components/drawer", element: <DocsPage mod={Drawer} /> },
+      { path: "components/modal", element: <DocsPage mod={Modal} /> },
+      { path: "components/tag-input", element: <DocsPage mod={TagInput} /> },
+      { path: "components/scroll-area", element: <DocsPage mod={ScrollArea} /> },
+      { path: "components/file-upload", element: <DocsPage mod={FileUpload} /> },
+      { path: "components/breadcrumb", element: <DocsPage mod={Breadcrumb} /> },
+      { path: "components/tree-view", element: <DocsPage mod={TreeView} /> },
+      { path: "components/timeline", element: <DocsPage mod={Timeline} /> },
+      { path: "components/alert-dialog", element: <DocsPage mod={AlertDialog} /> },
+      { path: "components/pagination", element: <DocsPage mod={Pagination} /> },
       { path: "components/app-shell", element: <DocsPage mod={AppShell} /> },
       { path: "components/data-table", element: <DocsPage mod={DataTable} /> },
       { path: "components/chart-card", element: <DocsPage mod={ChartCard} /> },

@@ -1,0 +1,59 @@
+---
+title: Scroll Area
+description: Styled cross-browser scrollbars for vertical and horizontal overflow.
+---
+
+`ScrollArea` wraps `@radix-ui/react-scroll-area`: themed scrollbars that
+render consistently across browsers, for vertical, horizontal, or both axes.
+
+## Installation
+
+```tsx
+import { ScrollArea, ScrollBar } from "@iammikz/srui";
+```
+
+## Usage
+
+<LivePreview code={`<ScrollArea className="h-48 w-56 rounded-md border border-border p-4">
+  <div className="text-sm font-medium">Tags</div>
+  {TAGS.map((tag) => <div key={tag} className="mt-2 text-sm">{tag}</div>)}
+</ScrollArea>`}>
+  <ScrollArea className="h-48 w-56 rounded-md border border-border p-4">
+    <div className="text-sm font-medium">Tags</div>
+    {Array.from({ length: 24 }, (_, i) => (
+      <div key={i} className="mt-2 text-sm">
+        tag-{i + 1}
+      </div>
+    ))}
+  </ScrollArea>
+</LivePreview>
+
+Horizontal — add an explicit `ScrollBar orientation="horizontal"`:
+
+<LivePreview code={`<ScrollArea className="w-56 whitespace-nowrap rounded-md border border-border p-4">
+  <div className="flex w-max space-x-4 text-sm">{TAGS.map((t) => <span key={t}>{t}</span>)}</div>
+  <ScrollBar orientation="horizontal" />
+</ScrollArea>`}>
+  <ScrollArea className="w-56 whitespace-nowrap rounded-md border border-border p-4">
+    <div className="flex w-max space-x-4 text-sm">
+      {Array.from({ length: 10 }, (_, i) => (
+        <span key={i}>tag-{i + 1}</span>
+      ))}
+    </div>
+    <ScrollBar orientation="horizontal" />
+  </ScrollArea>
+</LivePreview>
+
+## Exports
+
+| Export | Notes |
+|---|---|
+| `ScrollArea` | Root; sized via `className` |
+| `ScrollBar` | Explicit scrollbar; `orientation` (`"vertical"` default) |
+| `ScrollViewport` | Escape hatch for custom viewport composition |
+
+## Accessibility
+
+Native scrolling semantics are preserved (keyboard and wheel behave exactly
+like a native overflow container); the styled thumbs are pointer-only
+conveniences.

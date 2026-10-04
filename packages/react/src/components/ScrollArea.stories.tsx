@@ -1,0 +1,40 @@
+import type { Meta, StoryObj } from "@storybook/react";
+import { ScrollArea, ScrollBar } from "./ScrollArea";
+import { Separator } from "./Separator";
+
+const meta: Meta<typeof ScrollArea> = {
+  title: "Components/ScrollArea",
+  component: ScrollArea,
+};
+export default meta;
+
+type Story = StoryObj<typeof ScrollArea>;
+
+const TAGS = Array.from({ length: 24 }, (_, i) => `tag-${i + 1}`);
+
+export const Vertical: Story = {
+  render: () => (
+    <ScrollArea className="h-48 w-56 rounded-md border border-border p-4">
+      <div className="text-sm font-medium">Tags</div>
+      {TAGS.map((tag) => (
+        <div key={tag} className="mt-2 text-sm">
+          {tag}
+          <Separator className="mt-2" />
+        </div>
+      ))}
+    </ScrollArea>
+  ),
+};
+
+export const Horizontal: Story = {
+  render: () => (
+    <ScrollArea className="w-56 whitespace-nowrap rounded-md border border-border p-4">
+      <div className="flex w-max space-x-4 text-sm">
+        {TAGS.slice(0, 10).map((tag) => (
+          <span key={tag}>{tag}</span>
+        ))}
+      </div>
+      <ScrollBar orientation="horizontal" />
+    </ScrollArea>
+  ),
+};

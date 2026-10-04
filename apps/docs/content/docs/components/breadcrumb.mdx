@@ -1,0 +1,65 @@
+---
+title: Breadcrumb
+description: nav + ol trail primitives with a page anchor and a collapsed-ellipsis hook for DropdownMenu.
+---
+
+`Breadcrumb` renders the location trail: `nav` with an accessible name, an
+`ol` list, links for intermediate hops, and the current page as a
+non-clickable anchor with `aria-current`.
+
+## Installation
+
+```tsx
+import {
+  Breadcrumb, BreadcrumbList, BreadcrumbItem, BreadcrumbLink,
+  BreadcrumbPage, BreadcrumbSeparator,
+} from "@iammikz/srui";
+```
+
+## Usage
+
+<LivePreview code={`<Breadcrumb>
+  <BreadcrumbList>
+    <BreadcrumbItem><BreadcrumbLink href="#">Home</BreadcrumbLink></BreadcrumbItem>
+    <BreadcrumbSeparator />
+    <BreadcrumbItem><BreadcrumbLink href="#">Components</BreadcrumbLink></BreadcrumbItem>
+    <BreadcrumbSeparator />
+    <BreadcrumbItem><BreadcrumbPage>Breadcrumb</BreadcrumbPage></BreadcrumbItem>
+  </BreadcrumbList>
+</Breadcrumb>`}>
+  <Breadcrumb>
+    <BreadcrumbList>
+      <BreadcrumbItem>
+        <BreadcrumbLink href="#">Home</BreadcrumbLink>
+      </BreadcrumbItem>
+      <BreadcrumbSeparator />
+      <BreadcrumbItem>
+        <BreadcrumbLink href="#">Components</BreadcrumbLink>
+      </BreadcrumbItem>
+      <BreadcrumbSeparator />
+      <BreadcrumbItem>
+        <BreadcrumbPage>Breadcrumb</BreadcrumbPage>
+      </BreadcrumbItem>
+    </BreadcrumbList>
+  </Breadcrumb>
+</LivePreview>
+
+## Exports
+
+| Export | Notes |
+|---|---|
+| `Breadcrumb` | `nav` wrapper with `aria-label="Breadcrumb"` |
+| `BreadcrumbList` / `BreadcrumbItem` | The `ol`/`li` structure |
+| `BreadcrumbLink` | Intermediate hops (anchor props) |
+| `BreadcrumbPage` | Current page — `aria-current="page"`, not focusable |
+| `BreadcrumbSeparator` | Decorative chevron |
+| `BreadcrumbEllipsis` | Collapsed-trail affordance — pair with `DropdownMenu` |
+
+## Accessibility
+
+The trail is a labelled `nav` with an ordered list; separators and the
+ellipsis are hidden from assistive tech so only the trail itself is
+announced, ending at `aria-current="page"`.
+
+Upgrades over the PRUI original: the ellipsis composes with `DropdownMenu`
+to disclose the hidden middle of long trails in one click.

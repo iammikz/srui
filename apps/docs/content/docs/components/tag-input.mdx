@@ -1,0 +1,45 @@
+---
+title: Tag Input
+description: Chips-and-input tags field — Enter/comma commits, Backspace removes, duplicates and caps guarded.
+---
+
+`TagInput` turns free text into a normalized string list: Enter or a
+delimiter commits, Backspace on an empty input removes the last chip, and
+each chip carries its own remove button.
+
+## Installation
+
+```tsx
+import { TagInput } from "@iammikz/srui";
+```
+
+## Usage
+
+<LivePreview code={`const [tags, setTags] = useState(["react", "typescript"]);
+
+<TagInput value={tags} onChange={setTags} placeholder="Add tag…" />`}>
+  <TagInputDemo />
+</LivePreview>
+
+## Props
+
+| Prop | Type | Default | Description |
+|---|---|---|---|
+| `value` | `string[]` | — | The tags, in order |
+| `onChange` | `(tags: string[]) => void` | — | Full list after every add/remove |
+| `allowDuplicates` | `boolean` | `false` | Allow repeated tags |
+| `maxTags` | `number` | — | Hard cap on count |
+| `delimiters` | `string[]` | `[","]` | Extra commit characters (Enter always commits) |
+| `addOnBlur` | `boolean` | `true` | Commit pending text on blur |
+| `validate` | `(tag: string) => boolean` | — | Per-tag gate |
+| `size` | `"sm" \| "md"` | `"sm"` | Chip size |
+| `disabled` / `placeholder` | — | — | Usual field props |
+
+## Accessibility
+
+The wrapper is a labelled click target focusing the input; chip remove
+buttons announce `Remove {tag}`; Backspace undo works from the keyboard
+without ever needing the mouse.
+
+Upgrades over the PRUI original: `addOnBlur`, `maxTags`, `validate`, and
+`size` presets.

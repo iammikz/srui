@@ -1,0 +1,59 @@
+---
+title: File Upload
+description: Keyboard-accessible dropzone with a managed file list — type/size/count rejections included.
+---
+
+`FileUpload` is a dropzone plus managed file list: click, Enter, or drop
+adds files; per-file type/size/count rules reject with reasons; every file
+row carries its own remove button.
+
+## Installation
+
+```tsx
+import { FileUpload } from "@iammikz/srui";
+```
+
+## Usage
+
+<LivePreview code={`const [files, setFiles] = useState<File[]>([]);
+
+<FileUpload
+  value={files}
+  onChange={setFiles}
+  accept=".pdf,image/*"
+  maxSizeBytes={2 * 1024 * 1024}
+/>`}>
+  <FileUploadDemo />
+</LivePreview>
+
+## Props
+
+| Prop | Type | Default | Description |
+|---|---|---|---|
+| `value` | `File[]` | — | Controlled file list |
+| `onChange` | `(files: File[]) => void` | — | Full list after every add/remove |
+| `onFilesAdded` | `(files: File[]) => void` | — | Only the newly accepted files |
+| `onReject` | `(rejections: FileRejection[]) => void` | — | Rejected files with reasons |
+| `accept` | `string` | — | `accept` attribute (`.pdf,image/*`) |
+| `multiple` | `boolean` | `true` | Allow more than one file |
+| `maxSizeBytes` | `number` | — | Per-file size cap |
+| `maxFiles` | `number` | — | Total count cap |
+| `prompt` / `hint` / `icon` | — | — | Dropzone copy and icon |
+| `hideFileList` | `boolean` | `false` | Own the list rendering |
+| `disabled` | `boolean` | — | Freeze the dropzone |
+
+## Accessibility
+
+The dropzone is a `role="button"` with keyboard activation (Enter/Space
+open the picker); the hidden input stays out of the tab order. Remove
+buttons announce `Remove {filename}`.
+
+## Edge cases
+
+- Rejected files come back through `onReject` with a `type`, `size`, or
+  `count` reason — surface them with a `Toast` or `Alert`.
+- The accept/size hint under the prompt is generated from the props unless
+  you pass `hint`.
+
+Upgrades over the PRUI original: the `onReject` reason channel,
+`onFilesAdded` for side-effect uploads, and the generated accept/size hint.
