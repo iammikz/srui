@@ -227,13 +227,29 @@ test.describe("keyboard interactions (§6.4)", () => {
 
   test("DatePicker: typed input commits, grid arrows + Enter pick a day", async ({ page }) => {
     await page.goto("/?style=flat&scheme=light");
+    // First and second of NEXT month — never a month/week boundary, so the
+    // test is deterministic on any run date (hardcoded dates roll over).
+    const { firstKey, firstLabel, secondLabel } = await page.evaluate(() => {
+      const now = new Date();
+      const key = (d: Date) =>
+        `${d.getFullYear()}-${String(d.getMonth() + 1).padStart(2, "0")}-${String(
+          d.getDate(),
+        ).padStart(2, "0")}`;
+      const label = (d: Date) =>
+        d.toLocaleDateString("en-US", { month: "short", day: "numeric", year: "numeric" });
+      return {
+        firstKey: key(new Date(now.getFullYear(), now.getMonth() + 1, 1)),
+        firstLabel: label(new Date(now.getFullYear(), now.getMonth() + 1, 1)),
+        secondLabel: label(new Date(now.getFullYear(), now.getMonth() + 1, 2)),
+      };
+    });
     const trigger = page.getByRole("combobox", { name: "Due date" });
 
     // Typed input commits the wire format directly.
     await trigger.click();
-    await trigger.fill("2026-10-04");
+    await trigger.fill(firstKey);
     await page.keyboard.press("Enter");
-    await expect(trigger).toHaveValue("Oct 4, 2026");
+    await expect(trigger).toHaveValue(firstLabel);
 
     // ArrowDown opens the panel and dives into the grid; arrows move focus;
     // Enter picks; a completed pick closes the panel.
@@ -245,7 +261,7 @@ test.describe("keyboard interactions (§6.4)", () => {
     await expect(selected).toBeFocused();
     await page.keyboard.press("ArrowRight");
     await page.keyboard.press("Enter");
-    await expect(trigger).toHaveValue("Oct 5, 2026");
+    await expect(trigger).toHaveValue(secondLabel);
     await expect(grid).toBeHidden();
 
     // Escape closes and refocuses the trigger.
@@ -255,5 +271,22 @@ test.describe("keyboard interactions (§6.4)", () => {
     await page.keyboard.press("Escape");
     await expect(grid).toBeHidden();
     await expect(trigger).toBeFocused();
+  });
+
+  test("TimePicker: column options are labelled and a pick commits", async ({ page }) => {
+    await page.goto("/?style=flat&scheme=light");
+    const trigger = page.getByRole("combobox", { name: "Meeting time" });
+    await trigger.click();
+    const hourCol = page.getByRole("listbox", { name: "Hour" });
+    await expect(hourCol).toBeVisible();
+
+    // Regression: options once shipped with empty labels — every option
+    // must render its text and be reachable by accessible name.
+    const labels = await hourCol.locator("button").allTextContents();
+    expect(labels.length).toBeGreaterThan(0);
+    expect(labels.every((t) => t.trim().length > 0)).toBe(true);
+
+    await hourCol.getByRole("option", { name: "2", exact: true }).click();
+    await expect(trigger).toHaveValue("2:30 AM");
   });
 });

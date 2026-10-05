@@ -117,7 +117,9 @@ function Column({
               o.selected &&
                 "bg-primary text-primary-foreground hover:bg-primary hover:text-primary-foreground",
             )}
-          />
+          >
+            {o.display}
+          </button>
         ))}
       </div>
     </div>
