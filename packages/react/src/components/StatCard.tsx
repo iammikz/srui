@@ -56,7 +56,7 @@ export function StatCard({
   }, [value]);
 
   return (
-    <Card className={cn("gap-2", className)}>
+    <Card className={cn("w-full gap-2", className)}>
       <CardHeader>
         <span className="text-sm text-muted-foreground">{label}</span>
         {delta ? (
