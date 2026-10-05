@@ -83,37 +83,60 @@ export function ConfirmDialogDemo() {
   );
 }
 
-export function PaginationDemo({ total = 12, initial = 5 }: { total?: number; initial?: number }) {
+const ORDERS = Array.from({ length: 44 }, (_, i) => ({
+  id: `INV-${1200 + i}`,
+  total: ((i * 37) % 180) + 12,
+  status: (["Paid", "Pending", "Shipped"] as const)[i % 3],
+}));
+
+export function PaginationDemo({ perPage = 4, initial = 5 }: { perPage?: number; initial?: number }) {
   const [page, setPage] = React.useState(initial);
-  const range = usePaginationRange(page, total);
+  const totalPages = Math.ceil(ORDERS.length / perPage);
+  const range = usePaginationRange(page, totalPages);
+  const rows = ORDERS.slice((page - 1) * perPage, page * perPage);
   return (
-    <Pagination className="w-full">
-      <PaginationContent>
-        <PaginationItem>
-          <PaginationPrevious
-            onClick={() => setPage((p) => Math.max(1, p - 1))}
-            disabled={page === 1}
-          />
-        </PaginationItem>
-        {range.map((item) => (
-          <PaginationItem key={item}>
-            {item === "ellipsis-start" || item === "ellipsis-end" ? (
-              <PaginationEllipsis />
-            ) : (
-              <PaginationLink isActive={item === page} onClick={() => setPage(item)}>
-                {item}
-              </PaginationLink>
-            )}
-          </PaginationItem>
+    <div className="flex w-full max-w-sm flex-col gap-4">
+      <ul className="rounded-md border border-border">
+        {rows.map((order) => (
+          <li
+            key={order.id}
+            className="flex items-center justify-between border-b border-border px-3 py-2 text-sm last:border-b-0"
+          >
+            <span className="font-mono text-xs">{order.id}</span>
+            <span className="text-xs text-muted-foreground">
+              ${order.total}.00 · {order.status}
+            </span>
+          </li>
         ))}
-        <PaginationItem>
-          <PaginationNext
-            onClick={() => setPage((p) => Math.min(total, p + 1))}
-            disabled={page === total}
-          />
-        </PaginationItem>
-      </PaginationContent>
-    </Pagination>
+      </ul>
+      <Pagination>
+        <PaginationContent>
+          <PaginationItem>
+            <PaginationPrevious
+              onClick={() => setPage((p) => Math.max(1, p - 1))}
+              disabled={page === 1}
+            />
+          </PaginationItem>
+          {range.map((item) => (
+            <PaginationItem key={item}>
+              {item === "ellipsis-start" || item === "ellipsis-end" ? (
+                <PaginationEllipsis />
+              ) : (
+                <PaginationLink isActive={item === page} onClick={() => setPage(item)}>
+                  {item}
+                </PaginationLink>
+              )}
+            </PaginationItem>
+          ))}
+          <PaginationItem>
+            <PaginationNext
+              onClick={() => setPage((p) => Math.min(totalPages, p + 1))}
+              disabled={page === totalPages}
+            />
+          </PaginationItem>
+        </PaginationContent>
+      </Pagination>
+    </div>
   );
 }
 
