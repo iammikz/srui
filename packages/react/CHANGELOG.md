@@ -1,5 +1,13 @@
 # @iammikz/srui
 
+## 1.3.1
+
+### Patch Changes
+
+- 1f41beb: Fix ScrollArea not scrolling — the component was a bare Radix Root re-export without the required Viewport, so content overflowed its box instead of scrolling. It now composes the viewport internally (content drops straight in), mounts themed scrollbars via a new `orientation` prop (`"vertical"` default, `"horizontal"`, `"both"`; thumbs reveal on hover), and the viewport is tabbable so keyboard users can scroll it.
+- 656e507: Fix TimePicker/TimeRangePicker/DatePicker time-panel options rendering empty — the column option buttons were missing their labels, so times were invisible in the panel. Selection, keyboard map, and values were unaffected; only the option text was gone.
+- 0f1e4bb: Fix StatCard collapsing to content width in flex rows — the card now fills its slot (`w-full`), so tiles stay equal-sized regardless of value length (a 1–2 digit value no longer renders a narrow card). Grid layouts are unaffected.
+
 ## 1.3.0
 
 ### Minor Changes

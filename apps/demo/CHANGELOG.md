@@ -1,5 +1,14 @@
 # demo
 
+## 0.0.7
+
+### Patch Changes
+
+- Updated dependencies [1f41beb]
+- Updated dependencies [656e507]
+- Updated dependencies [0f1e4bb]
+  - @iammikz/srui@1.3.1
+
 ## 0.0.6
 
 ### Patch Changes
