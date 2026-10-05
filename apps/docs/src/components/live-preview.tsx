@@ -1,7 +1,7 @@
 "use client";
 
 import * as React from "react";
-import { Code, Eye } from "lucide-react";
+import { Check, Code, Copy, Eye } from "lucide-react";
 import { Button, Card, CardContent } from "@iammikz/srui";
 
 export interface LivePreviewProps {
@@ -15,10 +15,32 @@ export interface LivePreviewProps {
  * The <LivePreview> component (implementation plan §2.6): renders its
  * children inside a bordered `Card` that reflects the current UIProvider
  * style/scheme (tokens cascade from <html data-style>), plus a "view code"
- * `Button` that toggles the matching code block.
+ * `Button` that toggles the matching code block — which carries a copy
+ * button pinned to its top-right corner.
  */
 export function LivePreview({ children, code, label }: LivePreviewProps) {
   const [showCode, setShowCode] = React.useState(false);
+  const [copied, setCopied] = React.useState(false);
+  const copyTimer = React.useRef<number | null>(null);
+
+  React.useEffect(
+    () => () => {
+      if (copyTimer.current) window.clearTimeout(copyTimer.current);
+    },
+    [],
+  );
+
+  const copyCode = async () => {
+    if (!code) return;
+    try {
+      await navigator.clipboard.writeText(code);
+      setCopied(true);
+      if (copyTimer.current) window.clearTimeout(copyTimer.current);
+      copyTimer.current = window.setTimeout(() => setCopied(false), 1500);
+    } catch {
+      /* clipboard unavailable (permission or insecure context) */
+    }
+  };
 
   return (
     <div className="live-preview my-6 flex flex-col gap-3">
@@ -42,9 +64,23 @@ export function LivePreview({ children, code, label }: LivePreviewProps) {
         ) : null}
       </div>
       {code && showCode ? (
-        <pre className="docs-pre overflow-x-auto rounded-lg bg-muted p-4 text-xs leading-relaxed">
-          <code>{code}</code>
-        </pre>
+        <div className="relative">
+          <button
+            type="button"
+            onClick={copyCode}
+            aria-label={copied ? "Copied" : "Copy code"}
+            className="absolute top-2 right-2 z-10 inline-flex size-7 items-center justify-center rounded-md text-muted-foreground outline-none transition-colors duration-(--dur-fast) hover:bg-accent hover:text-accent-foreground focus-visible:outline-2 focus-visible:outline-ring"
+          >
+            {copied ? (
+              <Check className="size-3.5 text-success" />
+            ) : (
+              <Copy className="size-3.5" />
+            )}
+          </button>
+          <pre className="docs-pre overflow-x-auto rounded-lg bg-muted p-4 pr-12 text-xs leading-relaxed">
+            <code>{code}</code>
+          </pre>
+        </div>
       ) : null}
     </div>
   );
