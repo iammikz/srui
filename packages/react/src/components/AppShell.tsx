@@ -127,7 +127,10 @@ export function AppShell({
           <DialogContent
             showCloseButton={false}
             aria-describedby={undefined}
-            className="surface left-0 top-0 h-svh max-w-[calc(100%-4rem)] w-72 translate-x-0 translate-y-0 rounded-none border-r border-sidebar-border bg-sidebar p-0 text-sidebar-foreground motion-safe:animate-fade-in"
+            // flex (over the grid base) + overflow-hidden: the SidebarContent
+            // column needs a real height constraint, else the nav's
+            // overflow-y-auto never engages and the long menu overflows.
+            className="surface left-0 top-0 flex h-svh max-w-[calc(100%-4rem)] w-72 translate-x-0 translate-y-0 flex-col overflow-hidden rounded-none border-r border-sidebar-border bg-sidebar p-0 text-sidebar-foreground motion-safe:animate-fade-in"
           >
             <DialogTitle className="sr-only">Navigation</DialogTitle>
             <SidebarContent footer={slots?.sidebarFooter}>{sidebar}</SidebarContent>
