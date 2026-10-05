@@ -6,6 +6,7 @@ import {
   ColorPicker,
   ConfirmDialog,
   FileUpload,
+  Input,
   Modal,
   Pagination,
   PaginationContent,
@@ -157,26 +158,62 @@ export function TreeViewDemo() {
 
 export function ModalDemo() {
   const [open, setOpen] = React.useState(false);
+  const [email, setEmail] = React.useState("");
+  const [sent, setSent] = React.useState<string | null>(null);
   return (
     <>
-      <Button variant="destructive" onClick={() => setOpen(true)}>
-        Delete project
-      </Button>
+      <Button onClick={() => setOpen(true)}>Invite teammate</Button>
       <Modal
         open={open}
         onOpenChange={setOpen}
-        title="Delete project?"
-        description="This removes all environments and deployments. There is no undo."
+        title="Invite a teammate"
+        description="They'll receive an email with a join link that expires in 7 days."
         footer={
           <>
             <Button variant="outline" onClick={() => setOpen(false)}>
               Cancel
             </Button>
-            <Button variant="destructive" onClick={() => setOpen(false)}>
-              Delete
+            <Button
+              disabled={!email.trim()}
+              onClick={() => {
+                setSent(email.trim());
+                setEmail("");
+                setOpen(false);
+              }}
+            >
+              Send invite
             </Button>
           </>
         }
+      >
+        <Input
+          type="email"
+          placeholder="teammate@company.com"
+          value={email}
+          onChange={(e) => setEmail(e.target.value)}
+        />
+      </Modal>
+      {sent ? (
+        <span className="text-xs text-muted-foreground">Invite sent to {sent}</span>
+      ) : null}
+    </>
+  );
+}
+
+export function ModalInfoDemo() {
+  const [open, setOpen] = React.useState(false);
+  return (
+    <>
+      <Button variant="outline" onClick={() => setOpen(true)}>
+        What's new
+      </Button>
+      <Modal
+        open={open}
+        onOpenChange={setOpen}
+        size="sm"
+        title="Release 1.3.0"
+        description="New: Slider, ColorPicker, and the date/time picker family."
+        footer={<Button onClick={() => setOpen(false)}>Got it</Button>}
       />
     </>
   );

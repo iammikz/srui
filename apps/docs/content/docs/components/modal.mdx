@@ -1,11 +1,13 @@
 ---
 title: Modal
-description: Opinionated one-prop confirm dialog — title/description/footer slots over the Dialog primitives.
+description: Opinionated one-prop dialog for reversible flows — forms, invites, informational panels.
 ---
 
 `Modal` is the common case of `Dialog` with zero composition: `open` +
 `onOpenChange` + `title`/`description`/`footer` slots and a width preset.
-Confirmation flows, quick forms, and notices all fit in one element.
+It's for **reversible** flows — anything where dismissing by accident costs
+nothing. For destructive confirmations, use `AlertDialog`/`ConfirmDialog`
+instead (see the comparison below).
 
 ## Installation
 
@@ -15,17 +17,43 @@ import { Modal } from "@iammikz/srui";
 
 ## Usage
 
-<LivePreview code={`const [open, setOpen] = useState(false);
+An invite flow — body content, a guarded primary action, and dismissal that
+can't lose anything:
 
-<Button variant="destructive" onClick={() => setOpen(true)}>Delete project</Button>
+<LivePreview code={`const [open, setOpen] = useState(false);
+const [email, setEmail] = useState("");
+
+<Button onClick={() => setOpen(true)}>Invite teammate</Button>
 <Modal
   open={open}
   onOpenChange={setOpen}
-  title="Delete project?"
-  description="This removes all environments and deployments. There is no undo."
-  footer={<><Button variant="outline">Cancel</Button><Button variant="destructive">Delete</Button></>}
-/>`}>
+  title="Invite a teammate"
+  description="They'll receive an email with a join link that expires in 7 days."
+  footer={
+    <>
+      <Button variant="outline" onClick={() => setOpen(false)}>Cancel</Button>
+      <Button disabled={!email.trim()}>Send invite</Button>
+    </>
+  }
+>
+  <Input type="email" placeholder="teammate@company.com" value={email} onChange={(e) => setEmail(e.target.value)} />
+</Modal>`}>
   <ModalDemo />
+</LivePreview>
+
+### Informational (`size="sm"`)
+
+One fact, one way out:
+
+<LivePreview code={`<Modal
+  open={open}
+  onOpenChange={setOpen}
+  size="sm"
+  title="Release 1.3.0"
+  description="New: Slider, ColorPicker, and the date/time picker family."
+  footer={<Button>Got it</Button>}
+/>`}>
+  <ModalInfoDemo />
 </LivePreview>
 
 ## Props
@@ -41,10 +69,25 @@ import { Modal } from "@iammikz/srui";
 | `size` | `"sm" \| "md" \| "lg" \| "xl"` | `"md"` | Width preset |
 | `showCloseButton` | `boolean` | `true` | Hide the corner × |
 
+## Modal vs AlertDialog
+
+They look alike; the contract differs. Pick by what an accidental dismissal
+would cost.
+
+| | `Modal` (this) | `AlertDialog` / `ConfirmDialog` |
+|---|---|---|
+| Dismissal | Escape, overlay click, corner × — all close it | **Explicit Action or Cancel only**; overlay and Escape are ignored |
+| Role | `dialog` | `alertdialog` (announced assertively) |
+| Built for | Reversible flows: forms, invites, editors, info | Irreversible actions: delete, publish, charge |
+| Footer | Anything you pass | Action + Cancel; Action can be `destructive` |
+| Losing input | Acceptable — nothing destructive happened | Must be impossible to click away from |
+
+Rule of thumb: if the primary button says **Delete**, **Remove**, or
+**Publish**, reach for [AlertDialog](/components/alert-dialog/). Everything
+else is a `Modal`. Need trigger composition or custom layout? Start from
+[Dialog](/components/dialog/).
+
 ## Accessibility
 
 Everything `Dialog` provides: labelled dialog, focus trap, Escape and
 overlay dismissal with focus restoration.
-
-Upgrades over the PRUI original: `size` presets and the `showCloseButton`
-escape hatch.
