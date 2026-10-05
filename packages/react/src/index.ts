@@ -179,6 +179,7 @@ export type { ModalProps } from "./components/Modal";
 export { TagInput } from "./components/TagInput";
 export type { TagInputProps } from "./components/TagInput";
 export { ScrollArea, ScrollBar, ScrollViewport } from "./components/ScrollArea";
+export type { ScrollAreaProps, ScrollBarProps } from "./components/ScrollArea";
 export { FileUpload } from "./components/FileUpload";
 export type { FileUploadProps, FileRejection } from "./components/FileUpload";
 export {

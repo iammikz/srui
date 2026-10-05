@@ -1,22 +1,25 @@
 ---
 title: Scroll Area
-description: Styled cross-browser scrollbars for vertical and horizontal overflow.
+description: Themed cross-browser scrollbars for vertical, horizontal, or both axes — content goes straight in.
 ---
 
 `ScrollArea` wraps `@radix-ui/react-scroll-area`: themed scrollbars that
-render consistently across browsers, for vertical, horizontal, or both axes.
+render consistently across browsers. Content drops straight in — the viewport
+and scrollbar compose internally; you size the box.
 
 ## Installation
 
 ```tsx
-import { ScrollArea, ScrollBar } from "@iammikz/srui";
+import { ScrollArea } from "@iammikz/srui";
 ```
 
 ## Usage
 
 <LivePreview code={`<ScrollArea className="h-48 w-56 rounded-md border border-border p-4">
   <div className="text-sm font-medium">Tags</div>
-  {TAGS.map((tag) => <div key={tag} className="mt-2 text-sm">{tag}</div>)}
+  {TAGS.map((tag) => (
+    <div key={tag} className="mt-2 text-sm">{tag}</div>
+  ))}
 </ScrollArea>`}>
   <ScrollArea className="h-48 w-56 rounded-md border border-border p-4">
     <div className="text-sm font-medium">Tags</div>
@@ -28,32 +31,41 @@ import { ScrollArea, ScrollBar } from "@iammikz/srui";
   </ScrollArea>
 </LivePreview>
 
-Horizontal — add an explicit `ScrollBar orientation="horizontal"`:
+Horizontal — pass `orientation="horizontal"` (or `"both"`):
 
-<LivePreview code={`<ScrollArea className="w-56 whitespace-nowrap rounded-md border border-border p-4">
+<LivePreview code={`<ScrollArea orientation="horizontal" className="w-56 whitespace-nowrap rounded-md border border-border p-4">
   <div className="flex w-max space-x-4 text-sm">{TAGS.map((t) => <span key={t}>{t}</span>)}</div>
-  <ScrollBar orientation="horizontal" />
 </ScrollArea>`}>
-  <ScrollArea className="w-56 whitespace-nowrap rounded-md border border-border p-4">
+  <ScrollArea
+    orientation="horizontal"
+    className="w-56 whitespace-nowrap rounded-md border border-border p-4"
+  >
     <div className="flex w-max space-x-4 text-sm">
       {Array.from({ length: 10 }, (_, i) => (
         <span key={i}>tag-{i + 1}</span>
       ))}
     </div>
-    <ScrollBar orientation="horizontal" />
   </ScrollArea>
 </LivePreview>
+
+## Props
+
+| Prop | Type | Default | Description |
+|---|---|---|---|
+| `orientation` | `"vertical" \| "horizontal" \| "both"` | `"vertical"` | Which scrollbars to mount |
+| `className` | — | — | Sizes the box (`h-48`, `w-56`, borders, padding) |
+| … | — | — | Radix Root props (`type`, `scrollHideDelay`, …) |
 
 ## Exports
 
 | Export | Notes |
 |---|---|
-| `ScrollArea` | Root; sized via `className` |
-| `ScrollBar` | Explicit scrollbar; `orientation` (`"vertical"` default) |
-| `ScrollViewport` | Escape hatch for custom viewport composition |
+| `ScrollArea` | The box — content in, themed scrollbar(s) out |
+| `ScrollBar` | Standalone scrollbar for custom Radix compositions |
+| `ScrollViewport` | Escape hatch for raw Radix composition |
 
 ## Accessibility
 
-Native scrolling semantics are preserved (keyboard and wheel behave exactly
-like a native overflow container); the styled thumbs are pointer-only
+Native scrolling semantics are preserved — keyboard and wheel behave
+exactly like a native overflow container; the styled thumbs are pointer-only
 conveniences.

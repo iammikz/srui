@@ -1,6 +1,5 @@
 import type { Meta, StoryObj } from "@storybook/react";
-import { ScrollArea, ScrollBar } from "./ScrollArea";
-import { Separator } from "./Separator";
+import { ScrollArea } from "./ScrollArea";
 
 const meta: Meta<typeof ScrollArea> = {
   title: "Components/ScrollArea",
@@ -19,7 +18,6 @@ export const Vertical: Story = {
       {TAGS.map((tag) => (
         <div key={tag} className="mt-2 text-sm">
           {tag}
-          <Separator className="mt-2" />
         </div>
       ))}
     </ScrollArea>
@@ -28,13 +26,29 @@ export const Vertical: Story = {
 
 export const Horizontal: Story = {
   render: () => (
-    <ScrollArea className="w-56 whitespace-nowrap rounded-md border border-border p-4">
+    <ScrollArea
+      orientation="horizontal"
+      className="w-56 whitespace-nowrap rounded-md border border-border p-4"
+    >
       <div className="flex w-max space-x-4 text-sm">
         {TAGS.slice(0, 10).map((tag) => (
           <span key={tag}>{tag}</span>
         ))}
       </div>
-      <ScrollBar orientation="horizontal" />
+    </ScrollArea>
+  ),
+};
+
+export const Both: Story = {
+  render: () => (
+    <ScrollArea orientation="both" className="h-44 w-64 rounded-md border border-border p-4">
+      <div className="w-96 text-sm">
+        {TAGS.map((tag) => (
+          <div key={tag} className="py-0.5">
+            {tag} — a row wide enough to need the horizontal bar too
+          </div>
+        ))}
+      </div>
     </ScrollArea>
   ),
 };
