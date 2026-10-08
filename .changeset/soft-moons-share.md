@@ -1,5 +1,0 @@
----
-"@iammikz/srui": minor
----
-
-shadcn-parity polish across the primitives. `Button`, `BreadcrumbLink` and `PaginationLink` gain `asChild` (render a router `<Link>`/anchor with the component styling — the Button spinner is skipped in that mode). `Alert` gains `AlertTitle`/`AlertDescription` subcomponents alongside the existing `title`-prop shorthand. `Popover` exports `PopoverClose`; `Select` exports `SelectItemText` and the scroll buttons, and `SelectTrigger` gains `size="sm"|"default"|"lg"` plus `invalid`. `Tooltip` now opens instantly by default (`delayDuration={0}`, overridable). `Input` styles `type="file"`. Invalid/error states (`aria-invalid` + destructive styling) land on `Checkbox` (which also renders a proper minus for `checked="indeterminate"`), `RadioGroup`, `Switch`, `Label`, `Combobox`, `TagInput` and `SelectTrigger`, matching the existing `Input`/`Textarea` pattern. `AccordionTrigger` can override or hide its chevron via `icon`, and `BreadcrumbSeparator`/`BreadcrumbEllipsis` accept children to replace the default icons.

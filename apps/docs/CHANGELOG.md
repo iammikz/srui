@@ -1,5 +1,15 @@
 # docs
 
+## 0.0.8
+
+### Patch Changes
+
+- Updated dependencies [ba7104c]
+- Updated dependencies [ba7104c]
+- Updated dependencies [ba7104c]
+- Updated dependencies [ba7104c]
+  - @iammikz/srui@1.5.0
+
 ## 0.0.7
 
 ### Patch Changes
