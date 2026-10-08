@@ -45,9 +45,16 @@ toast({
 | `description` | `string` | — | Body text |
 | `variant` | `"default" \| "success" \| "destructive"` | `"default"` | `success` uses `bg-success`, `destructive` uses `bg-destructive` |
 | `action` | `{ label: string; onClick: () => void }` | — | Optional action button |
+| `duration` | `number` | `5000` | Auto-expire delay in ms |
+| `onDismiss` | `() => void` | — | Fires when the toast closes (timeout, ✕, swipe, or action) |
 
-Toasts auto-expire after 5 seconds; swipe right or press the ✕ to dismiss
-early.
+`toast()` returns an id — pass it to `dismiss(id)` or `update(id, options)`
+from the same `useToast()` destructure (e.g. flip a "Uploading…" toast to
+`variant="success"` when the upload finishes).
+
+`ToastProvider` accepts `position` — `"top"`, `"top-left"`, `"top-right"`,
+`"bottom"`, `"bottom-left"`, `"bottom-right"` (default) — to choose where
+toasts stack.
 
 ## Examples
 

@@ -22,6 +22,8 @@ export interface TagInputProps
   validate?: (tag: string) => boolean;
   /** Render size of the chips (default `sm`). */
   size?: "sm" | "md";
+  /** Marks the field as invalid — destructive border + `aria-invalid` on the input. */
+  invalid?: boolean;
 }
 
 /**
@@ -41,6 +43,7 @@ export function TagInput({
   className,
   disabled,
   placeholder,
+  invalid,
   ...props
 }: TagInputProps) {
   const [draft, setDraft] = React.useState("");
@@ -68,9 +71,12 @@ export function TagInput({
     <div
       data-slot="tag-input"
       data-disabled={disabled || undefined}
+      data-invalid={invalid || undefined}
       onClick={() => !disabled && inputRef.current?.focus()}
       className={cn(
         "flex min-h-9 w-full flex-wrap items-center gap-1.5 rounded-md border border-border bg-input/30 px-2 py-1 text-sm outline-none transition-[color,box-shadow,border-color] duration-(--dur-fast) ease-(--ease-out) focus-within:outline-2 focus-within:outline-offset-2 focus-within:outline-ring disabled:cursor-not-allowed disabled:opacity-50",
+        "aria-[invalid=true]:border-destructive aria-[invalid=true]:outline-destructive",
+        invalid && "border-destructive",
         className,
       )}
     >
@@ -102,6 +108,7 @@ export function TagInput({
         value={draft}
         disabled={disabled}
         aria-label="Add tag"
+        aria-invalid={invalid || undefined}
         placeholder={value.length === 0 ? placeholder : undefined}
         onChange={(e) => {
           const text = e.target.value;

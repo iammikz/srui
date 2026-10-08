@@ -1,0 +1,43 @@
+---
+title: Resizable
+description: Draggable panel layout, over react-resizable-panels.
+---
+
+`Resizable` splits a layout into panels separated by draggable handles —
+IDE-style panes, adjustable sidebars, split views.
+
+## Installation
+
+```tsx
+import { ResizablePanelGroup, ResizablePanel, ResizableHandle } from "@iammikz/srui";
+```
+
+## Usage
+
+<LivePreview code={`<ResizablePanelGroup orientation="horizontal">
+  <ResizablePanel defaultSize={50}>Sidebar</ResizablePanel>
+  <ResizableHandle withHandle />
+  <ResizablePanel defaultSize={50}>Main</ResizablePanel>
+</ResizablePanelGroup>`}>
+  <div className="w-full max-w-xl">
+    <ResizablePanelGroup orientation="horizontal" className="min-h-40 rounded-lg border border-border">
+      <ResizablePanel defaultSize={30} className="flex items-center justify-center p-4 text-sm text-muted-foreground">
+        Sidebar
+      </ResizablePanel>
+      <ResizableHandle withHandle />
+      <ResizablePanel defaultSize={70} className="flex items-center justify-center p-4 text-sm text-muted-foreground">
+        Main content
+      </ResizablePanel>
+    </ResizablePanelGroup>
+  </div>
+</LivePreview>
+
+## Exports
+
+| Export | Notes |
+|---|---|
+| `ResizablePanelGroup` | `orientation`, `defaultLayout`, `onLayoutChange` |
+| `ResizablePanel` | `defaultSize`/`minSize`/`maxSize` (percent), `collapsible` |
+| `ResizableHandle` | The drag handle; `withHandle` renders a grip |
+
+Handles are keyboard-focusable — arrows resize, focus-visible outlined.

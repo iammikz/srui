@@ -9,15 +9,33 @@ const Select = SelectPrimitive.Root;
 const SelectGroup = SelectPrimitive.Group;
 const SelectValue = SelectPrimitive.Value;
 
+interface SelectTriggerProps
+  extends React.ComponentPropsWithoutRef<typeof SelectPrimitive.Trigger> {
+  /** Trigger height: `sm` h-8, `default` h-9, `lg` h-10. */
+  size?: "sm" | "default" | "lg";
+  /** Marks the select as invalid — destructive border + `aria-invalid`. */
+  invalid?: boolean;
+}
+
 function SelectTrigger({
   className,
   children,
+  size = "default",
+  invalid,
   ...props
-}: React.ComponentPropsWithoutRef<typeof SelectPrimitive.Trigger>) {
+}: SelectTriggerProps) {
   return (
     <SelectPrimitive.Trigger
+      data-slot="select-trigger"
+      data-size={size}
+      aria-invalid={invalid || undefined}
       className={cn(
-        "surface flex h-9 w-full items-center justify-between gap-2 rounded-md border border-border bg-input/30 px-3 py-2 text-sm outline-none transition-[color,box-shadow,border-color] duration-(--dur-fast) ease-(--ease-out) focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-ring disabled:cursor-not-allowed disabled:opacity-50 data-[placeholder]:text-muted-foreground [&>span]:line-clamp-1 [&_svg]:size-4 [&_svg]:shrink-0",
+        "surface flex w-full items-center justify-between gap-2 rounded-md border border-border bg-input/30 px-3 py-2 text-sm outline-none transition-[color,box-shadow,border-color] duration-(--dur-fast) ease-(--ease-out) focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-ring disabled:cursor-not-allowed disabled:opacity-50 data-[placeholder]:text-muted-foreground [&>span]:line-clamp-1 [&_svg]:size-4 [&_svg]:shrink-0",
+        size === "sm" && "h-8 py-1 text-xs",
+        size === "default" && "h-9",
+        size === "lg" && "h-10",
+        "aria-invalid:border-destructive aria-invalid:outline-destructive",
+        invalid && "border-destructive",
         className,
       )}
       {...props}
@@ -27,6 +45,39 @@ function SelectTrigger({
         <ChevronDown className="size-4 opacity-50" />
       </SelectPrimitive.Icon>
     </SelectPrimitive.Trigger>
+  );
+}
+
+/** Exported for custom item layouts (shadcn parity); `SelectItem` uses it internally. */
+const SelectItemText = SelectPrimitive.ItemText;
+
+function SelectScrollUpButton({
+  className,
+  ...props
+}: React.ComponentPropsWithoutRef<typeof SelectPrimitive.ScrollUpButton>) {
+  return (
+    <SelectPrimitive.ScrollUpButton
+      data-slot="select-scroll-up-button"
+      className={cn("flex cursor-default items-center justify-center py-1", className)}
+      {...props}
+    >
+      <ChevronUp className="size-4" />
+    </SelectPrimitive.ScrollUpButton>
+  );
+}
+
+function SelectScrollDownButton({
+  className,
+  ...props
+}: React.ComponentPropsWithoutRef<typeof SelectPrimitive.ScrollDownButton>) {
+  return (
+    <SelectPrimitive.ScrollDownButton
+      data-slot="select-scroll-down-button"
+      className={cn("flex cursor-default items-center justify-center py-1", className)}
+      {...props}
+    >
+      <ChevronDown className="size-4" />
+    </SelectPrimitive.ScrollDownButton>
   );
 }
 
@@ -48,9 +99,7 @@ function SelectContent({
         )}
         {...props}
       >
-        <SelectPrimitive.ScrollUpButton className="flex cursor-default items-center justify-center py-1">
-          <ChevronUp className="size-4" />
-        </SelectPrimitive.ScrollUpButton>
+        <SelectScrollUpButton />
         <SelectPrimitive.Viewport
           className={cn(
             "p-1",
@@ -60,9 +109,7 @@ function SelectContent({
         >
           {children}
         </SelectPrimitive.Viewport>
-        <SelectPrimitive.ScrollDownButton className="flex cursor-default items-center justify-center py-1">
-          <ChevronDown className="size-4" />
-        </SelectPrimitive.ScrollDownButton>
+        <SelectScrollDownButton />
       </SelectPrimitive.Content>
     </SelectPrimitive.Portal>
   );
@@ -123,5 +170,8 @@ export {
   SelectContent,
   SelectLabel,
   SelectItem,
+  SelectItemText,
   SelectSeparator,
+  SelectScrollUpButton,
+  SelectScrollDownButton,
 };

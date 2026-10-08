@@ -4,6 +4,7 @@ import * as React from "react";
 import { scaleLinear, scalePoint } from "d3-scale";
 import { line, area as d3area, curveMonotoneX } from "d3-shape";
 import { cn } from "../../lib/cn";
+import { ChartTooltip } from "./ChartTooltip";
 
 export interface LineChartSeries {
   name: string;
@@ -21,6 +22,8 @@ export interface LineChartProps {
   showLegend?: boolean;
   /** Fill under the line (added in Phase 5; harmless in Phase 0 usage). */
   area?: boolean;
+  /** Hover/keyboard tooltip with the values at the nearest point (default true). */
+  tooltip?: boolean;
   className?: string;
 }
 
@@ -41,8 +44,11 @@ export function LineChart({
   showGrid = true,
   showLegend = true,
   area = false,
+  tooltip = true,
   className,
 }: LineChartProps) {
+  const [active, setActive] = React.useState<number | null>(null);
+  const svgRef = React.useRef<SVGSVGElement | null>(null);
   const allValues = series.flatMap((s) => s.values);
   const min = Math.min(0, ...allValues);
   const max = Math.max(1, ...allValues);
@@ -87,18 +93,73 @@ export function LineChart({
   const colorFor = (i: number, s: LineChartSeries) =>
     s.color ?? `var(--chart-${Math.min(i, 7) + 1})`;
 
+  // Nearest-label lookup for the hover/keyboard tooltip.
+  const points = labels.map((l) => x(l) ?? PADDING.left);
+  const nearestIndex = (clientX: number) => {
+    const rect = svgRef.current?.getBoundingClientRect();
+    if (!rect || rect.width === 0) return null;
+    const viewX = ((clientX - rect.left) / rect.width) * WIDTH;
+    let best = 0;
+    let bestDist = Infinity;
+    points.forEach((px, i) => {
+      const d = Math.abs(px - viewX);
+      if (d < bestDist) {
+        bestDist = d;
+        best = i;
+      }
+    });
+    return best;
+  };
+
+  const onKey = (e: React.KeyboardEvent) => {
+    if (active == null) {
+      if (e.key === "ArrowLeft" || e.key === "ArrowRight") {
+        e.preventDefault();
+        setActive(labels.length - 1);
+      }
+      return;
+    }
+    if (e.key === "ArrowLeft") {
+      e.preventDefault();
+      setActive(Math.max(0, active - 1));
+    } else if (e.key === "ArrowRight") {
+      e.preventDefault();
+      setActive(Math.min(labels.length - 1, active + 1));
+    } else if (e.key === "Home") {
+      setActive(0);
+    } else if (e.key === "End") {
+      setActive(labels.length - 1);
+    } else if (e.key === "Escape") {
+      setActive(null);
+    }
+  };
+
+  const activeTopPct =
+    active != null
+      ? (Math.min(...series.map((s) => y(s.values[active] ?? 0))) / height) * 100
+      : 0;
+
   return (
-    <figure className={cn("w-full", className)}>
-      <svg
-        viewBox={`0 0 ${WIDTH} ${height}`}
-        className="w-full"
-        role="img"
-        aria-label={
-          series.length === 1
-            ? `Line chart: ${series[0].name}`
-            : `Line chart with ${series.length} series`
-        }
-      >
+    <figure
+      className={cn("w-full outline-none", tooltip && "relative", className)}
+      tabIndex={tooltip ? 0 : undefined}
+      onKeyDown={tooltip ? onKey : undefined}
+      {...(tooltip ? { "aria-label": "Use arrow keys to inspect values" } : {})}
+    >
+      <div className="relative">
+        <svg
+          ref={svgRef}
+          viewBox={`0 0 ${WIDTH} ${height}`}
+          className="w-full"
+          role="img"
+          aria-label={
+            series.length === 1
+              ? `Line chart: ${series[0].name}`
+              : `Line chart with ${series.length} series`
+          }
+          onPointerMove={tooltip ? (e) => setActive(nearestIndex(e.clientX)) : undefined}
+          onPointerLeave={tooltip ? () => setActive(null) : undefined}
+        >
         {showGrid
           ? ticks.map((t) => (
               <g key={t}>
@@ -170,7 +231,44 @@ export function LineChart({
             </g>
           );
         })}
-      </svg>
+
+        {tooltip && active != null ? (
+          <g aria-hidden="true">
+            <line
+              x1={points[active]}
+              x2={points[active]}
+              y1={PADDING.top}
+              y2={height - PADDING.bottom}
+              className="stroke-border"
+              strokeWidth="1"
+            />
+            {series.map((s, i) => (
+              <circle
+                key={s.name}
+                cx={points[active]}
+                cy={y(s.values[active] ?? 0)}
+                r="3.5"
+                fill={colorFor(i, s)}
+                stroke="var(--popover)"
+                strokeWidth="1.5"
+              />
+            ))}
+          </g>
+        ) : null}
+        </svg>
+        {tooltip && active != null ? (
+          <ChartTooltip
+            label={labels[active]}
+            rows={series.map((s, i) => ({
+              name: s.name,
+              value: s.values[active] ?? 0,
+              color: colorFor(i, s),
+            }))}
+            leftPct={(points[active] / WIDTH) * 100}
+            topPct={activeTopPct}
+          />
+        ) : null}
+      </div>
       {showLegend && series.length > 1 ? (
         <figcaption className="mt-2 flex flex-wrap items-center justify-center gap-4">
           {series.map((s, i) => (

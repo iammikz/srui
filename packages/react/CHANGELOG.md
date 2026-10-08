@@ -1,5 +1,15 @@
 # @iammikz/srui
 
+## 1.4.0
+
+### Minor Changes
+
+- DataTable gains server-side (manual) pagination, matching TanStack Table semantics: pass `manualPagination` with `rowCount` (or `pageCount` when the API only knows pages) and keep `data` as just the current page — refetch in `onPaginationChange`, which fires with the resolved `{ pageIndex, pageSize }` on Prev/Next and rows-per-page changes. `pagination` optionally makes the state controlled. The footer, toolbar row count, and page math all follow the server's totals; `autoResetPageIndex` is disabled in manual mode so freshly fetched pages don't snap back to page 1.
+
+### Patch Changes
+
+- fef0403: Fix the AppShell mobile navigation drawer not scrolling — the drawer's DialogContent kept its grid display with an auto-height row, so the sidebar column never got a height constraint and the nav's `overflow-y-auto` never engaged; long menus overflowed past the screen. The drawer is now a height-constrained flex column with `overflow-hidden`, so the nav scrolls inside the viewport.
+
 ## 1.3.1
 
 ### Patch Changes

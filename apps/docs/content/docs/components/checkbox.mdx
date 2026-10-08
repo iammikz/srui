@@ -25,9 +25,10 @@ import { Checkbox } from "@iammikz/srui";
 
 ## Props
 
-`React.ComponentPropsWithoutRef<typeof RadixCheckbox.Root>` — `checked`,
-`onCheckedChange`, `disabled`, `required`, `name`, `value`, plus native
-button attributes.
+`React.ComponentPropsWithoutRef<typeof RadixCheckbox.Root>` — `checked`
+(`"indeterminate"` renders a minus), `onCheckedChange`, `disabled`,
+`required`, `name`, `value`, plus `invalid?: boolean` (destructive border +
+`aria-invalid`) and native button attributes.
 
 ## Examples
 

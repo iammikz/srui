@@ -1,0 +1,40 @@
+---
+title: Toggle Group
+description: A set of Toggles sharing one value, wrapping Radix ToggleGroup.
+---
+
+`ToggleGroup` renders a set of `Toggle`s that share a single value —
+`type="single"` for one active item, `type="multiple"` for several.
+
+## Installation
+
+```tsx
+import { ToggleGroup, ToggleGroupItem } from "@iammikz/srui";
+```
+
+## Usage
+
+<LivePreview code={`<ToggleGroup type="single" defaultValue="center" variant="outline">
+  <ToggleGroupItem value="left">Left</ToggleGroupItem>
+  <ToggleGroupItem value="center">Center</ToggleGroupItem>
+  <ToggleGroupItem value="right">Right</ToggleGroupItem>
+</ToggleGroup>`}>
+  <div className="flex flex-col gap-4">
+    <ToggleGroup type="single" defaultValue="center" variant="outline">
+      <ToggleGroupItem value="left">Left</ToggleGroupItem>
+      <ToggleGroupItem value="center">Center</ToggleGroupItem>
+      <ToggleGroupItem value="right">Right</ToggleGroupItem>
+    </ToggleGroup>
+    <ToggleGroup type="multiple" defaultValue={["bold", "italic"]}>
+      <ToggleGroupItem value="bold">Bold</ToggleGroupItem>
+      <ToggleGroupItem value="italic">Italic</ToggleGroupItem>
+      <ToggleGroupItem value="underline">Underline</ToggleGroupItem>
+    </ToggleGroup>
+  </div>
+</LivePreview>
+
+## Props
+
+`Radix ToggleGroup Root` props (`type`, `value`, `defaultValue`,
+`onValueChange`, `disabled`, `rovingFocus`) plus `variant`/`size`, which
+cascade to every `ToggleGroupItem` (overridable per item).

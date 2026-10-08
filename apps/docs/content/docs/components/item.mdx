@@ -1,0 +1,56 @@
+---
+title: Item
+description: List-item layout primitive — media, content, end slots.
+---
+
+`Item` is the list-row layout: leading media, a title/description block, and
+a trailing end slot. Lists, cards, notifications, search results.
+
+## Installation
+
+```tsx
+import { Item, ItemMedia, ItemContent, ItemTitle, ItemDescription, ItemEnd } from "@iammikz/srui";
+```
+
+## Usage
+
+<LivePreview code={`<Item>
+  <ItemMedia align="start"><FileText /></ItemMedia>
+  <ItemContent>
+    <ItemTitle>Q3 report.pdf</ItemTitle>
+    <ItemDescription>Updated 2 hours ago</ItemDescription>
+  </ItemContent>
+  <ItemEnd><Badge variant="secondary">Shared</Badge></ItemEnd>
+</Item>`}>
+  <div className="flex w-full max-w-md flex-col gap-4 rounded-lg border border-border p-4">
+    <Item>
+      <ItemMedia align="start">📄</ItemMedia>
+      <ItemContent>
+        <ItemTitle>Q3 report.pdf</ItemTitle>
+        <ItemDescription>Updated 2 hours ago · 1.2 MB</ItemDescription>
+      </ItemContent>
+      <ItemEnd>
+        <Badge variant="secondary">Shared</Badge>
+      </ItemEnd>
+    </Item>
+    <Item>
+      <ItemMedia align="start">📊</ItemMedia>
+      <ItemContent>
+        <ItemTitle>Draft — budget.xlsx</ItemTitle>
+        <ItemDescription>You edited this file</ItemDescription>
+      </ItemContent>
+      <ItemEnd>
+        <Badge variant="success">Live</Badge>
+      </ItemEnd>
+    </Item>
+  </div>
+</LivePreview>
+
+## Exports
+
+| Export | Notes |
+|---|---|
+| `Item` | `variant="row"` (default) or `"column"` |
+| `ItemMedia` | `align="start"` pins it to the first text line |
+| `ItemContent` / `ItemTitle` / `ItemDescription` | The text block |
+| `ItemEnd` | Trailing slot, vertically centered |

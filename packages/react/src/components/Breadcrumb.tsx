@@ -1,6 +1,7 @@
 "use client";
 
 import * as React from "react";
+import { Slot } from "@radix-ui/react-slot";
 import { ChevronRight, MoreHorizontal } from "lucide-react";
 import { cn } from "../lib/cn";
 
@@ -21,9 +22,18 @@ function BreadcrumbItem({ className, ...props }: React.ComponentProps<"li">) {
   return <li className={cn("inline-flex items-center gap-1.5", className)} {...props} />;
 }
 
-function BreadcrumbLink({ className, ...props }: React.ComponentProps<"a">) {
+/**
+ * A trail link. Pass `asChild` to render a router `<Link>` in its place;
+ * plain anchors work without it.
+ */
+function BreadcrumbLink({
+  asChild,
+  className,
+  ...props
+}: React.ComponentProps<"a"> & { asChild?: boolean }) {
+  const Comp = asChild ? Slot : "a";
   return (
-    <a
+    <Comp
       className={cn(
         "outline-none transition-colors duration-(--dur-fast) hover:text-foreground focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-ring",
         className,
@@ -45,10 +55,15 @@ function BreadcrumbPage({ className, ...props }: React.ComponentProps<"span">) {
   );
 }
 
-function BreadcrumbSeparator({ className, ...props }: React.ComponentProps<"li">) {
+/** Trail separator; children replace the default chevron. */
+function BreadcrumbSeparator({
+  className,
+  children,
+  ...props
+}: React.ComponentProps<"li">) {
   return (
     <li role="presentation" aria-hidden className={cn("[&_svg]:size-3.5", className)} {...props}>
-      <ChevronRight />
+      {children ?? <ChevronRight />}
     </li>
   );
 }
@@ -56,8 +71,13 @@ function BreadcrumbSeparator({ className, ...props }: React.ComponentProps<"li">
 /**
  * The collapsed-trail ellipsis — a menu button; pair it with DropdownMenu
  * (see the docs example) to reveal the hidden middle of long trails.
+ * Children replace the default `…` icon.
  */
-function BreadcrumbEllipsis({ className, ...props }: React.ComponentProps<"span">) {
+function BreadcrumbEllipsis({
+  className,
+  children,
+  ...props
+}: React.ComponentProps<"span">) {
   return (
     <span
       role="presentation"
@@ -65,7 +85,7 @@ function BreadcrumbEllipsis({ className, ...props }: React.ComponentProps<"span"
       className={cn("flex size-6 items-center justify-center", className)}
       {...props}
     >
-      <MoreHorizontal className="size-4" />
+      {children ?? <MoreHorizontal className="size-4" />}
     </span>
   );
 }

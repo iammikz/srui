@@ -41,10 +41,40 @@ const TONES: Record<AlertVariant, string> = {
     "text-destructive border-destructive/40 bg-destructive/10 [&_svg]:text-destructive",
 };
 
+/** Bold first line — the subcomponent counterpart of the `title` prop. */
+export function AlertTitle({
+  className,
+  ...props
+}: React.ComponentProps<"div">) {
+  return (
+    <div
+      data-slot="alert-title"
+      className={cn("mb-0.5 font-semibold text-foreground", className)}
+      {...props}
+    />
+  );
+}
+
+/** Body copy — the subcomponent counterpart of plain children. */
+export function AlertDescription({
+  className,
+  ...props
+}: React.ComponentProps<"div">) {
+  return (
+    <div
+      data-slot="alert-description"
+      className={cn("text-foreground/85 [&_p]:leading-relaxed", className)}
+      {...props}
+    />
+  );
+}
+
 /**
  * A static, inline callout for statuses and problems the page should
  * announce without interrupting: tone variants, optional dismiss, and a
- * `role="alert"` mapping for the destructive/warning tones.
+ * `role="alert"` mapping for the destructive/warning tones. Compose the body
+ * from `AlertTitle`/`AlertDescription`, or use the `title` prop + children
+ * shorthand — both render identically.
  */
 export function Alert({
   variant = "info",

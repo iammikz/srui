@@ -1,7 +1,7 @@
 "use client";
 
 import * as React from "react";
-import type { ColumnDef } from "@tanstack/react-table";
+import type { ColumnDef, PaginationState } from "@tanstack/react-table";
 import { Badge, Button, DataTable } from "@iammikz/srui";
 
 type Person = { id: number; name: string; email: string; role: string; status: string };
@@ -66,6 +66,72 @@ export function DataTableDemo() {
           pinColumns
         />
       )}
+    </div>
+  );
+}
+
+// The "server": 257 records, one page per request (300ms latency).
+const TOTAL = 257;
+const serverPeople: Person[] = Array.from({ length: TOTAL }, (_, i) => ({
+  id: i + 1,
+  name: `Person ${i + 1}`,
+  email: `person${i + 1}@example.com`,
+  role: i % 3 === 0 ? "Admin" : i % 3 === 1 ? "Editor" : "Viewer",
+  status: i % 5 === 0 ? "inactive" : "active",
+}));
+
+function fetchPeople(pageIndex: number, pageSize: number) {
+  return new Promise<{ rows: Person[]; total: number }>((resolve) => {
+    setTimeout(() => {
+      resolve({
+        rows: serverPeople.slice(pageIndex * pageSize, (pageIndex + 1) * pageSize),
+        total: TOTAL,
+      });
+    }, 300);
+  });
+}
+
+/**
+ * Server-side pagination demo: the endpoint returns one page per request and
+ * a row total; the footer pages through the full 257-row "dataset".
+ */
+export function DataTableServerDemo() {
+  const [pagination, setPagination] = React.useState<PaginationState>({
+    pageIndex: 0,
+    pageSize: 10,
+  });
+  // First page resolved synchronously so the prerendered page isn't empty.
+  const [page, setPage] = React.useState<Person[]>(() => serverPeople.slice(0, 10));
+  const [pending, setPending] = React.useState(false);
+
+  React.useEffect(() => {
+    let cancelled = false;
+    setPending(true);
+    fetchPeople(pagination.pageIndex, pagination.pageSize).then((res) => {
+      if (cancelled) return;
+      setPage(res.rows);
+      setPending(false);
+    });
+    return () => {
+      cancelled = true;
+    };
+  }, [pagination]);
+
+  return (
+    <div className="my-6">
+      <p className="mb-2 text-xs text-muted-foreground" aria-live="polite">
+        {pending
+          ? `GET /api/people?page=${pagination.pageIndex + 1}&limit=${pagination.pageSize} — fetching…`
+          : `GET /api/people?page=${pagination.pageIndex + 1}&limit=${pagination.pageSize} → ${page.length} rows, ${TOTAL} total`}
+      </p>
+      <DataTable
+        columns={columns}
+        data={page}
+        manualPagination
+        rowCount={TOTAL}
+        pagination={pagination}
+        onPaginationChange={setPagination}
+      />
     </div>
   );
 }

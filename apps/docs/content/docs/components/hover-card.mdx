@@ -1,0 +1,49 @@
+---
+title: Hover Card
+description: Preview popup on hover, wrapping Radix HoverCard.
+---
+
+`HoverCard` shows rich preview content when hovering a trigger — user cards,
+link previews, definitions.
+
+## Installation
+
+```tsx
+import { HoverCard, HoverCardTrigger, HoverCardContent } from "@iammikz/srui";
+```
+
+## Usage
+
+<LivePreview code={`<HoverCard>
+  <HoverCardTrigger asChild>
+    <Button variant="link">@adalovelace</Button>
+  </HoverCardTrigger>
+  <HoverCardContent>
+    <p className="text-sm font-medium">Ada Lovelace</p>
+    <p className="text-xs text-muted-foreground">First programmer</p>
+  </HoverCardContent>
+</HoverCard>`}>
+  <HoverCard>
+    <HoverCardTrigger asChild>
+      <a href="#hover-card" className="text-sm text-primary underline-offset-4 hover:underline">
+        @adalovelace
+      </a>
+    </HoverCardTrigger>
+    <HoverCardContent>
+      <p className="text-sm font-medium">Ada Lovelace</p>
+      <p className="text-xs text-muted-foreground">First programmer — hover to preview, move away to dismiss.</p>
+    </HoverCardContent>
+  </HoverCard>
+</LivePreview>
+
+## Exports
+
+| Export | Notes |
+|---|---|
+| `HoverCard` / `HoverCardTrigger` | Radix Root/Trigger (`open`/`onOpenChange` for controlled use) |
+| `HoverCardContent` | Surface panel; `align` (default `"center"`), `sideOffset` (default `6`), Radix Content props |
+
+## Accessibility
+
+Triggers expose `aria-expanded`; content is portaled and removed from the
+accessibility tree when closed. Keyboard focus on the trigger also opens it.

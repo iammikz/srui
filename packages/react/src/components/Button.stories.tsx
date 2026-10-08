@@ -45,3 +45,26 @@ export const Loading: Story = {
 export const Disabled: Story = {
   args: { children: "Disabled", disabled: true },
 };
+
+export const AsChild: Story = {
+  name: "asChild (renders the child element)",
+  render: () => (
+    <div className="flex flex-wrap items-center gap-3">
+      <Button asChild>
+        <a href="https://example.com" target="_blank" rel="noreferrer">
+          Anchor button
+        </a>
+      </Button>
+      <Button asChild variant="outline">
+        <a href="https://example.com" target="_blank" rel="noreferrer">
+          Outline anchor
+        </a>
+      </Button>
+      <Button asChild disabled>
+        <a href="https://example.com" target="_blank" rel="noreferrer">
+          Disabled anchor
+        </a>
+      </Button>
+    </div>
+  ),
+};

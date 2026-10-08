@@ -39,7 +39,7 @@ import { TooltipProvider, Tooltip, TooltipTrigger, TooltipContent } from "@iammi
 | Export | Notes |
 |---|---|
 | `TooltipProvider` | Required ancestor; `delayDuration` etc. |
-| `Tooltip` | Root; `open`/`onOpenChange` for controlled use |
+| `Tooltip` | Root; `open`/`onOpenChange` for controlled use. Opens instantly by default (`delayDuration={0}`) — pass `delayDuration` to reintroduce a hover delay |
 | `TooltipTrigger` | The hover/focus target (`asChild` supported) |
 | `TooltipContent` | The bubble; adds `sideOffset?: number` (default `6`) plus Radix Content props (`side`, `align`, …) |
 

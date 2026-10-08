@@ -29,9 +29,9 @@ Presets, one page per component).
 - `useUIStyle()` — returns `{ style, setStyle, scheme, setScheme, resolvedScheme }`.
 - `noFlashScript()` — returns the pre-paint script string.
 - `cn(...inputs)` — clsx + tailwind-merge class helper.
-- `Button` — props: native button attrs + `variant: "default"|"secondary"|"destructive"|"outline"|"ghost"|"link"`, `size: "sm"|"md"|"lg"|"icon"`, `loading?: boolean`. `<Button variant="outline" loading={busy}>Save</Button>`
+- `Button` — props: native button attrs + `variant: "default"|"secondary"|"destructive"|"outline"|"ghost"|"link"`, `size: "sm"|"md"|"lg"|"icon"`, `loading?: boolean`, `asChild?: boolean` (renders the child element, e.g. a router Link, with the button styling). `<Button variant="outline" loading={busy}>Save</Button>`
 - `Card, CardHeader, CardTitle, CardDescription, CardAction, CardContent, CardFooter` — div slots; Card is the `surface`. `<Card><CardHeader><CardTitle>T</CardTitle></CardHeader><CardContent>…</CardContent></Card>`
-- `Input` — native input attrs + `invalid?: boolean`. `<Input invalid placeholder="Email" />`
+- `Input` — native input attrs + `invalid?: boolean`; `type="file"` is styled (transparent file button). `<Input invalid placeholder="Email" />`
 - `Textarea` — native textarea attrs + `invalid?: boolean`.
 - `Dialog, DialogTrigger, DialogClose, DialogContent, DialogHeader, DialogTitle, DialogDescription, DialogFooter` — Radix dialog wrapped; DialogContent: `showCloseButton?: boolean`. `<Dialog><DialogTrigger asChild><Button>Open</Button></DialogTrigger><DialogContent>…</DialogContent></Dialog>`
 - `Spinner`, `DotsLoader`, `Skeleton` — presentational loaders.
@@ -41,22 +41,22 @@ Presets, one page per component).
 - `BarChart` — same shape as LineChart minus `area`; staggered grow-in.
 - `DonutChart` — props: `label, value (0-100), suffix?, size? (160), color?`. `<DonutChart label="Storage" value={68} suffix="%" />`
 - `Sparkline` — props: `values: number[], width? (120), height? (36), color?, strokeWidth?`.
-- `Select, SelectTrigger, SelectValue, SelectContent, SelectItem, SelectGroup, SelectLabel, SelectSeparator` — Radix select wrapped.
-- `Combobox` — props: `options: {value,label}[], value?, onChange(value), placeholder?, emptyText?, disabled?` (+ button attrs for aria-label). `<Combobox options={opts} value={v} onChange={setV} />`
+- `Select, SelectTrigger, SelectValue, SelectContent, SelectItem, SelectItemText, SelectGroup, SelectLabel, SelectSeparator, SelectScrollUpButton, SelectScrollDownButton` — Radix select wrapped; Trigger: `size?: "sm"|"default"|"lg"`, `invalid?`.
+- `Combobox` — props: `options: {value,label}[], value?, onChange(value), placeholder?, emptyText?, disabled?, invalid?` (+ button attrs for aria-label). `<Combobox options={opts} value={v} onChange={setV} />`
 - `Tabs, TabsList, TabsTrigger, TabsContent` — Radix tabs wrapped.
-- `TooltipProvider, Tooltip, TooltipTrigger, TooltipContent` — TooltipContent adds `sideOffset?: number` (default 6).
-- `Popover, PopoverTrigger, PopoverContent, PopoverAnchor` — non-modal panel.
+- `TooltipProvider, Tooltip, TooltipTrigger, TooltipContent` — Tooltip opens instantly by default (`delayDuration=0`, overridable); TooltipContent adds `sideOffset?: number` (default 6).
+- `Popover, PopoverTrigger, PopoverContent, PopoverAnchor, PopoverClose` — non-modal panel.
 - `ToastProvider` — place once near the root; `useToast()` returns `toast(options)`; options: `{ title, description?, variant?: "default"|"success"|"destructive", action?: { label, onClick } }`. Also exports Toast parts.
-- `Checkbox`, `RadioGroup, RadioGroupItem`, `Switch` — Radix wrapped; checked state uses `bg-primary`.
-- `Label` — Radix label wrapped.
+- `Checkbox`, `RadioGroup, RadioGroupItem`, `Switch` — Radix wrapped; checked state uses `bg-primary`; all accept `invalid?: boolean` (destructive styling + `aria-invalid`); Checkbox `checked="indeterminate"` renders a minus.
+- `Label` — Radix label wrapped; `invalid?: boolean` turns the text destructive.
 - `FormField` — props: `label, htmlFor, error?, hint?, children`. Renders Label + control + error (`role=alert`) or hint, never both.
 - `Avatar, AvatarImage, AvatarFallback` — AvatarFallback takes `name?: string` → initials.
 - `Badge` — `variant: "default"|"secondary"|"destructive"|"outline"|"success"|"warning"`.
 - `Separator` — `orientation?: "horizontal"|"vertical"` (default horizontal), `decorative?: boolean` (default true).
-- `Accordion, AccordionItem, AccordionTrigger, AccordionContent` — height-animated via Radix's content-height variable.
+- `Accordion, AccordionItem, AccordionTrigger, AccordionContent` — height-animated via Radix's content-height variable; Trigger: `icon?: LucideIcon|null` overrides the chevron.
 - `Collapsible, CollapsibleTrigger, CollapsibleContent`.
 - `AppShell` — Tier 1 props: `sidebar, topbar?, breadcrumbs?: {label, href?}[], children`; Tier 2: `slots?: { topbarEnd?, sidebarFooter? }, classNames?: { root, sidebar, topbar, main, breadcrumbs }`; Tier 3 hook: `useAppShell()` → `{ isDesktop, drawerOpen, setDrawerOpen, openDrawer, closeDrawer }`. Sidebar docks ≥768px, becomes a Dialog drawer below.
-- `DataTable` — Tier 1 props: `columns: ColumnDef<T>[], data: T[], sortable?, selectable?, pageSize?, onRowSelectionChange?: (rows: T[]) => void, filterable?, pinColumns?, csvExport?`; Tier 2: `slots?: { toolbar?: ComponentType<{table}>, empty?: ReactNode }, classNames?: { root, header, row, cell }`; Tier 3 hook: `useDataTable(config)` → TanStack Table instance (zero JSX). Sorts/filters/paginates via the TanStack pipeline; virtualizes >200 rows when pageSize is unset.
+- `DataTable` — Tier 1 props: `columns: ColumnDef<T>[], data: T[], sortable?, selectable?, pageSize?, manualPagination?, rowCount?, pageCount?, pagination?: {pageIndex,pageSize}?, onPaginationChange?: (p) => void, onRowSelectionChange?: (rows: T[]) => void, filterable?, pinColumns?, csvExport?`; Tier 2: `slots?: { toolbar?: ComponentType<{table}>, empty?: ReactNode }, classNames?: { root, header, row, cell }`; Tier 3 hook: `useDataTable(config)` → TanStack Table instance (zero JSX). Sorts/filters/paginates via the TanStack pipeline; virtualizes >200 rows when pageSize is unset. With `manualPagination`, `data` is just the current page — fetch each page in `onPaginationChange` and pass the server total as `rowCount` (`pageCount` when only pages are known); `pagination`/`onPaginationChange` give controlled or uncontrolled state.
 - `ChartCard` — props: `title, description?, chart: "line"|"bar", labels, series, timeRanges?, onTimeRangeChange?, loading?, area?` + Tier 2/3 (`useChartCard()` → `{ activeRange, setActiveRange, chartKey }`). Range changes remount the chart so the draw-in replays.
 - `FormBuilder` — props: `schema: z.ZodType, fields: { name, label, type: "text"|"email"|"password"|"number"|"textarea"|"select"|"checkbox", options?, placeholder?, hint? }[], onSubmit(values), submitLabel?` + Tier 2/3 (`useFormBuilder(schema, fields)` → `{ form, fieldProps, configOf }`). react-hook-form + Zod.
 - `CommandPalette` — props: `commands: { label, onSelect, shortcut? }[], open?, onOpenChange?, placeholder?` + Tier 2/3 (`useCommandPalette()`). Opens on Cmd/Ctrl+K.
@@ -72,17 +72,17 @@ Presets, one page per component).
 - `TimePicker` — props: `value?, onChange?, minuteStep?, seconds?, hour12?, min?, max?` (+ inline `TimePanel` with the same panel props). Column listboxes; values always `'HH:mm(:ss)'`. `<TimePicker minuteStep={15} hour12={false} />`
 - `TimeRangePicker` — props: `value?: {from?, to?}, onChange?, minuteStep?, seconds?, hour12?, min?, max?`. To panel disables times before From (inverted spans unbuildable). `<TimeRangePicker min="08:00" max="18:00" />`
 - `DropdownMenu` family — `Root/Trigger/Content/Item/CheckboxItem/RadioGroup/RadioItem/Label/Separator/Shortcut/Sub/SubTrigger/SubContent`. Item: `variant?: "default"|"destructive", inset?`. `<DropdownMenu><DropdownMenuTrigger asChild><Button>Open</Button></DropdownMenuTrigger><DropdownMenuContent>…</DropdownMenuContent></DropdownMenu>`
-- `Alert` — props: `variant?: "info"|"success"|"warning"|"destructive", title?, icon?: LucideIcon|null, onDismiss?`. Inline callout; warning/destructive announce as role=alert. `<Alert variant="destructive" title="Payment failed">…</Alert>`
+- `Alert` — props: `variant?: "info"|"success"|"warning"|"destructive", title?, icon?: LucideIcon|null, onDismiss?`; also `AlertTitle`/`AlertDescription` subcomponents (same rendering as `title` + children). Inline callout; warning/destructive announce as role=alert. `<Alert variant="destructive" title="Payment failed">…</Alert>`
 - `Progress` — props: `value?: number|null (null→indeterminate), max?, label?, showValue?, size?: "sm"|"md", variant?: "default"|"success"|"warning"|"destructive"`. role=progressbar. `<Progress value={62} showValue />`
 - `Sheet` family — `Sheet/Trigger/Close/Content/Header/Title/Description/Footer`; Content: `side?: "left"|"right"|"top"|"bottom"`. Edge-anchored sliding panel on Dialog primitives.
 - `Drawer` family — `Drawer/Trigger/Close/Content/Header/Title/Description/Footer`; Content: `dismissThreshold?` (default 0.33). Bottom sheet with grab handle + pointer drag-to-dismiss.
 - `Modal` — props: `open, onOpenChange, title, description?, footer?, size?: "sm"|"md"|"lg"|"xl", showCloseButton?`. Opinionated one-prop dialog over the Dialog primitives. `<Modal open={o} onOpenChange={setO} title="Delete?" footer={…} />`
-- `TagInput` — props: `value: string[], onChange, allowDuplicates?, maxTags?, delimiters?, addOnBlur?, validate?, size?`. Enter/comma commits, Backspace removes last. `<TagInput value={tags} onChange={setTags} />`
+- `TagInput` — props: `value: string[], onChange, allowDuplicates?, maxTags?, delimiters?, addOnBlur?, validate?, size?, invalid?`. Enter/comma commits, Backspace removes last. `<TagInput value={tags} onChange={setTags} />`
 - `ScrollArea, ScrollBar, ScrollViewport` — themed scrollbars (Radix); content drops straight in (viewport composes internally); `orientation?: "vertical"|"horizontal"|"both"` mounts the scrollbar set (default vertical, reveals on hover). `<ScrollArea className="h-48">…</ScrollArea>`
 - `FileUpload` — props: `value?: File[], onChange?, onFilesAdded?, onReject?: (FileRejection[])=>void, accept?, multiple?, maxSizeBytes?, maxFiles?, prompt?, hint?, hideFileList?`. Keyboard-accessible dropzone + managed list. `<FileUpload accept=".pdf" maxSizeBytes={2e6} />`
-- `Breadcrumb` family — `Breadcrumb/List/Item/Link/Page/Separator/Ellipsis`; nav+ol semantics, Page carries aria-current. Ellipsis composes with DropdownMenu for collapsed trails.
+- `Breadcrumb` family — `Breadcrumb/List/Item/Link/Page/Separator/Ellipsis`; nav+ol semantics, Page carries aria-current; Link: `asChild` (router Link); Separator/Ellipsis children replace the default icons. Ellipsis composes with DropdownMenu for collapsed trails.
 - `AlertDialog` family — `Root/Trigger/Content/Header/Title/Description/Footer/Action/Cancel`; Action: `variant?: "default"|"destructive"`; overlay/Escape do NOT dismiss (explicit action required). `ConfirmDialog` — one-prop form: `open, onOpenChange, title, description?, confirmLabel?, cancelLabel?, onConfirm?, tone?, size?`. `<ConfirmDialog open={o} onOpenChange={setO} title="Delete?" tone="destructive" onConfirm={del} />`
-- `Pagination` family — `Pagination/Content/Item/Link/Previous/Next/Ellipsis`; Link: `isActive?` (aria-current=page) + `usePaginationRange(page, totalPages, siblings?=1)` → `[1, "ellipsis-start", 4, 5, 6, "ellipsis-end", 12]`. `<Pagination><PaginationContent><PaginationItem><PaginationPrevious …/></PaginationItem>…</PaginationContent></Pagination>`
+- `Pagination` family — `Pagination/Content/Item/Link/Previous/Next/Ellipsis`; Link: `isActive?` (aria-current=page), `asChild` (render an `<a href>`) + `usePaginationRange(page, totalPages, siblings?=1)` → `[1, "ellipsis-start", 4, 5, 6, "ellipsis-end", 12]`. `<Pagination><PaginationContent><PaginationItem><PaginationPrevious …/></PaginationItem>…</PaginationContent></Pagination>`
 - `TreeView` — props: `items: {id, label, children?, icon?, defaultExpanded?, disabled?}[], selectedId?, onSelect?, aria-label`. role=tree with the full arrow-key map. `<TreeView items={tree} onSelect={setId} aria-label="Files" />`
 - `Timeline, TimelineItem` — Item: `title, description?, time?, icon?, variant?: "default"|"info"|"success"|"warning"|"destructive"`. Activity feed on a spine.
 
@@ -96,3 +96,23 @@ surface recipe `--surface-shadow(-hover/-pressed)`, `--surface-blur`,
 background-color), `animate-draw/grow-y/grow-x/shimmer/spin-slow/
 count-fade/scale-in/fade-in`. Preset scope: `[data-style="<preset>"]` —
 scoped to any wrapper for side-by-side presets.
+- `Table, TableHeader, TableBody, TableFooter, TableHead, TableRow, TableCell, TableCaption` — plain styled table primitives (no state; use DataTable for interactive tables). `<Table><TableHeader><TableRow><TableHead>H</TableHead></TableRow></TableHeader><TableBody>…</TableBody></Table>`
+- `Toggle` — Radix toggle; props: `variant?: "default"|"outline"`, `size?: "sm"|"default"|"lg"`, `pressed`/`defaultPressed`/`onPressedChange`. `toggleStyles` is the tv recipe.
+- `ToggleGroup, ToggleGroupItem` — Radix toggle-group; `type="single"|"multiple"`, `value/defaultValue/onValueChange`; variant/size cascade from group to items. `<ToggleGroup type="single" defaultValue="center" variant="outline">…</ToggleGroup>`
+- `HoverCard, HoverCardTrigger, HoverCardContent` — Radix hover card; Content: `align` (default center), `sideOffset` (default 6). `<HoverCard><HoverCardTrigger asChild>…</HoverCardTrigger><HoverCardContent>…</HoverCardContent></HoverCard>`
+- `ContextMenu` family — same shape as DropdownMenu (`Root/Trigger/Content/Item(variant,inset)/CheckboxItem/RadioGroup/RadioItem/Label/Separator/Shortcut/Group/Sub/SubTrigger/SubContent`), right-click activated.
+- `Kbd` — `<kbd>` key hint. `<Kbd>⌘</Kbd>`
+- `AspectRatio` — Radix aspect-ratio box (`ratio={16/9}`).
+- `ButtonGroup` — joined buttons; `orientation?: "horizontal"|"vertical"`; corners merge, hairline seams, hover/focus z-lift. `<ButtonGroup><Button variant="outline">…</Button>…</ButtonGroup>`
+- `NativeSelect` — styled native `<select>`; `size?: "sm"|"default"|"lg"`, `invalid?`; SSR-safe, submits with plain forms.
+- `Empty, EmptyMedia, EmptyTitle, EmptyDescription, EmptyContent` — empty-state layout. `<Empty><EmptyMedia>…</EmptyMedia><EmptyTitle>…</EmptyTitle><EmptyContent>…</EmptyContent></Empty>`
+- `Item, ItemMedia, ItemContent, ItemTitle, ItemDescription, ItemEnd` — list-item layout; Item `variant="row"|"column"`, Media `align="start"|"center"`.
+- `Field, FieldLabel, FieldDescription, FieldError, FieldControl` (+`useField()`) — context-wired form field: Field({name?, invalid?}) generates the control id, description/error register themselves, FieldControl injects id/aria-describedby/aria-invalid into any child control. `<Field name="email" invalid><FieldLabel>…</FieldLabel><FieldControl><Input …/></FieldControl><FieldError>…</FieldError></Field>`
+- `Command, CommandInput, CommandList, CommandEmpty, CommandGroup, CommandItem, CommandShortcut, CommandSeparator, CommandDialog` — raw cmdk primitives (shadcn Command parity); CommandPalette is the opinionated ⌘K palette on the same engine.
+- `InputOTP, InputOTPGroup, InputOTPSlot, InputOTPSeparator` — one-time-code input over input-otp; `maxLength`, `value/onChange`, slots take `index`. `<InputOTP maxLength={6} value={v} onChange={setV}><InputOTPGroup><InputOTPSlot index={0}/>…</InputOTPGroup></InputOTP>`
+- `Carousel, CarouselContent, CarouselItem, CarouselPrevious, CarouselNext` (+`useCarousel()`) — embla carousel; `orientation`, slide sizing via `className` (e.g. `basis-1/3`); controls auto-disable at the ends.
+- `ResizablePanelGroup, ResizablePanel, ResizableHandle` — react-resizable-panels v4 wrappers; Panel: `defaultSize/minSize/maxSize` (percent), `collapsible`; Handle: `withHandle` grip.
+- `Menubar` family — `Root(Menubar)/Menu/Trigger/Content/Item(variant,inset)/CheckboxItem/RadioGroup/RadioItem/Label/Separator/Shortcut/Group/Sub/SubTrigger/SubContent`; horizontal desktop menu bar.
+- `ToastProvider` — now `position?: "top"|"top-left"|"top-right"|"bottom"|"bottom-left"|"bottom-right"` (default bottom-right); `useToast()` returns `{ toast, dismiss, update }`; toast() returns an id and options gain `duration` (default 5000) and `onDismiss`.
+- `DirectionProvider` — Radix direction provider; sets `dir="ltr"|"rtl"` for the subtree (popovers/menus/pickers inherit). Wrap RTL layouts.
+- `LineChart`/`BarChart` — now interactive: `tooltip?: boolean` (default true) adds a hover/keyboard value bubble (guide line + dots on lines, band highlight on bars) at the nearest point; focus the chart and use ←/→/Home/End. `ChartTooltip` is exported for custom chart compositions.

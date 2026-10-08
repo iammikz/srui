@@ -1,5 +1,13 @@
 # demo
 
+## 0.0.8
+
+### Patch Changes
+
+- Updated dependencies [fef0403]
+- Updated dependencies
+  - @iammikz/srui@1.4.0
+
 ## 0.0.7
 
 ### Patch Changes

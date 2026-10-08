@@ -1,0 +1,31 @@
+---
+title: Aspect Ratio
+description: Fixed-ratio media container, wrapping Radix AspectRatio.
+---
+
+`AspectRatio` keeps children at a fixed width/height ratio — embeds, images,
+video posters — without padding hacks.
+
+## Installation
+
+```tsx
+import { AspectRatio } from "@iammikz/srui";
+```
+
+## Usage
+
+<LivePreview code={`<AspectRatio ratio={16 / 9}>
+  <img src="…" alt="…" className="h-full w-full object-cover" />
+</AspectRatio>`}>
+  <div className="w-full max-w-sm overflow-hidden rounded-lg border border-border">
+    <AspectRatio ratio={16 / 9}>
+      <div className="flex h-full w-full items-center justify-center bg-muted text-sm text-muted-foreground">
+        16 : 9
+      </div>
+    </AspectRatio>
+  </div>
+</LivePreview>
+
+## Props
+
+Radix `AspectRatio.Root` props — `ratio?: number` (default `1`), `asChild`.

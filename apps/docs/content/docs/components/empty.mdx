@@ -1,0 +1,42 @@
+---
+title: Empty
+description: Empty-state layout — media, title, description, action.
+---
+
+`Empty` is the empty-state frame: an icon/illustration, a title, supporting
+copy, and an action row.
+
+## Installation
+
+```tsx
+import { Empty, EmptyMedia, EmptyTitle, EmptyDescription, EmptyContent } from "@iammikz/srui";
+```
+
+## Usage
+
+<LivePreview code={`<Empty>
+  <EmptyMedia><SearchX /></EmptyMedia>
+  <EmptyTitle>No results found</EmptyTitle>
+  <EmptyDescription>Try different keywords.</EmptyDescription>
+  <EmptyContent><Button variant="outline" size="sm">Clear filters</Button></EmptyContent>
+</Empty>`}>
+  <div className="w-full max-w-md">
+    <Empty>
+      <EmptyMedia>🔍</EmptyMedia>
+      <EmptyTitle>No results found</EmptyTitle>
+      <EmptyDescription>Try different keywords or clear the active filters.</EmptyDescription>
+      <EmptyContent>
+        <Button variant="outline" size="sm">Clear filters</Button>
+      </EmptyContent>
+    </Empty>
+  </div>
+</LivePreview>
+
+## Exports
+
+| Export | Notes |
+|---|---|
+| `Empty` | Dashed-border frame, centered column |
+| `EmptyMedia` | Circular muted holder — icons or any markup |
+| `EmptyTitle` / `EmptyDescription` | Copy slots |
+| `EmptyContent` | Action row (buttons, links) |

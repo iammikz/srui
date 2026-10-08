@@ -54,3 +54,47 @@ export const Grouped: Story = {
     </Select>
   ),
 };
+
+export const TriggerSizes: Story = {
+  name: "Trigger sizes + invalid",
+  render: () => (
+    <div className="flex flex-col gap-3">
+      <Select defaultValue="mon">
+        <SelectTrigger className="w-48" size="sm" aria-label="Day (sm)">
+          <SelectValue />
+        </SelectTrigger>
+        <SelectContent>
+          <SelectItem value="mon">Monday</SelectItem>
+          <SelectItem value="tue">Tuesday</SelectItem>
+        </SelectContent>
+      </Select>
+      <Select defaultValue="mon">
+        <SelectTrigger className="w-48" aria-label="Day (default)">
+          <SelectValue />
+        </SelectTrigger>
+        <SelectContent>
+          <SelectItem value="mon">Monday</SelectItem>
+          <SelectItem value="tue">Tuesday</SelectItem>
+        </SelectContent>
+      </Select>
+      <Select defaultValue="mon">
+        <SelectTrigger className="w-48" size="lg" aria-label="Day (lg)">
+          <SelectValue />
+        </SelectTrigger>
+        <SelectContent>
+          <SelectItem value="mon">Monday</SelectItem>
+          <SelectItem value="tue">Tuesday</SelectItem>
+        </SelectContent>
+      </Select>
+      <Select defaultValue="mon">
+        <SelectTrigger className="w-48" invalid aria-label="Day (invalid)">
+          <SelectValue />
+        </SelectTrigger>
+        <SelectContent>
+          <SelectItem value="mon">Monday</SelectItem>
+          <SelectItem value="tue">Tuesday</SelectItem>
+        </SelectContent>
+      </Select>
+    </div>
+  ),
+};

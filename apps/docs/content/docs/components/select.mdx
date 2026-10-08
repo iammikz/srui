@@ -43,12 +43,14 @@ import {
 | Export | Notes |
 |---|---|
 | `Select` | Root; `value`/`onValueChange` for controlled use |
-| `SelectTrigger` | `React.ComponentPropsWithoutRef<typeof RadixSelect.Trigger>` — styled like `Input` |
+| `SelectTrigger` | Trigger — Radix Trigger props plus `size?: "sm" \| "default" \| "lg"` (h-8/h-9/h-10) and `invalid?: boolean` (destructive border + `aria-invalid`); styled like `Input` |
 | `SelectValue` | Renders the selected label (or `placeholder`) |
 | `SelectContent` | The popover; `bg-popover` + `surface` + `animate-scale-in`, `position="popper"` default |
 | `SelectItem` | Option with check indicator |
+| `SelectItemText` | The item's label part, for custom item layouts |
 | `SelectGroup` / `SelectLabel` | Option grouping |
 | `SelectSeparator` | Divider inside the list |
+| `SelectScrollUpButton` / `SelectScrollDownButton` | Long-list scroll affordances (composed into `SelectContent` already) |
 
 ## Examples
 

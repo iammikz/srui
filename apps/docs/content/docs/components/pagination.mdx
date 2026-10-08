@@ -69,7 +69,7 @@ const rows = ORDERS.slice((page - 1) * PER_PAGE, page * PER_PAGE);
 |---|---|
 | `Pagination` | `nav` wrapper, `aria-label="Pagination"` |
 | `PaginationContent` / `PaginationItem` | The `ol`/`li` structure |
-| `PaginationLink` | Page button; `isActive` sets `aria-current="page"` |
+| `PaginationLink` | Page button; `isActive` sets `aria-current="page"`; `asChild` renders an `<a href>` child instead of a `<button>` |
 | `PaginationPrevious` / `PaginationNext` | Edge buttons with chevrons; `disabled` at the bounds |
 | `PaginationEllipsis` | The `…` marker (hidden from assistive tech) |
 | `usePaginationRange(page, totalPages, siblings?)` | `1 … 4 5 6 … 12` window; first/last always shown, `siblings` (default 1) around the current page |
@@ -89,4 +89,6 @@ bounds; ellipses are decorative.
 
 Short ranges (≤ 6 pages with the default siblings) render every page with no
 ellipses. For tables with toolbar/filter/CSV needs, prefer `DataTable`'s
-built-in pagination instead of wiring this by hand.
+built-in pagination instead of wiring this by hand — it covers server-side
+paging too (`manualPagination` + `rowCount`; see
+[Data Table](/components/data-table)).

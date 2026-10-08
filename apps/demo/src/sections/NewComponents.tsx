@@ -2,6 +2,7 @@ import { useState } from "react";
 import {
   addDays,
   Alert,
+  AspectRatio,
   Breadcrumb,
   BreadcrumbItem,
   BreadcrumbLink,
@@ -9,9 +10,34 @@ import {
   BreadcrumbPage,
   BreadcrumbSeparator,
   Button,
+  ButtonGroup,
   Calendar,
+  Card,
+  CardContent,
+  Carousel,
+  CarouselContent,
+  CarouselItem,
+  CarouselNext,
+  CarouselPrevious,
   ColorPicker,
+  Command,
+  CommandEmpty,
+  CommandGroup,
+  CommandInput,
+  CommandItem,
+  CommandList,
   ConfirmDialog,
+  ContextMenu,
+  ContextMenuCheckboxItem,
+  ContextMenuContent,
+  ContextMenuItem,
+  ContextMenuLabel,
+  ContextMenuSeparator,
+  ContextMenuShortcut,
+  ContextMenuSub,
+  ContextMenuSubContent,
+  ContextMenuSubTrigger,
+  ContextMenuTrigger,
   DatePicker,
   DateRangePicker,
   Drawer,
@@ -29,7 +55,44 @@ import {
   DropdownMenuSeparator,
   DropdownMenuShortcut,
   DropdownMenuTrigger,
+  Empty,
+  EmptyContent,
+  EmptyDescription,
+  EmptyMedia,
+  EmptyTitle,
+  Field,
+  FieldControl,
+  FieldDescription,
+  FieldError,
+  FieldLabel,
   FileUpload,
+  HoverCard,
+  HoverCardContent,
+  HoverCardTrigger,
+  Input,
+  InputOTP,
+  InputOTPGroup,
+  InputOTPSeparator,
+  InputOTPSlot,
+  Item,
+  ItemContent,
+  ItemDescription,
+  ItemEnd,
+  ItemMedia,
+  ItemTitle,
+  Kbd,
+  Menubar,
+  MenubarCheckboxItem,
+  MenubarContent,
+  MenubarItem,
+  MenubarLabel,
+  MenubarMenu,
+  MenubarRadioGroup,
+  MenubarRadioItem,
+  MenubarSeparator,
+  MenubarShortcut,
+  MenubarTrigger,
+  NativeSelect,
   Pagination,
   PaginationContent,
   PaginationEllipsis,
@@ -38,13 +101,25 @@ import {
   PaginationNext,
   PaginationPrevious,
   Progress,
+  ResizableHandle,
+  ResizablePanel,
+  ResizablePanelGroup,
   ScrollArea,
   Slider,
+  Table,
+  TableBody,
+  TableCell,
+  TableHead,
+  TableHeader,
+  TableRow,
   TagInput,
   TimePicker,
   TimeRangePicker,
   Timeline,
   TimelineItem,
+  Toggle,
+  ToggleGroup,
+  ToggleGroupItem,
   TreeView,
   todayKey,
   usePaginationRange,
@@ -80,6 +155,9 @@ export function NewComponents() {
   const pageRange = usePaginationRange(page, 12);
   const [opacity, setOpacity] = useState([60]);
   const [brand, setBrand] = useState("#2563EB");
+  const [align, setAlign] = useState("center");
+  const [day, setDay] = useState("mon");
+  const [otp, setOtp] = useState("");
 
   return (
     <>
@@ -258,6 +336,254 @@ export function NewComponents() {
               </PaginationItem>
             </PaginationContent>
           </Pagination>
+        </div>
+      </Section>
+
+      <Section
+        id="parity-primitives"
+        title="shadcn-parity primitives"
+        description="Table, Toggle/ToggleGroup, HoverCard, ContextMenu, Kbd, AspectRatio, ButtonGroup, NativeSelect, Empty, Item."
+      >
+        <div className="grid gap-6 md:grid-cols-2">
+          <Table>
+            <TableHeader>
+              <TableRow>
+                <TableHead>Name</TableHead>
+                <TableHead>Role</TableHead>
+                <TableHead>Status</TableHead>
+              </TableRow>
+            </TableHeader>
+            <TableBody>
+              <TableRow>
+                <TableCell>Ada Lovelace</TableCell>
+                <TableCell>Admin</TableCell>
+                <TableCell>active</TableCell>
+              </TableRow>
+              <TableRow>
+                <TableCell>Grace Hopper</TableCell>
+                <TableCell>Editor</TableCell>
+                <TableCell>active</TableCell>
+              </TableRow>
+            </TableBody>
+          </Table>
+
+          <div className="flex flex-col gap-4">
+            <ToggleGroup type="single" value={align} onValueChange={(v) => v && setAlign(v)} variant="outline">
+              <ToggleGroupItem value="left" aria-label="Align left">Left</ToggleGroupItem>
+              <ToggleGroupItem value="center" aria-label="Align center">Center</ToggleGroupItem>
+              <ToggleGroupItem value="right" aria-label="Align right">Right</ToggleGroupItem>
+            </ToggleGroup>
+            <div className="flex flex-wrap items-center gap-3">
+              <Toggle defaultPressed aria-label="Toggle bold">
+                Bold
+              </Toggle>
+              <ButtonGroup>
+                <Button variant="outline" size="sm">Day</Button>
+                <Button variant="outline" size="sm">Week</Button>
+                <Button variant="outline" size="sm">Month</Button>
+              </ButtonGroup>
+              <span className="flex items-center gap-1.5 text-xs text-muted-foreground">
+                <Kbd>⌘</Kbd>+<Kbd>K</Kbd>
+              </span>
+            </div>
+            <div className="w-56">
+              <NativeSelect aria-label="Day" value={day} onChange={(e) => setDay(e.target.value)}>
+                <option value="mon">Monday</option>
+                <option value="tue">Tuesday</option>
+                <option value="wed">Wednesday</option>
+              </NativeSelect>
+            </div>
+          </div>
+
+          <div className="flex flex-col gap-4">
+            <HoverCard>
+              <HoverCardTrigger asChild>
+                <Button variant="link">@adalovelace</Button>
+              </HoverCardTrigger>
+              <HoverCardContent>
+                <p className="text-sm font-medium">Ada Lovelace</p>
+                <p className="text-xs text-muted-foreground">First programmer</p>
+              </HoverCardContent>
+            </HoverCard>
+            <ContextMenu>
+              <ContextMenuTrigger className="flex h-20 items-center justify-center rounded-lg border border-dashed border-border text-sm text-muted-foreground">
+                Right-click this area
+              </ContextMenuTrigger>
+              <ContextMenuContent>
+                <ContextMenuLabel>Actions</ContextMenuLabel>
+                <ContextMenuItem>
+                  Copy <ContextMenuShortcut>⌘C</ContextMenuShortcut>
+                </ContextMenuItem>
+                <ContextMenuSeparator />
+                <ContextMenuCheckboxItem checked>Wrap lines</ContextMenuCheckboxItem>
+                <ContextMenuSub>
+                  <ContextMenuSubTrigger>Sort by</ContextMenuSubTrigger>
+                  <ContextMenuSubContent>
+                    <ContextMenuItem>Name</ContextMenuItem>
+                    <ContextMenuItem>Size</ContextMenuItem>
+                  </ContextMenuSubContent>
+                </ContextMenuSub>
+                <ContextMenuSeparator />
+                <ContextMenuItem variant="destructive">Delete</ContextMenuItem>
+              </ContextMenuContent>
+            </ContextMenu>
+          </div>
+
+          <div className="flex flex-wrap items-start gap-4">
+            <div className="w-44 overflow-hidden rounded-lg border border-border">
+              <AspectRatio ratio={16 / 9}>
+                <div className="flex h-full w-full items-center justify-center bg-muted text-xs text-muted-foreground">
+                  16:9
+                </div>
+              </AspectRatio>
+            </div>
+            <div className="w-44">
+              <Empty className="p-6">
+                <EmptyMedia>🔍</EmptyMedia>
+                <EmptyTitle>No results</EmptyTitle>
+                <EmptyDescription>Try different keywords.</EmptyDescription>
+                <EmptyContent>
+                  <Button variant="outline" size="sm">Clear</Button>
+                </EmptyContent>
+              </Empty>
+            </div>
+            <div className="flex w-56 flex-col gap-3 rounded-lg border border-border p-3">
+              <Item>
+                <ItemMedia align="start">📄</ItemMedia>
+                <ItemContent>
+                  <ItemTitle>Q3 report.pdf</ItemTitle>
+                  <ItemDescription>Updated 2 hours ago</ItemDescription>
+                </ItemContent>
+              </Item>
+              <Item>
+                <ItemMedia align="start">📊</ItemMedia>
+                <ItemContent>
+                  <ItemTitle>budget.xlsx</ItemTitle>
+                  <ItemDescription>You edited this file</ItemDescription>
+                </ItemContent>
+                <ItemEnd>
+                  <Toggle variant="outline" size="sm" aria-label="Star file">
+                    Star
+                  </Toggle>
+                </ItemEnd>
+              </Item>
+            </div>
+          </div>
+        </div>
+      </Section>
+
+      <Section
+        id="parity-p2"
+        title="shadcn-parity — Field, Command, InputOTP, Carousel, Resizable, Menubar"
+        description="The medium builds: context-wired fields, raw cmdk, OTP input, embla carousel, resizable panels, menu bar."
+      >
+        <div className="grid gap-6 md:grid-cols-2">
+          <div className="w-full max-w-sm">
+            <Field name="team-email">
+              <FieldLabel>Team email</FieldLabel>
+              <FieldControl>
+                <Input placeholder="teammate@acme.com" />
+              </FieldControl>
+              <FieldDescription>They'll get an invite link.</FieldDescription>
+            </Field>
+            <div className="mt-4">
+              <Field name="role-p2" invalid>
+                <FieldLabel>Role</FieldLabel>
+                <FieldControl>
+                  <NativeSelect defaultValue="">
+                    <option value="">Pick a role…</option>
+                    <option value="admin">Admin</option>
+                    <option value="editor">Editor</option>
+                  </NativeSelect>
+                </FieldControl>
+                <FieldError>Pick a role to send the invite.</FieldError>
+              </Field>
+            </div>
+          </div>
+
+          <div className="w-full max-w-sm">
+            <Command>
+              <CommandInput placeholder="Type a command or search…" />
+              <CommandList>
+                <CommandEmpty>No results found.</CommandEmpty>
+                <CommandGroup heading="Suggestions">
+                  <CommandItem>Calendar</CommandItem>
+                  <CommandItem>Profile</CommandItem>
+                </CommandGroup>
+              </CommandList>
+            </Command>
+          </div>
+
+          <div className="flex flex-col items-start gap-4">
+            <InputOTP maxLength={6} value={otp} onChange={setOtp} aria-label="Verification code">
+              <InputOTPGroup>
+                <InputOTPSlot index={0} />
+                <InputOTPSlot index={1} />
+                <InputOTPSlot index={2} />
+              </InputOTPGroup>
+              <InputOTPSeparator />
+              <InputOTPGroup>
+                <InputOTPSlot index={3} />
+                <InputOTPSlot index={4} />
+                <InputOTPSlot index={5} />
+              </InputOTPGroup>
+            </InputOTP>
+            <div className="w-full rounded-lg border border-border p-1">
+              <Menubar>
+                <MenubarMenu>
+                  <MenubarTrigger>File</MenubarTrigger>
+                  <MenubarContent>
+                    <MenubarItem>
+                      New Tab <MenubarShortcut>⌘T</MenubarShortcut>
+                    </MenubarItem>
+                    <MenubarSeparator />
+                    <MenubarCheckboxItem checked>Auto-save</MenubarCheckboxItem>
+                  </MenubarContent>
+                </MenubarMenu>
+                <MenubarMenu>
+                  <MenubarTrigger>View</MenubarTrigger>
+                  <MenubarContent>
+                    <MenubarLabel>Zoom</MenubarLabel>
+                    <MenubarRadioGroup value="100">
+                      <MenubarRadioItem value="80">80%</MenubarRadioItem>
+                      <MenubarRadioItem value="100">100%</MenubarRadioItem>
+                    </MenubarRadioGroup>
+                  </MenubarContent>
+                </MenubarMenu>
+              </Menubar>
+            </div>
+          </div>
+
+          <div className="flex flex-col gap-6">
+            <div className="w-full max-w-xl">
+              <Carousel>
+                <CarouselContent>
+                  {Array.from({ length: 6 }, (_, i) => (
+                    <CarouselItem key={i} className="basis-1/3">
+                      <Card>
+                        <CardContent className="flex aspect-square items-center justify-center p-4 text-xs text-muted-foreground">
+                          Slide {i + 1}
+                        </CardContent>
+                      </Card>
+                    </CarouselItem>
+                  ))}
+                </CarouselContent>
+                <CarouselPrevious />
+                <CarouselNext />
+              </Carousel>
+            </div>
+            <div className="h-40 w-full max-w-xl">
+              <ResizablePanelGroup orientation="horizontal" className="rounded-lg border border-border">
+                <ResizablePanel defaultSize={30} className="flex items-center justify-center p-4 text-sm text-muted-foreground">
+                  Sidebar
+                </ResizablePanel>
+                <ResizableHandle withHandle />
+                <ResizablePanel defaultSize={70} className="flex items-center justify-center p-4 text-sm text-muted-foreground">
+                  Main — drag the handle
+                </ResizablePanel>
+              </ResizablePanelGroup>
+            </div>
+          </div>
         </div>
       </Section>
     </>

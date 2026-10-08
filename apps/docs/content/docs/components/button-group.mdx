@@ -1,0 +1,43 @@
+---
+title: Button Group
+description: Joined buttons — merged corners, hairline seams.
+---
+
+`ButtonGroup` merges sibling buttons into one segmented control: corners
+combine, a hairline seam separates items, and hover/focus surface above the
+neighbours. Wrap any buttons as direct children.
+
+## Installation
+
+```tsx
+import { ButtonGroup } from "@iammikz/srui";
+```
+
+## Usage
+
+<LivePreview code={`<ButtonGroup>
+  <Button variant="outline">Day</Button>
+  <Button variant="outline">Week</Button>
+  <Button variant="outline">Month</Button>
+</ButtonGroup>`}>
+  <div className="flex flex-wrap items-center gap-6">
+    <ButtonGroup>
+      <Button variant="outline">Day</Button>
+      <Button variant="outline">Week</Button>
+      <Button variant="outline">Month</Button>
+    </ButtonGroup>
+    <ButtonGroup orientation="vertical">
+      <Button variant="outline">Day</Button>
+      <Button variant="outline">Week</Button>
+      <Button variant="outline">Month</Button>
+    </ButtonGroup>
+  </div>
+</LivePreview>
+
+## Props
+
+| Prop | Type | Default | Description |
+|---|---|---|---|
+| `orientation` | `"horizontal" \| "vertical"` | `"horizontal"` | Which corners merge |
+
+Any direct children work — `Button`, `Toggle`, custom buttons.

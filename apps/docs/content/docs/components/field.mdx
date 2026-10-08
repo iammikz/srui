@@ -1,0 +1,75 @@
+---
+title: Field
+description: Context-wired form field — label, description, error, control.
+---
+
+`Field` wires a form field together through context: the label, description
+and error register themselves, and `FieldControl` injects the control `id`,
+`aria-describedby` and `aria-invalid` into any control you drop in — srui's
+or your own.
+
+## Installation
+
+```tsx
+import { Field, FieldLabel, FieldDescription, FieldError, FieldControl } from "@iammikz/srui";
+```
+
+## Usage
+
+<LivePreview code={`<Field name="email">
+  <FieldLabel>Email</FieldLabel>
+  <FieldControl>
+    <Input placeholder="ada@example.com" />
+  </FieldControl>
+  <FieldDescription>We only use this for sign-in.</FieldDescription>
+</Field>`}>
+  <div className="w-full max-w-sm">
+    <Field name="email">
+      <FieldLabel>Email</FieldLabel>
+      <FieldControl>
+        <Input placeholder="ada@example.com" />
+      </FieldControl>
+      <FieldDescription>We only use this for sign-in.</FieldDescription>
+    </Field>
+  </div>
+</LivePreview>
+
+### Invalid
+
+`invalid` on `Field` (or rendering a `FieldError`) turns the label
+destructive and marks the control `aria-invalid`.
+
+<LivePreview code={`<Field name="plan" invalid>
+  <FieldLabel>Plan</FieldLabel>
+  <FieldControl><NativeSelect>…</NativeSelect></FieldControl>
+  <FieldError>Pick a plan to continue.</FieldError>
+</Field>`}>
+  <div className="w-full max-w-sm">
+    <Field name="plan" invalid>
+      <FieldLabel>Plan</FieldLabel>
+      <FieldControl>
+        <NativeSelect defaultValue="">
+          <option value="">Pick a plan…</option>
+          <option value="free">Free</option>
+        </NativeSelect>
+      </FieldControl>
+      <FieldError>Pick a plan to continue.</FieldError>
+    </Field>
+  </div>
+</LivePreview>
+
+## Exports
+
+| Export | Notes |
+|---|---|
+| `Field` | `name` (derives ids), `invalid` |
+| `FieldLabel` | htmlFor wired automatically; inherits the invalid tone |
+| `FieldControl` | Injects `id`/`aria-describedby`/`aria-invalid` into its child |
+| `FieldDescription` / `FieldError` | Register themselves as describedby sources; error renders `role="alert"` |
+| `useField()` | Raw context for fully custom controls |
+
+## Accessibility
+
+One `aria-describedby` joins every description and error to the control; the
+label's `htmlFor` matches the control id; `aria-invalid` flips with the field
+state. Works with react-hook-form via `Controller`-rendered controls.

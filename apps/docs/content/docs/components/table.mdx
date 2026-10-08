@@ -1,0 +1,81 @@
+---
+title: Table
+description: Plain styled table primitives for static and server-rendered tables.
+---
+
+`Table` is the shadcn-style primitive set for plain tables — no state, no
+client logic. For sorting, filtering, pagination, selection, pinning and
+virtualization use `DataTable`.
+
+## Installation
+
+```tsx
+import {
+  Table, TableHeader, TableBody, TableFooter, TableHead, TableRow, TableCell, TableCaption,
+} from "@iammikz/srui";
+```
+
+## Usage
+
+<LivePreview code={`<Table>
+  <TableHeader>
+    <TableRow>
+      <TableHead>Name</TableHead>
+      <TableHead>Role</TableHead>
+    </TableRow>
+  </TableHeader>
+  <TableBody>
+    <TableRow>
+      <TableCell>Ada Lovelace</TableCell>
+      <TableCell>Admin</TableCell>
+    </TableRow>
+  </TableBody>
+</Table>`}>
+  <Table>
+    <TableHeader>
+      <TableRow>
+        <TableHead>Name</TableHead>
+        <TableHead>Role</TableHead>
+        <TableHead>Status</TableHead>
+      </TableRow>
+    </TableHeader>
+    <TableBody>
+      <TableRow>
+        <TableCell>Ada Lovelace</TableCell>
+        <TableCell>Admin</TableCell>
+        <TableCell>active</TableCell>
+      </TableRow>
+      <TableRow>
+        <TableCell>Grace Hopper</TableCell>
+        <TableCell>Editor</TableCell>
+        <TableCell>active</TableCell>
+      </TableRow>
+      <TableRow>
+        <TableCell>Alan Turing</TableCell>
+        <TableCell>Viewer</TableCell>
+        <TableCell>invited</TableCell>
+      </TableRow>
+    </TableBody>
+    <TableFooter>
+      <TableRow>
+        <TableCell colSpan={3}>3 members</TableCell>
+      </TableRow>
+    </TableFooter>
+  </Table>
+</LivePreview>
+
+## Exports
+
+| Export | Notes |
+|---|---|
+| `Table` | `overflow-x-auto` wrapper + `w-full` table |
+| `TableHeader` / `TableBody` / `TableFooter` | Row groups; footer gets `bg-muted/50` |
+| `TableHead` | `th` — uppercase, muted, `scope="col"` |
+| `TableRow` | `border-b`, hover highlight, `data-state=selected` styling |
+| `TableCell` | `td` |
+| `TableCaption` | Muted caption below the table |
+
+## Accessibility
+
+Header cells carry `scope="col"`; the container scrolls horizontally without
+clipping focus. Rows support `data-state="selected"` for selection styling.

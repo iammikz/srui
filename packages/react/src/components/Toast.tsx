@@ -10,14 +10,31 @@ export interface ToastOptions {
   description?: string;
   variant?: "default" | "success" | "destructive";
   action?: { label: string; onClick: () => void };
+  /** How long the toast stays open (ms). Default 5000. */
+  duration?: number;
+  /** Fires when the toast closes — swipe, X, action, or timeout. */
+  onDismiss?: () => void;
 }
+
+export type ToastPosition =
+  | "top"
+  | "top-left"
+  | "top-right"
+  | "bottom"
+  | "bottom-left"
+  | "bottom-right";
 
 interface ToastRecord extends ToastOptions {
   id: number;
 }
 
 interface ToastContextValue {
-  toast: (options: ToastOptions) => void;
+  /** Shows a toast; returns its id for `update`/`dismiss`. */
+  toast: (options: ToastOptions) => number;
+  /** Closes a toast by id. */
+  dismiss: (id: number) => void;
+  /** Merges options into a live toast (e.g. progress → success). */
+  update: (id: number, options: Partial<ToastOptions>) => void;
 }
 
 const ToastContext = React.createContext<ToastContextValue | null>(null);
@@ -29,24 +46,45 @@ export function useToast(): ToastContextValue {
   return ctx;
 }
 
+const VIEWPORT_POSITIONS: Record<ToastPosition, string> = {
+  top: "top-0 left-1/2 -translate-x-1/2 flex-col",
+  "top-left": "top-0 left-0 flex-col",
+  "top-right": "top-0 right-0 flex-col",
+  bottom: "bottom-0 left-1/2 -translate-x-1/2 flex-col-reverse",
+  "bottom-left": "bottom-0 left-0 flex-col-reverse",
+  "bottom-right": "bottom-0 right-0 flex-col-reverse",
+};
+
 /**
  * Place once near the app root (alongside UIProvider). Holds the toast list
  * and renders the viewport; components below it call `toast({...})`.
  */
-export function ToastProvider({ children }: { children: React.ReactNode }) {
+export function ToastProvider({
+  children,
+  position = "bottom-right",
+}: {
+  children: React.ReactNode;
+  /** Where toasts stack. Default `bottom-right`. */
+  position?: ToastPosition;
+}) {
   const [toasts, setToasts] = React.useState<ToastRecord[]>([]);
   const counter = React.useRef(0);
 
   const toast = React.useCallback((options: ToastOptions) => {
     const id = ++counter.current;
     setToasts((prev) => [...prev, { ...options, id }]);
+    return id;
   }, []);
 
   const dismiss = React.useCallback((id: number) => {
     setToasts((prev) => prev.filter((t) => t.id !== id));
   }, []);
 
-  const value = React.useMemo(() => ({ toast }), [toast]);
+  const update = React.useCallback((id: number, options: Partial<ToastOptions>) => {
+    setToasts((prev) => prev.map((t) => (t.id === id ? { ...t, ...options } : t)));
+  }, []);
+
+  const value = React.useMemo(() => ({ toast, dismiss, update }), [toast, dismiss, update]);
 
   return (
     <ToastContext.Provider value={value}>
@@ -55,7 +93,7 @@ export function ToastProvider({ children }: { children: React.ReactNode }) {
         {toasts.map((t) => (
           <Toast key={t.id} record={t} onOpenChange={(open) => !open && dismiss(t.id)} />
         ))}
-        <ToastViewport />
+        <ToastViewport position={position} />
       </ToastPrimitive.Provider>
     </ToastContext.Provider>
   );
@@ -68,11 +106,14 @@ function Toast({
   record: ToastRecord;
   onOpenChange: (open: boolean) => void;
 }) {
-  const { title, description, variant = "default", action } = record;
+  const { title, description, variant = "default", action, duration, onDismiss } = record;
   return (
     <ToastPrimitive.Root
-      duration={5000}
-      onOpenChange={onOpenChange}
+      duration={duration ?? 5000}
+      onOpenChange={(open) => {
+        onOpenChange(open);
+        if (!open) onDismiss?.();
+      }}
       className={cn(
         "surface group grid w-full items-center gap-1 rounded-lg border p-4 text-sm outline-none motion-safe:animate-scale-in",
         variant === "default" && "border-border bg-popover text-popover-foreground",
@@ -139,12 +180,16 @@ function ToastAction({
 
 function ToastViewport({
   className,
+  position = "bottom-right",
   ...props
-}: React.ComponentPropsWithoutRef<typeof ToastPrimitive.Viewport>) {
+}: React.ComponentPropsWithoutRef<typeof ToastPrimitive.Viewport> & {
+  position?: ToastPosition;
+}) {
   return (
     <ToastPrimitive.Viewport
       className={cn(
-        "fixed right-0 bottom-0 z-[60] flex w-full max-w-[26rem] list-none flex-col gap-2 p-4 outline-none",
+        "fixed z-[60] flex w-full max-w-[26rem] list-none gap-2 p-4 outline-none",
+        VIEWPORT_POSITIONS[position],
         className,
       )}
       {...props}

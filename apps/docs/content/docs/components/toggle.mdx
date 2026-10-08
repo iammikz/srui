@@ -1,0 +1,42 @@
+---
+title: Toggle
+description: Two-state button, wrapping Radix Toggle.
+---
+
+`Toggle` is a button that stays pressed: formatting controls, favorite
+states, view switches. `ToggleGroup` composes several into one value.
+
+## Installation
+
+```tsx
+import { Toggle } from "@iammikz/srui";
+```
+
+## Usage
+
+<LivePreview code={`<Toggle defaultPressed aria-label="Toggle bold">
+  Bold
+</Toggle>`}>
+  <div className="flex flex-wrap items-center gap-3">
+    <Toggle defaultPressed aria-label="Toggle bold">
+      Bold
+    </Toggle>
+    <Toggle variant="outline" aria-label="Toggle italic">
+      Italic
+    </Toggle>
+    <Toggle disabled aria-label="Disabled toggle">
+      Off
+    </Toggle>
+  </div>
+</LivePreview>
+
+## Props
+
+| Prop | Type | Default | Description |
+|---|---|---|---|
+| `variant` | `"default" \| "outline"` | `"default"` | `outline` adds a border |
+| `size` | `"sm" \| "default" \| "lg"` | `"default"` | h-8 / h-9 / h-10 |
+| `pressed` / `defaultPressed` | `boolean` | — | Controlled / initial pressed state |
+| `onPressedChange` | `(pressed: boolean) => void` | — | Fires on toggle |
+
+Also exports `toggleStyles` (the `tv` recipe) for custom compositions.

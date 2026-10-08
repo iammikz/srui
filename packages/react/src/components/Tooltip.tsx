@@ -5,8 +5,18 @@ import * as TooltipPrimitive from "@radix-ui/react-tooltip";
 import { cn } from "../lib/cn";
 
 const TooltipProvider = TooltipPrimitive.Provider;
-const Tooltip = TooltipPrimitive.Root;
 const TooltipTrigger = TooltipPrimitive.Trigger;
+
+/**
+ * Opens instantly by default (the shadcn ergonomic); override per-instance
+ * with `delayDuration`. All other `TooltipPrimitive.Root` props pass through.
+ */
+function Tooltip({
+  delayDuration = 0,
+  ...props
+}: React.ComponentPropsWithoutRef<typeof TooltipPrimitive.Root>) {
+  return <TooltipPrimitive.Root delayDuration={delayDuration} {...props} />;
+}
 
 function TooltipContent({
   className,

@@ -63,6 +63,23 @@ import * as TreeView from "../content/docs/components/tree-view.mdx";
 import * as Timeline from "../content/docs/components/timeline.mdx";
 import * as AlertDialog from "../content/docs/components/alert-dialog.mdx";
 import * as Pagination from "../content/docs/components/pagination.mdx";
+import * as Table from "../content/docs/components/table.mdx";
+import * as Toggle from "../content/docs/components/toggle.mdx";
+import * as ToggleGroup from "../content/docs/components/toggle-group.mdx";
+import * as HoverCard from "../content/docs/components/hover-card.mdx";
+import * as ContextMenu from "../content/docs/components/context-menu.mdx";
+import * as Kbd from "../content/docs/components/kbd.mdx";
+import * as AspectRatio from "../content/docs/components/aspect-ratio.mdx";
+import * as ButtonGroup from "../content/docs/components/button-group.mdx";
+import * as NativeSelect from "../content/docs/components/native-select.mdx";
+import * as Empty from "../content/docs/components/empty.mdx";
+import * as Item from "../content/docs/components/item.mdx";
+import * as Field from "../content/docs/components/field.mdx";
+import * as Command from "../content/docs/components/command.mdx";
+import * as InputOTP from "../content/docs/components/input-otp.mdx";
+import * as Carousel from "../content/docs/components/carousel.mdx";
+import * as Resizable from "../content/docs/components/resizable.mdx";
+import * as Menubar from "../content/docs/components/menubar.mdx";
 import * as Slider from "../content/docs/components/slider.mdx";
 import * as ColorPicker from "../content/docs/components/color-picker.mdx";
 import * as AppShell from "../content/docs/components/app-shell.mdx";
@@ -178,6 +195,23 @@ export const routes: RouteRecord[] = [
       { path: "components/timeline", element: <DocsPage mod={Timeline} /> },
       { path: "components/alert-dialog", element: <DocsPage mod={AlertDialog} /> },
       { path: "components/pagination", element: <DocsPage mod={Pagination} /> },
+      { path: "components/table", element: <DocsPage mod={Table} /> },
+      { path: "components/toggle", element: <DocsPage mod={Toggle} /> },
+      { path: "components/toggle-group", element: <DocsPage mod={ToggleGroup} /> },
+      { path: "components/hover-card", element: <DocsPage mod={HoverCard} /> },
+      { path: "components/context-menu", element: <DocsPage mod={ContextMenu} /> },
+      { path: "components/kbd", element: <DocsPage mod={Kbd} /> },
+      { path: "components/aspect-ratio", element: <DocsPage mod={AspectRatio} /> },
+      { path: "components/button-group", element: <DocsPage mod={ButtonGroup} /> },
+      { path: "components/native-select", element: <DocsPage mod={NativeSelect} /> },
+      { path: "components/empty", element: <DocsPage mod={Empty} /> },
+      { path: "components/item", element: <DocsPage mod={Item} /> },
+      { path: "components/field", element: <DocsPage mod={Field} /> },
+      { path: "components/command", element: <DocsPage mod={Command} /> },
+      { path: "components/input-otp", element: <DocsPage mod={InputOTP} /> },
+      { path: "components/carousel", element: <DocsPage mod={Carousel} /> },
+      { path: "components/resizable", element: <DocsPage mod={Resizable} /> },
+      { path: "components/menubar", element: <DocsPage mod={Menubar} /> },
       { path: "components/slider", element: <DocsPage mod={Slider} /> },
       { path: "components/color-picker", element: <DocsPage mod={ColorPicker} /> },
       { path: "components/app-shell", element: <DocsPage mod={AppShell} /> },

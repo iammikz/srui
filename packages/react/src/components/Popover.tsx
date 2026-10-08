@@ -8,6 +8,20 @@ const Popover = PopoverPrimitive.Root;
 const PopoverTrigger = PopoverPrimitive.Trigger;
 const PopoverAnchor = PopoverPrimitive.Anchor;
 
+/** Closes the popover on click/activation (shadcn-parity export). */
+function PopoverClose({
+  className,
+  ...props
+}: React.ComponentPropsWithoutRef<typeof PopoverPrimitive.Close>) {
+  return (
+    <PopoverPrimitive.Close
+      data-slot="popover-close"
+      className={cn("outline-none focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-ring", className)}
+      {...props}
+    />
+  );
+}
+
 const PopoverContent = React.forwardRef<
   HTMLDivElement,
   React.ComponentPropsWithoutRef<typeof PopoverPrimitive.Content>
@@ -31,4 +45,4 @@ const PopoverContent = React.forwardRef<
   );
 });
 
-export { Popover, PopoverTrigger, PopoverContent, PopoverAnchor };
+export { Popover, PopoverTrigger, PopoverContent, PopoverAnchor, PopoverClose };

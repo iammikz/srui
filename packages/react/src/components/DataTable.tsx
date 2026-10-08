@@ -11,6 +11,7 @@ import {
   type Column,
   type ColumnDef,
   type ColumnFiltersState,
+  type PaginationState,
   type RowSelectionState,
   type SortingState,
   type Table as TanstackTable,
@@ -46,6 +47,20 @@ export interface DataTableProps<T> {
   sortable?: boolean;
   selectable?: boolean;
   pageSize?: number;
+  /**
+   * Server-side pagination: pages are fetched from elsewhere instead of being
+   * sliced out of `data` client-side. Pair with `rowCount` and refetch in
+   * `onPaginationChange`.
+   */
+  manualPagination?: boolean;
+  /** Total rows per the server response; drives "Page X of Y" when manual. */
+  rowCount?: number;
+  /** Total pages when the API can't report a row count; alternative to `rowCount`. */
+  pageCount?: number;
+  /** Controlled pagination state; omit to let the table own it. */
+  pagination?: PaginationState;
+  /** Fires with the resolved `{ pageIndex, pageSize }` on any page change — refetch here. */
+  onPaginationChange?: (pagination: PaginationState) => void;
   onRowSelectionChange?: (rows: T[]) => void;
   /** Global search input above the columns; filters every column at once. */
   filterable?: boolean;
@@ -66,6 +81,16 @@ export interface UseDataTableConfig<T> {
   sortable?: boolean;
   selectable?: boolean;
   pageSize?: number;
+  /** Server-side pagination — see `DataTableProps.manualPagination`. */
+  manualPagination?: boolean;
+  /** Total rows per the server response; drives `getPageCount()` when manual. */
+  rowCount?: number;
+  /** Total pages when the API can't report a row count; alternative to `rowCount`. */
+  pageCount?: number;
+  /** Controlled pagination state; omit to let the hook own it. */
+  pagination?: PaginationState;
+  /** Fires with the resolved `{ pageIndex, pageSize }` on any page change. */
+  onPaginationChange?: (pagination: PaginationState) => void;
   onRowSelectionChange?: (rows: T[]) => void;
 }
 
@@ -80,29 +105,57 @@ export function useDataTable<T>({
   sortable = true,
   selectable = false,
   pageSize,
+  manualPagination = false,
+  rowCount,
+  pageCount,
+  pagination,
+  onPaginationChange,
   onRowSelectionChange,
 }: UseDataTableConfig<T>): TableInstance<T> {
   const [sorting, setSorting] = React.useState<SortingState>([]);
   const [columnFilters, setColumnFilters] = React.useState<ColumnFiltersState>([]);
   const [globalFilter, setGlobalFilter] = React.useState("");
   const [rowSelection, setRowSelection] = React.useState<RowSelectionState>({});
+  const [internalPagination, setInternalPagination] = React.useState<PaginationState>({
+    pageIndex: 0,
+    pageSize: pageSize ?? 10,
+  });
+  const currentPagination = pagination ?? internalPagination;
 
   const table = useReactTable({
     data,
     columns,
-    state: { sorting, columnFilters, globalFilter, rowSelection },
+    state: {
+      sorting,
+      columnFilters,
+      globalFilter,
+      rowSelection,
+      pagination: currentPagination,
+    },
     onSortingChange: setSorting,
     onColumnFiltersChange: setColumnFilters,
     onGlobalFilterChange: setGlobalFilter,
     onRowSelectionChange: setRowSelection,
+    onPaginationChange: (updater) => {
+      const next =
+        typeof updater === "function" ? updater(currentPagination) : updater;
+      setInternalPagination(next);
+      onPaginationChange?.(next);
+    },
     getCoreRowModel: getCoreRowModel(),
     getSortedRowModel: sortable ? getSortedRowModel() : undefined,
     getFilteredRowModel: getFilteredRowModel(),
-    getPaginationRowModel: pageSize ? getPaginationRowModel() : undefined,
+    getPaginationRowModel:
+      pageSize && !manualPagination ? getPaginationRowModel() : undefined,
     globalFilterFn: "includesString",
     enableSorting: sortable,
     enableRowSelection: selectable,
-    initialState: pageSize ? { pagination: { pageSize } } : undefined,
+    manualPagination,
+    // Without this, TanStack snaps back to page 1 whenever a freshly fetched
+    // data array lands — the server-paging footgun.
+    autoResetPageIndex: !manualPagination,
+    rowCount,
+    pageCount,
   });
 
   React.useEffect(() => {
@@ -170,7 +223,9 @@ function exportCsv<T>(table: TableInstance<T>) {
  * Tier 1 super-component: sortable, filterable, paginatable, selectable
  * table with optional sticky column pinning, automatic virtualization for
  * large datasets (>200 rows without pageSize) and client-side CSV export.
- * Sort → filter → paginate compose through Tanstack's row pipeline.
+ * Sort → filter → paginate compose through TanStack's row pipeline.
+ * Pagination is client-side by default; `manualPagination` + `rowCount`
+ * switch it to server-side (fetch pages in `onPaginationChange`).
  */
 export function DataTable<T>({
   columns,
@@ -178,6 +233,11 @@ export function DataTable<T>({
   sortable = true,
   selectable = false,
   pageSize,
+  manualPagination = false,
+  rowCount,
+  pageCount,
+  pagination,
+  onPaginationChange,
   onRowSelectionChange,
   filterable = false,
   pinColumns = false,
@@ -221,11 +281,18 @@ export function DataTable<T>({
     sortable,
     selectable,
     pageSize,
+    manualPagination,
+    rowCount,
+    pageCount,
+    pagination,
+    onPaginationChange,
     onRowSelectionChange,
   });
 
   const rows = table.getRowModel().rows;
-  const useVirtual = !pageSize && rows.length > DATA_TABLE_VIRTUALIZE_THRESHOLD;
+  // Manual mode only ever holds one server page, so it never virtualizes.
+  const useVirtual =
+    !pageSize && !manualPagination && rows.length > DATA_TABLE_VIRTUALIZE_THRESHOLD;
   const scrollRef = React.useRef<HTMLDivElement>(null);
   const virtualizer = useVirtualizer({
     count: rows.length,
@@ -268,7 +335,10 @@ export function DataTable<T>({
             className="whitespace-nowrap text-xs text-muted-foreground"
             aria-live="polite"
           >
-            {table.getFilteredRowModel().rows.length} rows
+            {manualPagination
+              ? (rowCount ?? table.getFilteredRowModel().rows.length)
+              : table.getFilteredRowModel().rows.length}{" "}
+            rows
           </span>
         </div>
         <div className="flex items-center gap-2">
@@ -378,7 +448,7 @@ export function DataTable<T>({
         </table>
       </div>
 
-      {pageSize ? (
+      {pageSize || manualPagination ? (
         <div className="flex flex-wrap items-center justify-end gap-2 border-t border-border px-3 py-2">
           <div className="mr-auto flex items-center gap-2">
             <span className="whitespace-nowrap text-xs text-muted-foreground">
@@ -395,7 +465,7 @@ export function DataTable<T>({
                 <SelectValue />
               </SelectTrigger>
               <SelectContent>
-                {[...new Set([pageSize, 10, 20, 30, 50])]
+                {[...new Set([pageSize ?? 10, 10, 20, 30, 50])]
                   .sort((a, b) => a - b)
                   .map((size) => (
                     <SelectItem key={size} value={String(size)} className="text-xs">

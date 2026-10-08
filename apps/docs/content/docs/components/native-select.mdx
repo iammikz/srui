@@ -1,0 +1,38 @@
+---
+title: Native Select
+description: Styled native select element — SSR-safe, no JS.
+---
+
+`NativeSelect` is a styled `<select>` — it renders identically on the server,
+works without JavaScript, and submits with plain HTML forms. For search,
+rich item rendering and popovers use `Select`.
+
+## Installation
+
+```tsx
+import { NativeSelect } from "@iammikz/srui";
+```
+
+## Usage
+
+<LivePreview code={`<NativeSelect aria-label="Day" defaultValue="mon">
+  <option value="mon">Monday</option>
+  <option value="tue">Tuesday</option>
+</NativeSelect>`}>
+  <div className="w-full max-w-56">
+    <NativeSelect aria-label="Day" defaultValue="mon">
+      <option value="mon">Monday</option>
+      <option value="tue">Tuesday</option>
+      <option value="wed">Wednesday</option>
+    </NativeSelect>
+  </div>
+</LivePreview>
+
+## Props
+
+All native `<select>` attributes plus:
+
+| Prop | Type | Default | Description |
+|---|---|---|---|
+| `size` | `"sm" \| "default" \| "lg"` | `"default"` | h-8 / h-9 / h-10 |
+| `invalid` | `boolean` | `false` | Destructive border + `aria-invalid` |

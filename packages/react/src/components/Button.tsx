@@ -1,4 +1,5 @@
 import * as React from "react";
+import { Slot } from "@radix-ui/react-slot";
 import { tv, type VariantProps } from "tailwind-variants";
 import { cn } from "../lib/cn";
 import { Spinner } from "./Loader";
@@ -36,22 +37,52 @@ export interface ButtonProps
     VariantProps<typeof button> {
   /** Shows a spinner and disables the button while true. */
   loading?: boolean;
+  /**
+   * Render the single child element as-is (e.g. a router `<Link>` or `<a>`)
+   * with the button styling, instead of wrapping it in a `<button>`.
+   * The spinner is skipped in this mode — compose it into the child if needed.
+   */
+  asChild?: boolean;
 }
 
 export const Button = React.forwardRef<HTMLButtonElement, ButtonProps>(
-  ({ className, variant, size, loading, disabled, children, ...props }, ref) => (
-    <button
-      ref={ref}
-      data-loading={loading ? "" : undefined}
-      disabled={disabled || loading}
-      aria-busy={loading || undefined}
-      className={cn(button({ variant, size }), className)}
-      {...props}
-    >
-      {loading ? <Spinner className="size-4" /> : null}
-      {children}
-    </button>
-  ),
+  (
+    { className, variant, size, loading, disabled, asChild = false, children, ...props },
+    ref,
+  ) => {
+    const styles = cn(button({ variant, size }), className);
+
+    if (asChild) {
+      return (
+        <Slot
+          ref={ref}
+          data-loading={loading ? "" : undefined}
+          // `disabled` is meaningless on most slot children (anchors, links);
+          // expose the state accessibly instead.
+          aria-disabled={disabled || loading || undefined}
+          aria-busy={loading || undefined}
+          className={styles}
+          {...props}
+        >
+          {children}
+        </Slot>
+      );
+    }
+
+    return (
+      <button
+        ref={ref}
+        data-loading={loading ? "" : undefined}
+        disabled={disabled || loading}
+        aria-busy={loading || undefined}
+        className={styles}
+        {...props}
+      >
+        {loading ? <Spinner className="size-4" /> : null}
+        {children}
+      </button>
+    );
+  },
 );
 Button.displayName = "Button";
 

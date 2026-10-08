@@ -38,6 +38,9 @@ const SECTIONS: Record<string, string> = {
   "Alert/Progress/Timeline/Breadcrumb/TagInput/TreeView/ScrollArea/FileUpload":
     "#new-primitives",
   "DropdownMenu/Drawer": "#menus-overlays",
+  "P1 primitives (Table/Toggle/HoverCard/ContextMenu/Kbd/AspectRatio/ButtonGroup/NativeSelect/Empty/Item)":
+    "#parity-primitives",
+  "P2 (Field/Command/InputOTP/Carousel/Resizable/Menubar)": "#parity-p2",
 };
 
 const SERIOUS_OR_CRITICAL = (v: { impact: string | null }) =>
@@ -155,7 +158,10 @@ test.describe("keyboard interactions (§6.4)", () => {
     await page.goto("/?style=flat&scheme=light");
     const trigger = page.getByRole("combobox", { name: "Select (Radix)" });
     await trigger.click();
-    await expect(page.locator("[role=listbox]")).toBeVisible();
+    // The homepage also renders cmdk Command lists (role=listbox); scope to
+    // the Select's own listbox.
+    const listbox = page.locator("[role=listbox][data-state=open]");
+    await expect(listbox).toBeVisible();
     await page.locator("[data-highlighted]").first().waitFor();
 
     await expect(async () => {
@@ -211,6 +217,17 @@ test.describe("keyboard interactions (§6.4)", () => {
     await expect(firstRow.locator("td").nth(1)).toHaveText("Ada Lovelace");
     await page.keyboard.press("Enter");
     await expect(firstRow.locator("td").nth(1)).toHaveText(/Alan|Barbara|Donald|Grace|Katherine|Linus|Margaret/);
+  });
+
+  test("DataTable: manual pagination refetches per page", async ({ page }) => {
+    await page.goto("/?style=flat&scheme=light");
+    const scope = page.locator("#data-table-server");
+    const firstName = scope.locator("tbody tr td").first();
+    await expect(firstName).toHaveText("Person 1");
+    await expect(scope.getByText("257 rows", { exact: true })).toBeVisible();
+    await scope.getByRole("button", { name: "Next" }).click();
+    await expect(firstName).toHaveText("Person 11");
+    await expect(scope.getByText("Page 2 of 26")).toBeVisible();
   });
 
   test("CommandPalette: Ctrl+K opens, arrows + Enter run a command", async ({ page }) => {

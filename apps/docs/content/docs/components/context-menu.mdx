@@ -1,0 +1,51 @@
+---
+title: Context Menu
+description: Right-click menu with the same surface as DropdownMenu.
+---
+
+`ContextMenu` is the right-click counterpart of `DropdownMenu` — identical
+items, labels, separators, shortcuts, checkboxes, radios and submenus.
+
+## Installation
+
+```tsx
+import { ContextMenu, ContextMenuTrigger, ContextMenuContent, ContextMenuItem } from "@iammikz/srui";
+```
+
+## Usage
+
+<LivePreview code={`<ContextMenu>
+  <ContextMenuTrigger>Right-click this area</ContextMenuTrigger>
+  <ContextMenuContent>
+    <ContextMenuItem>Copy</ContextMenuItem>
+    <ContextMenuItem variant="destructive">Delete</ContextMenuItem>
+  </ContextMenuContent>
+</ContextMenu>`}>
+  <ContextMenu>
+    <ContextMenuTrigger className="flex h-32 w-full max-w-md items-center justify-center rounded-lg border border-dashed border-border text-sm text-muted-foreground">
+      Right-click here
+    </ContextMenuTrigger>
+    <ContextMenuContent>
+      <ContextMenuItem>
+        Back <ContextMenuShortcut>⌘[</ContextMenuShortcut>
+      </ContextMenuItem>
+      <ContextMenuItem variant="destructive">Delete</ContextMenuItem>
+      <ContextMenuSeparator />
+      <ContextMenuCheckboxItem checked>Show hidden files</ContextMenuCheckboxItem>
+    </ContextMenuContent>
+  </ContextMenu>
+</LivePreview>
+
+## Exports
+
+`ContextMenu, ContextMenuTrigger, ContextMenuContent, ContextMenuItem`
+(`variant="destructive"`, `inset`), `ContextMenuCheckboxItem`,
+`ContextMenuRadioGroup`, `ContextMenuRadioItem`, `ContextMenuLabel`,
+`ContextMenuSeparator`, `ContextMenuShortcut`, `ContextMenuGroup`,
+`ContextMenuSub`, `ContextMenuSubTrigger`, `ContextMenuSubContent` — the
+same API shape as `DropdownMenu`.
+
+## Accessibility
+
+Full keyboard model: the menu opens on the context-menu key, arrows move,
+type-ahead selects, Escape closes.

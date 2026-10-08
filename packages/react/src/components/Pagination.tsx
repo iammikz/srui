@@ -1,6 +1,7 @@
 "use client";
 
 import * as React from "react";
+import { Slot } from "@radix-ui/react-slot";
 import { ChevronLeft, ChevronRight, MoreHorizontal } from "lucide-react";
 import { cn } from "../lib/cn";
 
@@ -56,12 +57,20 @@ function PaginationItem({ className, ...props }: React.ComponentProps<"li">) {
 export interface PaginationLinkProps extends React.ComponentProps<"button"> {
   /** Marks the current page — `aria-current="page"` + selected styling. */
   isActive?: boolean;
+  /** Render the single child (e.g. an `<a href>`) instead of a `<button>`. */
+  asChild?: boolean;
 }
 
-function PaginationLink({ className, isActive, ...props }: PaginationLinkProps) {
+function PaginationLink({
+  className,
+  isActive,
+  asChild,
+  ...props
+}: PaginationLinkProps) {
+  const Comp = asChild ? Slot : "button";
   return (
-    <button
-      type="button"
+    <Comp
+      {...(asChild ? null : { type: "button" as const })}
       aria-current={isActive ? "page" : undefined}
       className={cn(
         "inline-flex size-9 items-center justify-center rounded-md text-sm font-medium outline-none transition-colors duration-(--dur-fast) hover:bg-accent hover:text-accent-foreground focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-ring disabled:pointer-events-none disabled:opacity-50 aria-[current=page]:border aria-[current=page]:border-ring aria-[current=page]:bg-accent aria-[current=page]:text-accent-foreground",

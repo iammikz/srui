@@ -31,7 +31,16 @@ import { Button } from "@iammikz/srui";
 | `variant` | `"default" \| "secondary" \| "destructive" \| "outline" \| "ghost" \| "link"` | `"default"` | Visual style |
 | `size` | `"sm" \| "md" \| "lg" \| "icon"` | `"md"` | Control size (`icon` is square) |
 | `loading` | `boolean` | `false` | Shows a spinner, disables the button, sets `aria-busy` |
+| `asChild` | `boolean` | `false` | Renders the single child element (e.g. a router `<Link>` or `<a>`) with the button styling instead of a `<button>`; the spinner is skipped in this mode |
 | ...props | `React.ButtonHTMLAttributes<HTMLButtonElement>` | — | All native button attributes |
+
+### asChild
+
+```tsx
+<Button asChild>
+  <a href="/pricing">Pricing</a>
+</Button>
+```
 
 ## Examples
 

@@ -1,6 +1,6 @@
 import type { Meta, StoryObj } from "@storybook/react";
 import { useState } from "react";
-import { Alert } from "./Alert";
+import { Alert, AlertDescription, AlertTitle } from "./Alert";
 
 const meta: Meta<typeof Alert> = {
   title: "Components/Alert",
@@ -42,4 +42,16 @@ export const Dismissible: Story = {
       </button>
     );
   },
+};
+
+export const ComposedParts: Story = {
+  name: "AlertTitle + AlertDescription composition",
+  render: () => (
+    <Alert variant="warning">
+      <AlertTitle>Approaching limit</AlertTitle>
+      <AlertDescription>
+        85% of the monthly build minutes are used. Upgrade for more.
+      </AlertDescription>
+    </Alert>
+  ),
 };

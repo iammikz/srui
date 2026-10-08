@@ -1,0 +1,42 @@
+---
+title: Carousel
+description: Scroll-snap carousel with prev/next controls, over embla.
+---
+
+`Carousel` is an embla-powered carousel: drag/scroll-snap content, arrow
+controls that disable at the ends, horizontal or vertical.
+
+## Installation
+
+```tsx
+import { Carousel, CarouselContent, CarouselItem, CarouselPrevious, CarouselNext } from "@iammikz/srui";
+```
+
+## Usage
+
+<LivePreview code={`<Carousel>
+  <CarouselContent>
+    {items.map((item) => (
+      <CarouselItem className="basis-1/3">{item}</CarouselItem>
+    ))}
+  </CarouselContent>
+  <CarouselPrevious />
+  <CarouselNext />
+</Carousel>`}>
+  <CarouselDemo />
+</LivePreview>
+
+## Exports
+
+| Export | Notes |
+|---|---|
+| `Carousel` | `orientation="horizontal" \| "vertical"`, `opts` (embla options), `setApi` |
+| `CarouselContent` / `CarouselItem` | The track and slides — size slides via `className` (`basis-1/3` etc.) |
+| `CarouselPrevious` / `CarouselNext` | Round arrow buttons; auto-disabled at the ends |
+| `useCarousel()` | `{ api, scrollPrev, scrollNext, canScrollPrev, canScrollNext, orientation }` |
+
+## Accessibility
+
+The region is `aria-roledescription="carousel"`, slides are
+`role="group"`/`aria-roledescription="slide"`, and arrow keys scroll when
+the carousel itself is focused.

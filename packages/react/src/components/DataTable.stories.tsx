@@ -1,6 +1,6 @@
 import type { Meta, StoryObj } from "@storybook/react";
-import type { ColumnDef } from "@tanstack/react-table";
-import { useState } from "react";
+import type { ColumnDef, PaginationState } from "@tanstack/react-table";
+import { useEffect, useState } from "react";
 import { DataTable } from "./DataTable";
 import { Badge } from "./Badge";
 
@@ -82,4 +82,68 @@ export const Virtualized10k: Story = {
       />
     </div>
   ),
+};
+
+// A fake REST endpoint: 257 records on the "server", one page per request.
+const TOTAL_PEOPLE = 257;
+const allPeople: Person[] = Array.from({ length: TOTAL_PEOPLE }, (_, i) => ({
+  id: i + 1,
+  name: `Person ${i + 1}`,
+  email: `person${i + 1}@example.com`,
+  role: i % 3 === 0 ? "Admin" : i % 3 === 1 ? "Editor" : "Viewer",
+  status: i % 5 === 0 ? "inactive" : "active",
+}));
+
+function fetchPeople(pageIndex: number, pageSize: number) {
+  return new Promise<{ rows: Person[]; total: number }>((resolve) => {
+    setTimeout(() => {
+      resolve({
+        rows: allPeople.slice(pageIndex * pageSize, (pageIndex + 1) * pageSize),
+        total: TOTAL_PEOPLE,
+      });
+    }, 300);
+  });
+}
+
+export const ServerPaginated: Story = {
+  name: "Server-side pagination (one page per request)",
+  render: () => {
+    const [pagination, setPagination] = useState<PaginationState>({
+      pageIndex: 0,
+      pageSize: 10,
+    });
+    const [page, setPage] = useState<Person[]>(() => allPeople.slice(0, 10));
+    const [pending, setPending] = useState(false);
+
+    useEffect(() => {
+      let cancelled = false;
+      setPending(true);
+      fetchPeople(pagination.pageIndex, pagination.pageSize).then((res) => {
+        if (cancelled) return;
+        setPage(res.rows);
+        setPending(false);
+      });
+      return () => {
+        cancelled = true;
+      };
+    }, [pagination]);
+
+    return (
+      <div className="flex w-full max-w-3xl flex-col gap-2">
+        <span className="text-xs text-muted-foreground" aria-live="polite">
+          {pending
+            ? `GET /api/people?page=${pagination.pageIndex + 1}&limit=${pagination.pageSize} …`
+            : `GET /api/people?page=${pagination.pageIndex + 1}&limit=${pagination.pageSize} → ${page.length} rows, ${TOTAL_PEOPLE} total`}
+        </span>
+        <DataTable
+          columns={columns}
+          data={page}
+          manualPagination
+          rowCount={TOTAL_PEOPLE}
+          pagination={pagination}
+          onPaginationChange={setPagination}
+        />
+      </div>
+    );
+  },
 };

@@ -1,5 +1,5 @@
-import { useMemo, useState } from "react";
-import type { ColumnDef } from "@tanstack/react-table";
+import { useEffect, useMemo, useState } from "react";
+import type { ColumnDef, PaginationState } from "@tanstack/react-table";
 import { z } from "zod";
 import {
   AppShell,
@@ -60,6 +60,9 @@ function makePeople(n: number): Person[] {
 }
 
 const months = ["Jan", "Feb", "Mar", "Apr", "May", "Jun", "Jul"];
+
+// The "server" for the manual-pagination demo: one page per request.
+const SERVER_PEOPLE = makePeople(257);
 const rangeData: Record<string, number[]> = {
   "7d": [12, 18, 15, 21, 26, 24, 31],
   "30d": [42, 51, 48, 61, 59, 72, 81],
@@ -124,6 +127,19 @@ export function SuperComponents() {
     { id: "2", title: "New comment on #482", read: false, timestamp: new Date(Date.now() - 42 * 60000) },
     { id: "3", title: "Weekly report ready", read: true, timestamp: new Date(Date.now() - 26 * 3600000) },
   ]);
+  const [serverPagination, setServerPagination] = useState<PaginationState>({
+    pageIndex: 0,
+    pageSize: 10,
+  });
+  const [serverPage, setServerPage] = useState<Person[]>(() => SERVER_PEOPLE.slice(0, 10));
+
+  useEffect(() => {
+    const timer = setTimeout(() => {
+      const start = serverPagination.pageIndex * serverPagination.pageSize;
+      setServerPage(SERVER_PEOPLE.slice(start, start + serverPagination.pageSize));
+    }, 300);
+    return () => clearTimeout(timer);
+  }, [serverPagination]);
 
   const tableData = bigData ?? people;
   const tableColumns = useMemo(() => columns, []);
@@ -151,7 +167,7 @@ export function SuperComponents() {
       <Section
         id="data-table"
         title="DataTable"
-        description="Sort, filter, paginate, select, pin, export CSV — and 10,000-row virtualization."
+        description="Sort, filter, paginate (client- or server-side), select, pin, export CSV — and 10,000-row virtualization."
       >
         <div className="mb-4 flex flex-wrap gap-2">
           <Button size="sm" variant={bigData ? "default" : "outline"} onClick={() => setBigData((d) => (d ? null : makePeople(10000)))}>
@@ -172,6 +188,20 @@ export function SuperComponents() {
             slots={{ empty: "No people match your filters." }}
           />
         )}
+        <div id="data-table-server" className="mt-6">
+          <p className="mb-2 text-xs text-muted-foreground">
+            Server-side: the “API” serves one page per request — 257 rows
+            total, 10 per page, footer pages through the whole dataset.
+          </p>
+          <DataTable
+            columns={tableColumns}
+            data={serverPage}
+            manualPagination
+            rowCount={SERVER_PEOPLE.length}
+            pagination={serverPagination}
+            onPaginationChange={setServerPagination}
+          />
+        </div>
       </Section>
 
       <Section id="chart-card" title="ChartCard" description="Card + chart + time-range switcher; ranges re-trigger the draw-in.">

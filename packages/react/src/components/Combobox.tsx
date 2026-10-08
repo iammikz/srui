@@ -19,6 +19,8 @@ export interface ComboboxProps {
   emptyText?: string;
   className?: string;
   disabled?: boolean;
+  /** Marks the combobox as invalid — destructive trigger border + `aria-invalid`. */
+  invalid?: boolean;
   /** Accessible name for the trigger button (no visible label). */
   "aria-label"?: string;
 }
@@ -35,6 +37,7 @@ export function Combobox({
   emptyText = "No results found.",
   className,
   disabled,
+  invalid,
   ...triggerProps
 }: ComboboxProps) {
   const [open, setOpen] = React.useState(false);
@@ -45,8 +48,11 @@ export function Combobox({
       <PopoverTrigger
         disabled={disabled}
         aria-label={triggerProps["aria-label"]}
+        aria-invalid={invalid || undefined}
         className={cn(
           "surface flex h-9 w-full items-center justify-between gap-2 rounded-md border border-border bg-input/30 px-3 py-2 text-sm outline-none transition-[color,box-shadow,border-color] duration-(--dur-fast) ease-(--ease-out) focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-ring disabled:cursor-not-allowed disabled:opacity-50",
+          "aria-invalid:border-destructive aria-invalid:outline-destructive",
+          invalid && "border-destructive",
           className,
         )}
         aria-expanded={open}

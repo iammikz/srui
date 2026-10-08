@@ -44,6 +44,28 @@ import { Alert } from "@iammikz/srui";
 | `icon` | `LucideIcon \| null` | variant default | Override or disable the icon |
 | `onDismiss` | `() => void` | — | Renders a dismiss button |
 
+The body can also be composed from subcomponents — equivalent to the
+`title` prop + children shorthand:
+
+<LivePreview code={`<Alert variant="warning">
+  <AlertTitle>Approaching limit</AlertTitle>
+  <AlertDescription>
+    85% of the monthly build minutes are used.
+  </AlertDescription>
+</Alert>`}>
+  <Alert variant="warning">
+    <AlertTitle>Approaching limit</AlertTitle>
+    <AlertDescription>
+      85% of the monthly build minutes are used.
+    </AlertDescription>
+  </Alert>
+</LivePreview>
+
+| Export | Notes |
+|---|---|
+| `AlertTitle` | Bold first line |
+| `AlertDescription` | Body copy |
+
 ## Accessibility
 
 `info`/`success` render `role="status"` (polite); `warning`/`destructive`

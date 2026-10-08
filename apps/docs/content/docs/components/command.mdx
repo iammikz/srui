@@ -1,0 +1,57 @@
+---
+title: Command
+description: Composable command menu primitives over cmdk.
+---
+
+`Command` is the raw cmdk primitive set (shadcn Command parity) — build
+palettes, inline command lists, or comboboxes. `CommandPalette` is the
+opinionated ⌘K dialog built on the same engine.
+
+## Installation
+
+```tsx
+import { Command, CommandInput, CommandList, CommandEmpty, CommandGroup, CommandItem } from "@iammikz/srui";
+```
+
+## Usage
+
+<LivePreview code={`<Command>
+  <CommandInput placeholder="Search…" />
+  <CommandList>
+    <CommandEmpty>No results.</CommandEmpty>
+    <CommandGroup heading="Suggestions">
+      <CommandItem>Calendar</CommandItem>
+      <CommandItem>Profile</CommandItem>
+    </CommandGroup>
+  </CommandList>
+</Command>`}>
+  <div className="w-full max-w-sm">
+    <Command>
+      <CommandInput placeholder="Type a command or search…" />
+      <CommandList>
+        <CommandEmpty>No results found.</CommandEmpty>
+        <CommandGroup heading="Suggestions">
+          <CommandItem>Calendar</CommandItem>
+          <CommandItem>Profile</CommandItem>
+          <CommandItem>Appearance</CommandItem>
+        </CommandGroup>
+      </CommandList>
+    </Command>
+  </div>
+</LivePreview>
+
+## Exports
+
+| Export | Notes |
+|---|---|
+| `Command` | Root container (border + popover surface) |
+| `CommandInput` | Search input with leading icon |
+| `CommandList` | Scrollable list (max-h-64) |
+| `CommandEmpty` | Rendered when filtering matches nothing |
+| `CommandGroup` | `heading` label; `[data-cmdk-group-heading]` styled |
+| `CommandItem` | `value` (filter key), `onSelect`, `disabled` |
+| `CommandShortcut` / `CommandSeparator` | Trailing hint / divider |
+| `CommandDialog` | The primitives inside a Dialog (`title` prop for a11y) |
+
+Filtering is cmdk's fuzzy match over `value` (falls back to the item text).
+Keyboard: arrows move, Enter selects, Escape closes (in `CommandDialog`).

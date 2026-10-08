@@ -3,6 +3,7 @@
 import * as React from "react";
 import { scaleLinear, scaleBand } from "d3-scale";
 import { cn } from "../../lib/cn";
+import { ChartTooltip } from "./ChartTooltip";
 import type { LineChartSeries } from "./LineChart";
 
 export type BarChartSeries = LineChartSeries;
@@ -13,6 +14,8 @@ export interface BarChartProps {
   height?: number;
   showGrid?: boolean;
   showLegend?: boolean;
+  /** Hover/keyboard tooltip with the values of the hovered bar group (default true). */
+  tooltip?: boolean;
   className?: string;
 }
 
@@ -31,8 +34,11 @@ export function BarChart({
   height = 240,
   showGrid = true,
   showLegend = true,
+  tooltip = true,
   className,
 }: BarChartProps) {
+  const [active, setActive] = React.useState<number | null>(null);
+  const svgRef = React.useRef<SVGSVGElement | null>(null);
   const allValues = series.flatMap((s) => s.values);
   const max = Math.max(1, ...allValues);
 
@@ -68,18 +74,73 @@ export function BarChart({
   const baseline = height - PADDING.bottom;
   const barWidth = Math.max(2, x1.bandwidth());
 
+  // Band centers for the hover/keyboard tooltip.
+  const centers = labels.map((l) => (x0(l) ?? 0) + x0.bandwidth() / 2);
+  const nearestIndex = (clientX: number) => {
+    const rect = svgRef.current?.getBoundingClientRect();
+    if (!rect || rect.width === 0) return null;
+    const viewX = ((clientX - rect.left) / rect.width) * WIDTH;
+    let best = 0;
+    let bestDist = Infinity;
+    centers.forEach((cx, i) => {
+      const d = Math.abs(cx - viewX);
+      if (d < bestDist) {
+        bestDist = d;
+        best = i;
+      }
+    });
+    return best;
+  };
+
+  const onKey = (e: React.KeyboardEvent) => {
+    if (active == null) {
+      if (e.key === "ArrowLeft" || e.key === "ArrowRight") {
+        e.preventDefault();
+        setActive(labels.length - 1);
+      }
+      return;
+    }
+    if (e.key === "ArrowLeft") {
+      e.preventDefault();
+      setActive(Math.max(0, active - 1));
+    } else if (e.key === "ArrowRight") {
+      e.preventDefault();
+      setActive(Math.min(labels.length - 1, active + 1));
+    } else if (e.key === "Home") {
+      setActive(0);
+    } else if (e.key === "End") {
+      setActive(labels.length - 1);
+    } else if (e.key === "Escape") {
+      setActive(null);
+    }
+  };
+
+  const activeTopPct =
+    active != null
+      ? (Math.min(...series.map((s) => y(s.values[active] ?? 0))) / height) * 100
+      : 0;
+
   return (
-    <figure className={cn("w-full", className)}>
-      <svg
-        viewBox={`0 0 ${WIDTH} ${height}`}
-        className="w-full"
-        role="img"
-        aria-label={
-          series.length === 1
-            ? `Bar chart: ${series[0].name}`
-            : `Bar chart with ${series.length} series`
-        }
-      >
+    <figure
+      className={cn("w-full outline-none", tooltip && "relative", className)}
+      tabIndex={tooltip ? 0 : undefined}
+      onKeyDown={tooltip ? onKey : undefined}
+      {...(tooltip ? { "aria-label": "Use arrow keys to inspect values" } : {})}
+    >
+      <div className="relative">
+        <svg
+          ref={svgRef}
+          viewBox={`0 0 ${WIDTH} ${height}`}
+          className="w-full"
+          role="img"
+          aria-label={
+            series.length === 1
+              ? `Bar chart: ${series[0].name}`
+              : `Bar chart with ${series.length} series`
+          }
+          onPointerMove={tooltip ? (e) => setActive(nearestIndex(e.clientX)) : undefined}
+          onPointerLeave={tooltip ? () => setActive(null) : undefined}
+        >
         {showGrid
           ? ticks.map((t) => (
               <g key={t}>
@@ -144,7 +205,33 @@ export function BarChart({
             </g>
           );
         })}
-      </svg>
+
+        {tooltip && active != null ? (
+          <rect
+            aria-hidden="true"
+            x={x0(labels[active]) ?? 0}
+            y={PADDING.top}
+            width={x0.bandwidth()}
+            height={baseline - PADDING.top}
+            fill="currentColor"
+            className="text-foreground/5"
+            rx="4"
+          />
+        ) : null}
+        </svg>
+        {tooltip && active != null ? (
+          <ChartTooltip
+            label={labels[active]}
+            rows={series.map((s, i) => ({
+              name: s.name,
+              value: s.values[active] ?? 0,
+              color: colorFor(i, s),
+            }))}
+            leftPct={(centers[active] / WIDTH) * 100}
+            topPct={activeTopPct}
+          />
+        ) : null}
+      </div>
       {showLegend && series.length > 1 ? (
         <figcaption className="mt-2 flex flex-wrap items-center justify-center gap-4">
           {series.map((s, i) => (

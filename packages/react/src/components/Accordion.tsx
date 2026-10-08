@@ -2,7 +2,7 @@
 
 import * as React from "react";
 import * as AccordionPrimitive from "@radix-ui/react-accordion";
-import { ChevronDown } from "lucide-react";
+import { ChevronDown, type LucideIcon } from "lucide-react";
 import { cn } from "../lib/cn";
 
 const Accordion = AccordionPrimitive.Root;
@@ -19,11 +19,19 @@ function AccordionItem({
   );
 }
 
+interface AccordionTriggerProps
+  extends React.ComponentPropsWithoutRef<typeof AccordionPrimitive.Trigger> {
+  /** Overrides the trailing chevron; `null` hides it entirely. */
+  icon?: LucideIcon | null;
+}
+
 function AccordionTrigger({
   className,
   children,
+  icon,
   ...props
-}: React.ComponentPropsWithoutRef<typeof AccordionPrimitive.Trigger>) {
+}: AccordionTriggerProps) {
+  const Icon = icon === null ? null : (icon ?? ChevronDown);
   return (
     <AccordionPrimitive.Header className="flex">
       <AccordionPrimitive.Trigger
@@ -34,10 +42,12 @@ function AccordionTrigger({
         {...props}
       >
         {children}
-        <ChevronDown
-          className="size-4 shrink-0 text-muted-foreground transition-transform duration-(--dur-base)"
-          aria-hidden="true"
-        />
+        {Icon ? (
+          <Icon
+            className="size-4 shrink-0 text-muted-foreground transition-transform duration-(--dur-base)"
+            aria-hidden="true"
+          />
+        ) : null}
       </AccordionPrimitive.Trigger>
     </AccordionPrimitive.Header>
   );

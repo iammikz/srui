@@ -43,10 +43,16 @@ import { LineChart, BarChart, DonutChart, Sparkline } from "@iammikz/srui";
 | `series` | `LineChartSeries[]` (`{ name, values, color? }`) | — | One stroked path each |
 | `height` | `number` | `240` | Plot height in px (viewBox width is 600) |
 | `area` | `boolean` | `false` | Fill under the line with 15% opacity |
+| `tooltip` | `boolean` | `true` | Hover/keyboard tooltip — guide line + value bubble at the nearest point |
 | `showGrid` / `showLegend` | `boolean` | `true` | Toggle gridlines / legend |
 | `className` | `string` | — | For the wrapping figure |
 
 Series colors default to `var(--chart-1)` … `var(--chart-8)`.
+
+**Tooltips:** hover (or focus + arrow keys) any point to get a guide line
+with dots and a bubble listing every series' value — the interactive layer
+srui charts were missing, on the same hand-rolled SVG (no recharts
+dependency). `BarChart` highlights the hovered bar group the same way.
 
 ### Area mode
 

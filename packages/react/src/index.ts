@@ -64,9 +64,12 @@ export {
   SelectValue,
   SelectContent,
   SelectItem,
+  SelectItemText,
   SelectGroup,
   SelectLabel,
   SelectSeparator,
+  SelectScrollUpButton,
+  SelectScrollDownButton,
 } from "./components/Select";
 export { Combobox } from "./components/Combobox";
 export type { ComboboxProps, ComboboxOption } from "./components/Combobox";
@@ -82,6 +85,7 @@ export {
   PopoverTrigger,
   PopoverContent,
   PopoverAnchor,
+  PopoverClose,
 } from "./components/Popover";
 export {
   ToastProvider,
@@ -92,13 +96,17 @@ export {
   ToastAction,
   ToastViewport,
 } from "./components/Toast";
-export type { ToastOptions } from "./components/Toast";
+export type { ToastOptions, ToastPosition } from "./components/Toast";
 export { Checkbox } from "./components/Checkbox";
+export type { CheckboxProps } from "./components/Checkbox";
 export { RadioGroup, RadioGroupItem } from "./components/RadioGroup";
+export type { RadioGroupProps } from "./components/RadioGroup";
 export { Switch } from "./components/Switch";
+export type { SwitchProps } from "./components/Switch";
 export { Textarea } from "./components/Textarea";
 export type { TextareaProps } from "./components/Textarea";
 export { Label } from "./components/Label";
+export type { LabelProps } from "./components/Label";
 export { FormField } from "./components/FormField";
 export type { FormFieldProps } from "./components/FormField";
 export { Avatar, AvatarImage, AvatarFallback } from "./components/Avatar";
@@ -148,7 +156,7 @@ export {
   DropdownMenuSubTrigger,
   DropdownMenuSubContent,
 } from "./components/DropdownMenu";
-export { Alert } from "./components/Alert";
+export { Alert, AlertTitle, AlertDescription } from "./components/Alert";
 export type { AlertProps, AlertVariant } from "./components/Alert";
 export { Progress } from "./components/Progress";
 export type { ProgressProps } from "./components/Progress";
@@ -259,7 +267,8 @@ export type {
   CommandPaletteProps,
   CommandPaletteSlots,
   CommandPaletteClassNames,
-  CommandItem,
+  // Renamed: `CommandItem` is now the Command primitive component export.
+  CommandItem as CommandPaletteItem,
 } from "./components/CommandPalette";
 export { NotificationCenter, useNotificationCenter } from "./components/NotificationCenter";
 export type { NotificationItem } from "./components/NotificationCenter";
@@ -269,3 +278,115 @@ export { DonutChart } from "./components/chart/DonutChart";
 export type { DonutChartProps } from "./components/chart/DonutChart";
 export { Sparkline } from "./components/chart/Sparkline";
 export type { SparklineProps } from "./components/chart/Sparkline";
+
+// shadcn-parity primitives (P1)
+export {
+  Table,
+  TableHeader,
+  TableBody,
+  TableFooter,
+  TableHead,
+  TableRow,
+  TableCell,
+  TableCaption,
+} from "./components/Table";
+export { Toggle, toggleStyles } from "./components/Toggle";
+export { ToggleGroup, ToggleGroupItem } from "./components/ToggleGroup";
+export { HoverCard, HoverCardTrigger, HoverCardContent } from "./components/HoverCard";
+export {
+  ContextMenu,
+  ContextMenuTrigger,
+  ContextMenuContent,
+  ContextMenuItem,
+  ContextMenuCheckboxItem,
+  ContextMenuRadioGroup,
+  ContextMenuRadioItem,
+  ContextMenuLabel,
+  ContextMenuSeparator,
+  ContextMenuShortcut,
+  ContextMenuGroup,
+  ContextMenuSub,
+  ContextMenuSubTrigger,
+  ContextMenuSubContent,
+} from "./components/ContextMenu";
+export { Kbd } from "./components/Kbd";
+export { AspectRatio } from "./components/AspectRatio";
+export { ButtonGroup } from "./components/ButtonGroup";
+export { NativeSelect } from "./components/NativeSelect";
+export {
+  Empty,
+  EmptyMedia,
+  EmptyTitle,
+  EmptyDescription,
+  EmptyContent,
+} from "./components/Empty";
+export {
+  Item,
+  ItemMedia,
+  ItemContent,
+  ItemTitle,
+  ItemDescription,
+  ItemEnd,
+} from "./components/Item";
+
+// shadcn-parity components (P2)
+export {
+  Field,
+  FieldLabel,
+  FieldDescription,
+  FieldError,
+  FieldControl,
+  useField,
+} from "./components/Field";
+export {
+  Command,
+  CommandInput,
+  CommandList,
+  CommandEmpty,
+  CommandGroup,
+  CommandItem,
+  CommandShortcut,
+  CommandSeparator,
+  CommandDialog,
+} from "./components/Command";
+export {
+  InputOTP,
+  InputOTPGroup,
+  InputOTPSlot,
+  InputOTPSeparator,
+} from "./components/InputOTP";
+export {
+  Carousel,
+  CarouselContent,
+  CarouselItem,
+  CarouselPrevious,
+  CarouselNext,
+  useCarousel,
+} from "./components/Carousel";
+export {
+  ResizablePanelGroup,
+  ResizablePanel,
+  ResizableHandle,
+} from "./components/Resizable";
+export {
+  Menubar,
+  MenubarMenu,
+  MenubarTrigger,
+  MenubarContent,
+  MenubarItem,
+  MenubarCheckboxItem,
+  MenubarRadioGroup,
+  MenubarRadioItem,
+  MenubarLabel,
+  MenubarSeparator,
+  MenubarShortcut,
+  MenubarGroup,
+  MenubarSub,
+  MenubarSubTrigger,
+  MenubarSubContent,
+} from "./components/Menubar";
+
+// P3 — direction support + chart tooltip
+export { DirectionProvider } from "./components/Direction";
+export { ChartTooltip } from "./components/chart/ChartTooltip";
+export type { ChartTooltipRow } from "./components/chart/ChartTooltip";

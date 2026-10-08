@@ -16,6 +16,7 @@ export const Input = React.forwardRef<HTMLInputElement, InputProps>(
       data-slot="input"
       className={cn(
         "flex h-9 w-full min-w-0 rounded-md border border-border bg-input/30 px-3 py-1 text-base outline-none transition-[color,box-shadow,border-color] duration-(--dur-fast) ease-(--ease-out) placeholder:text-muted-foreground focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-ring disabled:cursor-not-allowed disabled:opacity-50 md:text-sm",
+        "file:inline-flex file:h-7 file:cursor-pointer file:border-0 file:bg-transparent file:text-sm file:font-medium file:text-foreground",
         "aria-invalid:border-destructive aria-invalid:outline-destructive",
         invalid && "border-destructive",
         className,
