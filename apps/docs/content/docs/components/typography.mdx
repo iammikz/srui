@@ -1,0 +1,50 @@
+---
+title: Typography
+description: Styled semantic text on the design tokens.
+---
+
+`Typography` maps text styles to semantic elements — headings, body copy,
+leads, muted text, blockquotes, lists, and code — all on the token system.
+
+## Installation
+
+```tsx
+import { Typography } from "@iammikz/srui";
+```
+
+## Usage
+
+<LivePreview code={`<div className="flex flex-col gap-2">
+  <Typography variant="h1">Taxing Laughter</Typography>
+  <Typography variant="lead">The Joke Tax Chronicles.</Typography>
+  <Typography>The king imposed a joke tax…</Typography>
+  <Typography variant="blockquote">"A wise law."</Typography>
+</div>`}>
+  <div className="flex w-full max-w-2xl flex-col gap-2">
+    <Typography variant="h1">Taxing Laughter</Typography>
+    <Typography variant="lead">
+      The Joke Tax Chronicles — a cautionary tale of fiscal comedy.
+    </Typography>
+    <Typography>
+      The king, being thoroughly amused, imposed a joke tax on the kingdom,
+      collected by the Department of Humour Revenue.
+    </Typography>
+    <Typography variant="blockquote">
+      "I account it one of the wisest laws ever enacted."
+    </Typography>
+    <Typography variant="muted">— Royal Treasurer, 1724 (disputed)</Typography>
+    <Typography variant="ul">
+      <li>Long jokes: taxed doubly</li>
+      <li>Puns: exempt under the Grandfather Clause</li>
+    </Typography>
+    <Typography>
+      Configure in <Typography variant="inlineCode">rates.config</Typography>.
+    </Typography>
+  </div>
+</LivePreview>
+
+## Variants
+
+`h1` `h2` `h3` `h4` `p` `lead` `large` `small` `muted` `blockquote` `ul`
+`code` `inlineCode` — each maps to its semantic element; pass `asChild` to
+render your own element with the style. All accept `className` overrides.

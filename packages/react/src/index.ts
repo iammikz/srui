@@ -400,3 +400,25 @@ export type { MessageProps } from "./components/chat/Message";
 export { MessageScroller } from "./components/chat/MessageScroller";
 export { Attachment } from "./components/chat/Attachment";
 export type { AttachmentProps } from "./components/chat/Attachment";
+
+// Final parity batch: NavigationMenu, InputGroup, Typography
+export {
+  NavigationMenu,
+  NavigationMenuList,
+  NavigationMenuItem,
+  NavigationMenuTrigger,
+  NavigationMenuContent,
+  NavigationMenuLink,
+  NavigationMenuIndicator,
+  NavigationMenuViewport,
+  NavigationMenuSub,
+} from "./components/NavigationMenu";
+export {
+  InputGroup,
+  InputGroupAddon,
+  InputGroupInput,
+  InputGroupTextarea,
+  InputGroupButton,
+} from "./components/InputGroup";
+export { Typography } from "./components/Typography";
+export type { TypographyProps } from "./components/Typography";

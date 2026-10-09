@@ -121,3 +121,6 @@ scoped to any wrapper for side-by-side presets.
 - `MessageScroller` — stick-to-bottom transcript `ol`: starts at the newest, follows new content while at the bottom, ignores growth while scrolled up. `<MessageScroller className="h-72"><Message …>…</Message></MessageScroller>`
 - `Attachment` — message file chip: `name, size?, kind?: "file"|"image", previewUrl?, progress? (0-100 bar), onRemove?`.
 - `DataTable` — server-side sorting/filtering landed: `manualSorting` + `sorting`/`onSortingChange` (`[{id, desc}]`) and `manualFiltering` + `globalFilter`/`onGlobalFilterChange` follow the same controlled/uncontrolled pattern as `pagination`/`onPaginationChange`.
+- `NavigationMenu` family — `Root/List/Item/Trigger/Content/Link/Indicator/Viewport` (+`Sub`): header navigation with flyout panels; render Indicator + Viewport once per menu. Content composes any layout.
+- `InputGroup, InputGroupAddon, InputGroupInput, InputGroupTextarea, InputGroupButton` — the group carries the border + focus-within ring; addons (`align="start"|"end"`) hold icons/text/buttons; the field renders transparent.
+- `Typography` — `variant: "h1"|"h2"|"h3"|"h4"|"p"|"lead"|"large"|"small"|"muted"|"blockquote"|"ul"|"code"|"inlineCode"` (+`asChild`): styled semantic text on the tokens.

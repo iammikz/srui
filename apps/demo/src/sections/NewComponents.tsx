@@ -74,6 +74,10 @@ import {
   HoverCardContent,
   HoverCardTrigger,
   Input,
+  InputGroup,
+  InputGroupAddon,
+  InputGroupButton,
+  InputGroupInput,
   InputOTP,
   InputOTPGroup,
   InputOTPSeparator,
@@ -98,6 +102,14 @@ import {
   MenubarTrigger,
   Message,
   MessageScroller,
+  NavigationMenu,
+  NavigationMenuContent,
+  NavigationMenuIndicator,
+  NavigationMenuItem,
+  NavigationMenuLink,
+  NavigationMenuList,
+  NavigationMenuTrigger,
+  NavigationMenuViewport,
   NativeSelect,
   Pagination,
   PaginationContent,
@@ -625,6 +637,59 @@ export function NewComponents() {
               <Attachment name="uploading.mp4" size={94000000} progress={62} />
             </Message>
           </MessageScroller>
+        </div>
+      </Section>
+
+      <Section
+        id="final-parity"
+        title="NavigationMenu, InputGroup"
+        description="The last gap-report stragglers — header flyouts and inputs with add-ons."
+      >
+        <div className="grid gap-6 md:grid-cols-2">
+          <div className="relative w-full max-w-xl">
+            <NavigationMenu>
+              <NavigationMenuList>
+                <NavigationMenuItem>
+                  <NavigationMenuTrigger>Components</NavigationMenuTrigger>
+                  <NavigationMenuContent>
+                    <ul className="grid w-[26rem] grid-cols-2 gap-1 p-2">
+                      {[
+                        ["Data Table", "Sort, filter, paginate — client or server."],
+                        ["Charts", "Animated SVG with hover tooltips."],
+                        ["Form Builder", "Zod-driven forms."],
+                        ["Command Palette", "⌘K on cmdk."],
+                      ].map(([t, d]) => (
+                        <li key={t}>
+                          <NavigationMenuLink href="#final-parity" className="flex flex-col items-start gap-1 rounded-md p-3">
+                            <span className="text-sm font-medium">{t}</span>
+                            <span className="text-xs text-muted-foreground">{d}</span>
+                          </NavigationMenuLink>
+                        </li>
+                      ))}
+                    </ul>
+                  </NavigationMenuContent>
+                </NavigationMenuItem>
+                <NavigationMenuItem>
+                  <NavigationMenuLink href="#final-parity">Changelog</NavigationMenuLink>
+                </NavigationMenuItem>
+              </NavigationMenuList>
+              <NavigationMenuIndicator />
+              <NavigationMenuViewport />
+            </NavigationMenu>
+          </div>
+          <div className="flex w-full max-w-sm flex-col gap-4">
+            <InputGroup>
+              <InputGroupAddon>👤</InputGroupAddon>
+              <InputGroupInput placeholder="Username" aria-label="Username" />
+            </InputGroup>
+            <InputGroup>
+              <InputGroupAddon>https://</InputGroupAddon>
+              <InputGroupInput placeholder="example.com" aria-label="Domain" />
+              <InputGroupButton variant="outline" className="rounded-r-md">
+                Go
+              </InputGroupButton>
+            </InputGroup>
+          </div>
         </div>
       </Section>
     </>

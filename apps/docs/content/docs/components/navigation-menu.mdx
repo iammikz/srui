@@ -1,0 +1,79 @@
+---
+title: Navigation Menu
+description: Site header navigation with flyouts, wrapping Radix NavigationMenu.
+---
+
+`NavigationMenu` is the header-navigation pattern: a row of links and
+triggers whose content panels fly out into a shared animated viewport.
+
+## Installation
+
+```tsx
+import {
+  NavigationMenu, NavigationMenuList, NavigationMenuItem, NavigationMenuTrigger,
+  NavigationMenuContent, NavigationMenuLink, NavigationMenuIndicator, NavigationMenuViewport,
+} from "@iammikz/srui";
+```
+
+## Usage
+
+<LivePreview code={`<NavigationMenu>
+  <NavigationMenuList>
+    <NavigationMenuItem>
+      <NavigationMenuTrigger>Components</NavigationMenuTrigger>
+      <NavigationMenuContent>…</NavigationMenuContent>
+    </NavigationMenuItem>
+    <NavigationMenuItem>
+      <NavigationMenuLink href="#">Changelog</NavigationMenuLink>
+    </NavigationMenuItem>
+  </NavigationMenuList>
+  <NavigationMenuIndicator />
+  <NavigationMenuViewport />
+</NavigationMenu>`}>
+  <div className="relative w-full max-w-xl not-prose">
+    <NavigationMenu>
+      <NavigationMenuList>
+        <NavigationMenuItem>
+          <NavigationMenuTrigger>Components</NavigationMenuTrigger>
+          <NavigationMenuContent>
+            <ul className="grid w-[26rem] grid-cols-2 gap-1 p-2">
+              {[
+                ["Data Table", "Sort, filter, paginate — client or server."],
+                ["Charts", "Animated SVG with hover tooltips."],
+                ["Form Builder", "Zod-driven forms."],
+                ["Command Palette", "⌘K on cmdk."],
+              ].map(([t, d]) => (
+                <li key={t}>
+                  <NavigationMenuLink href="#" className="flex flex-col items-start gap-1 rounded-md p-3">
+                    <span className="text-sm font-medium">{t}</span>
+                    <span className="text-xs text-muted-foreground">{d}</span>
+                  </NavigationMenuLink>
+                </li>
+              ))}
+            </ul>
+          </NavigationMenuContent>
+        </NavigationMenuItem>
+        <NavigationMenuItem>
+          <NavigationMenuLink href="#">Changelog</NavigationMenuLink>
+        </NavigationMenuItem>
+      </NavigationMenuList>
+      <NavigationMenuIndicator />
+      <NavigationMenuViewport />
+    </NavigationMenu>
+  </div>
+</LivePreview>
+
+## Exports
+
+| Export | Notes |
+|---|---|
+| `NavigationMenu` / `NavigationMenuList` / `NavigationMenuItem` | Root/list/item |
+| `NavigationMenuTrigger` | Opens the item's content; chevron rotates when open |
+| `NavigationMenuContent` | The flyout markup — composes any layout (grids, lists) |
+| `NavigationMenuLink` | Styled link; `active` prop for the current page |
+| `NavigationMenuIndicator` / `NavigationMenuViewport` | The active dot + the shared animated panel — render once per menu |
+
+## Accessibility
+
+Full Radix keyboard model: tab to a trigger, arrows between items, Enter or
+arrow-down opens content, Escape closes. Links expose standard semantics.

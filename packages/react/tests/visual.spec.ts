@@ -78,6 +78,9 @@ const PAGES: Record<string, string> = {
   resizable: "/components/resizable/",
   menubar: "/components/menubar/",
   chat: "/components/chat/",
+  "navigation-menu": "/components/navigation-menu/",
+  "input-group": "/components/input-group/",
+  typography: "/components/typography/",
   slider: "/components/slider/",
   "color-picker": "/components/color-picker/",
 };

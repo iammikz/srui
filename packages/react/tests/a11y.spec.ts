@@ -42,6 +42,7 @@ const SECTIONS: Record<string, string> = {
     "#parity-primitives",
   "P2 (Field/Command/InputOTP/Carousel/Resizable/Menubar)": "#parity-p2",
   "Chat (MessageScroller/Message/Bubble/Attachment)": "#chat",
+  "NavigationMenu/InputGroup": "#final-parity",
 };
 
 const SERIOUS_OR_CRITICAL = (v: { impact: string | null }) =>

@@ -1,0 +1,51 @@
+---
+title: Input Group
+description: Inputs with leading/trailing add-ons.
+---
+
+`InputGroup` carries the border and focus ring; `InputGroupInput` (or the
+textarea) renders transparently inside it, and `InputGroupAddon`s hold
+icons, text, or buttons at either end.
+
+## Installation
+
+```tsx
+import { InputGroup, InputGroupAddon, InputGroupInput, InputGroupButton } from "@iammikz/srui";
+```
+
+## Usage
+
+<LivePreview code={`<InputGroup>
+  <InputGroupAddon><User /></InputGroupAddon>
+  <InputGroupInput placeholder="Username" aria-label="Username" />
+</InputGroup>`}>
+  <div className="flex w-full max-w-sm flex-col gap-4">
+    <InputGroup>
+      <InputGroupAddon>👤</InputGroupAddon>
+      <InputGroupInput placeholder="Username" aria-label="Username" />
+    </InputGroup>
+    <InputGroup>
+      <InputGroupAddon>https://</InputGroupAddon>
+      <InputGroupInput placeholder="example.com" aria-label="Domain" />
+      <InputGroupButton variant="outline" className="rounded-r-md">Go</InputGroupButton>
+    </InputGroup>
+    <InputGroup>
+      <InputGroupInput placeholder="Search…" aria-label="Search" />
+      <InputGroupAddon align="end">⌘K</InputGroupAddon>
+    </InputGroup>
+  </div>
+</LivePreview>
+
+## Exports
+
+| Export | Notes |
+|---|---|
+| `InputGroup` | The bordered shell; carries the `focus-within` ring and `aria-invalid` styling |
+| `InputGroupAddon` | End slot — `align="start" \| "end"`; icons, text, buttons |
+| `InputGroupInput` / `InputGroupTextarea` | The transparent field |
+| `InputGroupButton` | Flush `Button` that stretches to the group height |
+
+## Accessibility
+
+The group is `role="group"`; label the inner input (`aria-label` or a
+`Label htmlFor`). Screen readers announce add-on text adjacent to the field.

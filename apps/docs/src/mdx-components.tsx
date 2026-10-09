@@ -204,6 +204,20 @@ import {
   MenubarLabel,
   MenubarSeparator,
   MenubarShortcut,
+  NavigationMenu,
+  NavigationMenuList,
+  NavigationMenuItem,
+  NavigationMenuTrigger,
+  NavigationMenuContent,
+  NavigationMenuLink,
+  NavigationMenuIndicator,
+  NavigationMenuViewport,
+  InputGroup,
+  InputGroupAddon,
+  InputGroupInput,
+  InputGroupTextarea,
+  InputGroupButton,
+  Typography,
 } from "@iammikz/srui";
 import { Callout } from "./components/callout";
 import { LivePreview } from "./components/live-preview";
@@ -517,6 +531,20 @@ const mdxComponents = {
   InputOTPDemo,
   CarouselDemo,
   ChatDemo,
+  NavigationMenu,
+  NavigationMenuList,
+  NavigationMenuItem,
+  NavigationMenuTrigger,
+  NavigationMenuContent,
+  NavigationMenuLink,
+  NavigationMenuIndicator,
+  NavigationMenuViewport,
+  InputGroup,
+  InputGroupAddon,
+  InputGroupInput,
+  InputGroupTextarea,
+  InputGroupButton,
+  Typography,
 };
 
 export function MdxProvider({ children }: { children: React.ReactNode }) {

@@ -81,6 +81,9 @@ import * as Carousel from "../content/docs/components/carousel.mdx";
 import * as Resizable from "../content/docs/components/resizable.mdx";
 import * as Menubar from "../content/docs/components/menubar.mdx";
 import * as Chat from "../content/docs/components/chat.mdx";
+import * as NavigationMenu from "../content/docs/components/navigation-menu.mdx";
+import * as InputGroup from "../content/docs/components/input-group.mdx";
+import * as Typography from "../content/docs/components/typography.mdx";
 import * as Slider from "../content/docs/components/slider.mdx";
 import * as ColorPicker from "../content/docs/components/color-picker.mdx";
 import * as AppShell from "../content/docs/components/app-shell.mdx";
@@ -214,6 +217,9 @@ export const routes: RouteRecord[] = [
       { path: "components/resizable", element: <DocsPage mod={Resizable} /> },
       { path: "components/menubar", element: <DocsPage mod={Menubar} /> },
       { path: "components/chat", element: <DocsPage mod={Chat} /> },
+      { path: "components/navigation-menu", element: <DocsPage mod={NavigationMenu} /> },
+      { path: "components/input-group", element: <DocsPage mod={InputGroup} /> },
+      { path: "components/typography", element: <DocsPage mod={Typography} /> },
       { path: "components/slider", element: <DocsPage mod={Slider} /> },
       { path: "components/color-picker", element: <DocsPage mod={ColorPicker} /> },
       { path: "components/app-shell", element: <DocsPage mod={AppShell} /> },
