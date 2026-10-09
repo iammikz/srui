@@ -41,6 +41,7 @@ const SECTIONS: Record<string, string> = {
   "P1 primitives (Table/Toggle/HoverCard/ContextMenu/Kbd/AspectRatio/ButtonGroup/NativeSelect/Empty/Item)":
     "#parity-primitives",
   "P2 (Field/Command/InputOTP/Carousel/Resizable/Menubar)": "#parity-p2",
+  "Chat (MessageScroller/Message/Bubble/Attachment)": "#chat",
 };
 
 const SERIOUS_OR_CRITICAL = (v: { impact: string | null }) =>

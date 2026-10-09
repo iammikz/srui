@@ -3,12 +3,16 @@ import {
   addDays,
   Alert,
   AspectRatio,
+  Attachment,
+  Avatar,
+  AvatarFallback,
   Breadcrumb,
   BreadcrumbItem,
   BreadcrumbLink,
   BreadcrumbList,
   BreadcrumbPage,
   BreadcrumbSeparator,
+  Bubble,
   Button,
   ButtonGroup,
   Calendar,
@@ -92,6 +96,8 @@ import {
   MenubarSeparator,
   MenubarShortcut,
   MenubarTrigger,
+  Message,
+  MessageScroller,
   NativeSelect,
   Pagination,
   PaginationContent,
@@ -584,6 +590,41 @@ export function NewComponents() {
               </ResizablePanelGroup>
             </div>
           </div>
+        </div>
+      </Section>
+
+      <Section
+        id="chat"
+        title="Chat"
+        description="MessageScroller (stick-to-bottom), Message rows, Bubbles, Attachments."
+      >
+        <div className="w-full max-w-md">
+          <MessageScroller className="h-64 rounded-lg border border-border p-4">
+            <Message
+              avatar={<Avatar className="size-8"><AvatarFallback name="Ada Lovelace" /></Avatar>}
+              name="Ada"
+              time="09:41"
+            >
+              <Bubble>Morning! Did the deploy finish?</Bubble>
+            </Message>
+            <Message
+              placement="end"
+              avatar={<Avatar className="size-8"><AvatarFallback name="You" /></Avatar>}
+              name="You"
+              time="09:41"
+            >
+              <Bubble variant="sent">Yes — build 128 is live on all regions.</Bubble>
+            </Message>
+            <Message
+              avatar={<Avatar className="size-8"><AvatarFallback name="Ada Lovelace" /></Avatar>}
+              name="Ada"
+              time="09:42"
+            >
+              <Bubble>Perfect. Attaching the report now.</Bubble>
+              <Attachment name="q3-report.pdf" size={1246000} />
+              <Attachment name="uploading.mp4" size={94000000} progress={62} />
+            </Message>
+          </MessageScroller>
         </div>
       </Section>
     </>

@@ -390,3 +390,13 @@ export {
 export { DirectionProvider } from "./components/Direction";
 export { ChartTooltip } from "./components/chart/ChartTooltip";
 export type { ChartTooltipRow } from "./components/chart/ChartTooltip";
+export { formatBytes } from "./components/FileUpload";
+
+// Chat building blocks (shadcn parity)
+export { Bubble } from "./components/chat/Bubble";
+export type { BubbleProps } from "./components/chat/Bubble";
+export { Message } from "./components/chat/Message";
+export type { MessageProps } from "./components/chat/Message";
+export { MessageScroller } from "./components/chat/MessageScroller";
+export { Attachment } from "./components/chat/Attachment";
+export type { AttachmentProps } from "./components/chat/Attachment";

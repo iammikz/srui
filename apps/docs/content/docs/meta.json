@@ -65,6 +65,7 @@
     "components/carousel",
     "components/resizable",
     "components/menubar",
+    "components/chat",
     "components/slider",
     "components/color-picker",
     "components/app-shell",

@@ -61,6 +61,24 @@ export interface DataTableProps<T> {
   pagination?: PaginationState;
   /** Fires with the resolved `{ pageIndex, pageSize }` on any page change — refetch here. */
   onPaginationChange?: (pagination: PaginationState) => void;
+  /**
+   * Server-side sorting: header clicks emit `onSortingChange` instead of
+   * re-sorting `data` client-side. Refetch with the new sort there.
+   */
+  manualSorting?: boolean;
+  /** Controlled sorting state (`[{ id, desc }]`); omit to let the table own it. */
+  sorting?: SortingState;
+  /** Fires with the resolved sorting state on header clicks. */
+  onSortingChange?: (sorting: SortingState) => void;
+  /**
+   * Server-side filtering: the global search emits `onGlobalFilterChange`
+   * instead of filtering `data` client-side. Refetch with the query there.
+   */
+  manualFiltering?: boolean;
+  /** Controlled global filter string; omit to let the table own it. */
+  globalFilter?: string;
+  /** Fires with the search string as the user types. */
+  onGlobalFilterChange?: (filter: string) => void;
   onRowSelectionChange?: (rows: T[]) => void;
   /** Global search input above the columns; filters every column at once. */
   filterable?: boolean;
@@ -91,6 +109,18 @@ export interface UseDataTableConfig<T> {
   pagination?: PaginationState;
   /** Fires with the resolved `{ pageIndex, pageSize }` on any page change. */
   onPaginationChange?: (pagination: PaginationState) => void;
+  /** Server-side sorting — header clicks emit `onSortingChange`. */
+  manualSorting?: boolean;
+  /** Controlled sorting state; omit to let the hook own it. */
+  sorting?: SortingState;
+  /** Fires with the resolved sorting state on header clicks. */
+  onSortingChange?: (sorting: SortingState) => void;
+  /** Server-side filtering — the search emits `onGlobalFilterChange`. */
+  manualFiltering?: boolean;
+  /** Controlled global filter string; omit to let the hook own it. */
+  globalFilter?: string;
+  /** Fires with the search string as the user types. */
+  onGlobalFilterChange?: (filter: string) => void;
   onRowSelectionChange?: (rows: T[]) => void;
 }
 
@@ -110,31 +140,49 @@ export function useDataTable<T>({
   pageCount,
   pagination,
   onPaginationChange,
+  manualSorting = false,
+  sorting: sortingProp,
+  onSortingChange,
+  manualFiltering = false,
+  globalFilter: globalFilterProp,
+  onGlobalFilterChange,
   onRowSelectionChange,
 }: UseDataTableConfig<T>): TableInstance<T> {
-  const [sorting, setSorting] = React.useState<SortingState>([]);
+  const [internalSorting, setInternalSorting] = React.useState<SortingState>([]);
   const [columnFilters, setColumnFilters] = React.useState<ColumnFiltersState>([]);
-  const [globalFilter, setGlobalFilter] = React.useState("");
+  const [internalGlobalFilter, setInternalGlobalFilter] = React.useState("");
   const [rowSelection, setRowSelection] = React.useState<RowSelectionState>({});
   const [internalPagination, setInternalPagination] = React.useState<PaginationState>({
     pageIndex: 0,
     pageSize: pageSize ?? 10,
   });
   const currentPagination = pagination ?? internalPagination;
+  const currentSorting = sortingProp ?? internalSorting;
+  const currentGlobalFilter = globalFilterProp ?? internalGlobalFilter;
 
   const table = useReactTable({
     data,
     columns,
     state: {
-      sorting,
+      sorting: currentSorting,
       columnFilters,
-      globalFilter,
+      globalFilter: currentGlobalFilter,
       rowSelection,
       pagination: currentPagination,
     },
-    onSortingChange: setSorting,
+    onSortingChange: (updater) => {
+      const next =
+        typeof updater === "function" ? updater(currentSorting) : updater;
+      setInternalSorting(next);
+      onSortingChange?.(next);
+    },
     onColumnFiltersChange: setColumnFilters,
-    onGlobalFilterChange: setGlobalFilter,
+    onGlobalFilterChange: (updater) => {
+      const next =
+        typeof updater === "function" ? updater(currentGlobalFilter) : updater;
+      setInternalGlobalFilter(next);
+      onGlobalFilterChange?.(next);
+    },
     onRowSelectionChange: setRowSelection,
     onPaginationChange: (updater) => {
       const next =
@@ -151,6 +199,8 @@ export function useDataTable<T>({
     enableSorting: sortable,
     enableRowSelection: selectable,
     manualPagination,
+    manualSorting,
+    manualFiltering,
     // Without this, TanStack snaps back to page 1 whenever a freshly fetched
     // data array lands — the server-paging footgun.
     autoResetPageIndex: !manualPagination,
@@ -238,6 +288,12 @@ export function DataTable<T>({
   pageCount,
   pagination,
   onPaginationChange,
+  manualSorting = false,
+  sorting,
+  onSortingChange,
+  manualFiltering = false,
+  globalFilter,
+  onGlobalFilterChange,
   onRowSelectionChange,
   filterable = false,
   pinColumns = false,
@@ -286,6 +342,12 @@ export function DataTable<T>({
     pageCount,
     pagination,
     onPaginationChange,
+    manualSorting,
+    sorting,
+    onSortingChange,
+    manualFiltering,
+    globalFilter,
+    onGlobalFilterChange,
     onRowSelectionChange,
   });
 

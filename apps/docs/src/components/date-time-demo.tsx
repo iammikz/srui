@@ -8,22 +8,31 @@ import {
   DateRangePicker,
   TimePicker,
   TimeRangePicker,
-  todayKey,
   type DateRange,
   type TimeRange,
 } from "@iammikz/srui";
 
+/**
+ * Fixed "today" for the demos: the prerendered pages are screenshot-baselined
+ * (visual.spec.ts), so real `todayKey()` values would rot the baselines daily.
+ * The week containing this date is stable across presets/min/max below.
+ */
+const DEMO_TODAY = "2026-01-15";
+
 export function CalendarDemo() {
-  const [value, setValue] = React.useState(todayKey());
-  return <Calendar value={value} onSelect={setValue} aria-label="Due date" />;
+  const [value, setValue] = React.useState(DEMO_TODAY);
+  return (
+    <Calendar value={value} onSelect={setValue} defaultMonth="2026-01" aria-label="Due date" />
+  );
 }
 
 export function CalendarBoundedDemo() {
   return (
     <Calendar
-      defaultValue={addDays(todayKey(), 3)}
-      min={todayKey()}
-      max={addDays(todayKey(), 40)}
+      defaultValue={addDays(DEMO_TODAY, 3)}
+      min={DEMO_TODAY}
+      max={addDays(DEMO_TODAY, 40)}
+      defaultMonth="2026-01"
       weekStartsOn={1}
       aria-label="Bounded calendar"
     />
@@ -64,9 +73,9 @@ export function DateRangePresetsDemo() {
       ariaLabel="Preset window"
       className="w-64"
       presets={[
-        { label: "Last 7 days", getRange: () => ({ from: addDays(todayKey(), -7), to: todayKey() }) },
-        { label: "Last 30 days", getRange: () => ({ from: addDays(todayKey(), -30), to: todayKey() }) },
-        { label: "This month", getRange: () => ({ from: todayKey().slice(0, 8) + "01", to: todayKey() }) },
+        { label: "Last 7 days", getRange: () => ({ from: addDays(DEMO_TODAY, -7), to: DEMO_TODAY }) },
+        { label: "Last 30 days", getRange: () => ({ from: addDays(DEMO_TODAY, -30), to: DEMO_TODAY }) },
+        { label: "This month", getRange: () => ({ from: DEMO_TODAY.slice(0, 8) + "01", to: DEMO_TODAY }) },
       ]}
     />
   );

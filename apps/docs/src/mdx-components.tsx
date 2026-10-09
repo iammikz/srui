@@ -247,6 +247,7 @@ import {
   TreeViewDemo,
 } from "./components/input-demo";
 import { InputOTPDemo, CarouselDemo } from "./components/p2-demo";
+import { ChatDemo } from "./components/chat-demo";
 import { AuthBlock, DashboardBlock, SettingsBlock } from "./components/blocks/dashboard-block";
 import { ThemeBuilder } from "./components/blocks/theme-builder";
 
@@ -515,6 +516,7 @@ const mdxComponents = {
   MenubarShortcut,
   InputOTPDemo,
   CarouselDemo,
+  ChatDemo,
 };
 
 export function MdxProvider({ children }: { children: React.ReactNode }) {

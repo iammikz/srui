@@ -92,6 +92,7 @@ export const nav: NavSection[] = [
       { label: "Carousel", href: "/components/carousel" },
       { label: "Resizable", href: "/components/resizable" },
       { label: "Menubar", href: "/components/menubar" },
+      { label: "Chat", href: "/components/chat" },
       { label: "App Shell", href: "/components/app-shell" },
       { label: "Data Table", href: "/components/data-table" },
       { label: "Chart Card", href: "/components/chart-card" },

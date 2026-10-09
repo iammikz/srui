@@ -1,0 +1,45 @@
+---
+title: Chat
+description: Chat building blocks — Bubble, Message, Message Scroller, Attachment.
+---
+
+The chat family composes a transcript: `MessageScroller` keeps the newest
+message in view, `Message` rows carry avatar/name/time/actions, `Bubble`
+holds the text, and `Attachment` shows files and upload progress.
+
+## Installation
+
+```tsx
+import { Bubble, Message, MessageScroller, Attachment } from "@iammikz/srui";
+```
+
+## Usage
+
+<ChatDemo />
+
+```tsx
+<MessageScroller className="h-72">
+  <Message avatar={<Avatar />} name="Ada" time="09:41">
+    <Bubble>Morning! Did the deploy finish?</Bubble>
+    <Attachment name="report.pdf" size={1246000} progress={100} />
+  </Message>
+  <Message placement="end" name="You" time="09:41">
+    <Bubble variant="sent">Yes — build 128 is live.</Bubble>
+  </Message>
+</MessageScroller>
+```
+
+## Exports
+
+| Export | Notes |
+|---|---|
+| `Bubble` | `variant="sent" \| "received"` (primary vs surface), `placement` overrides the side, `avatar` slot |
+| `Message` | Row wrapper: `placement`, `avatar`, `name`, `time`, `actions` (hover-visible row) |
+| `MessageScroller` | Stick-to-bottom transcript: starts at the newest message, follows while at the bottom, ignores growth while reading history |
+| `Attachment` | `name`, `size?`, `kind="file" \| "image"`, `previewUrl?`, `progress?` (0–100 bar), `onRemove?` |
+
+## Accessibility
+
+Messages are list items in the scroller's `ol`; attachment remove buttons and
+progress bars are labelled; the action row is keyboard-reachable
+(`focus-within` reveals it, not only hover).

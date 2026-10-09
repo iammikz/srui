@@ -52,6 +52,10 @@ const columns: ColumnDef<Person, unknown>[] = [
 | `pageCount` | `number` | — | Total pages, for APIs that can't report a row count (alternative to `rowCount`) |
 | `pagination` | `PaginationState` | — | Controlled pagination state (`{ pageIndex, pageSize }`); omit to let the table own it |
 | `onPaginationChange` | `(pagination: PaginationState) => void` | — | Fires with the resolved state on page/pageSize change — refetch here |
+| `manualSorting` | `boolean` | `false` | Server-side sorting: header clicks emit `onSortingChange` instead of sorting client-side |
+| `sorting` / `onSortingChange` | `SortingState` / `(s: SortingState) => void` | — | Controlled sorting state (`[{ id, desc }]`) / the refetch trigger |
+| `manualFiltering` | `boolean` | `false` | Server-side filtering: the search box emits `onGlobalFilterChange` instead of filtering client-side |
+| `globalFilter` / `onGlobalFilterChange` | `string` / `(q: string) => void` | — | Controlled search string / fires as the user types |
 | `onRowSelectionChange` | `(rows: T[]) => void` | — | Called with selected row objects |
 | `filterable` | `boolean` | `false` | Global search input above the columns (case-insensitive, matches any column) |
 | `pinColumns` | `boolean` | `false` | Sticky first/last columns (`position: sticky`) |
@@ -100,9 +104,11 @@ useEffect(() => {
 - `onPaginationChange` fires with the resolved `{ pageIndex, pageSize }` on
   Prev/Next and rows-per-page changes — that's your refetch trigger.
   `pagination` is optional: omit it and the table owns the state.
-- Sorting, the global filter and CSV export stay client-side — they operate
-  on the loaded page. Pass `sortable={false}` / `filterable={false}` when
-  the server should own those.
+- The same pattern covers sorting and search: `manualSorting` +
+  `onSortingChange` (header clicks emit `[{ id, desc }]` — sort server-side
+  and refetch) and `manualFiltering` + `onGlobalFilterChange` (the search
+  box emits the query as the user types). Sorting, the global filter and
+  CSV export otherwise stay client-side — they operate on the loaded page.
 - If the API reports pages instead of totals, pass `pageCount` instead of
   `rowCount`.
 

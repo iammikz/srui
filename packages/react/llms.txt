@@ -116,3 +116,8 @@ scoped to any wrapper for side-by-side presets.
 - `ToastProvider` — now `position?: "top"|"top-left"|"top-right"|"bottom"|"bottom-left"|"bottom-right"` (default bottom-right); `useToast()` returns `{ toast, dismiss, update }`; toast() returns an id and options gain `duration` (default 5000) and `onDismiss`.
 - `DirectionProvider` — Radix direction provider; sets `dir="ltr"|"rtl"` for the subtree (popovers/menus/pickers inherit). Wrap RTL layouts.
 - `LineChart`/`BarChart` — now interactive: `tooltip?: boolean` (default true) adds a hover/keyboard value bubble (guide line + dots on lines, band highlight on bars) at the nearest point; focus the chart and use ←/→/Home/End. `ChartTooltip` is exported for custom chart compositions.
+- `Bubble` — chat bubble: `variant?: "sent"|"received"` (primary vs surface), `placement?: "start"|"end"` (defaults from variant), `avatar?`. Stack several per message.
+- `Message` — chat row: `placement?, avatar?, name?, time?, actions?` (hover/focus-visible action row under the content); children are Bubbles/Attachments.
+- `MessageScroller` — stick-to-bottom transcript `ol`: starts at the newest, follows new content while at the bottom, ignores growth while scrolled up. `<MessageScroller className="h-72"><Message …>…</Message></MessageScroller>`
+- `Attachment` — message file chip: `name, size?, kind?: "file"|"image", previewUrl?, progress? (0-100 bar), onRemove?`.
+- `DataTable` — server-side sorting/filtering landed: `manualSorting` + `sorting`/`onSortingChange` (`[{id, desc}]`) and `manualFiltering` + `globalFilter`/`onGlobalFilterChange` follow the same controlled/uncontrolled pattern as `pagination`/`onPaginationChange`.

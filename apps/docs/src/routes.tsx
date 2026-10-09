@@ -80,6 +80,7 @@ import * as InputOTP from "../content/docs/components/input-otp.mdx";
 import * as Carousel from "../content/docs/components/carousel.mdx";
 import * as Resizable from "../content/docs/components/resizable.mdx";
 import * as Menubar from "../content/docs/components/menubar.mdx";
+import * as Chat from "../content/docs/components/chat.mdx";
 import * as Slider from "../content/docs/components/slider.mdx";
 import * as ColorPicker from "../content/docs/components/color-picker.mdx";
 import * as AppShell from "../content/docs/components/app-shell.mdx";
@@ -212,6 +213,7 @@ export const routes: RouteRecord[] = [
       { path: "components/carousel", element: <DocsPage mod={Carousel} /> },
       { path: "components/resizable", element: <DocsPage mod={Resizable} /> },
       { path: "components/menubar", element: <DocsPage mod={Menubar} /> },
+      { path: "components/chat", element: <DocsPage mod={Chat} /> },
       { path: "components/slider", element: <DocsPage mod={Slider} /> },
       { path: "components/color-picker", element: <DocsPage mod={ColorPicker} /> },
       { path: "components/app-shell", element: <DocsPage mod={AppShell} /> },

@@ -77,6 +77,7 @@ const PAGES: Record<string, string> = {
   carousel: "/components/carousel/",
   resizable: "/components/resizable/",
   menubar: "/components/menubar/",
+  chat: "/components/chat/",
   slider: "/components/slider/",
   "color-picker": "/components/color-picker/",
 };
