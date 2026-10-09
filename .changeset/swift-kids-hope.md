@@ -1,5 +1,0 @@
----
-"@iammikz/srui": minor
----
-
-Review fixes. `InputOTP` is editable again — the wrapper no longer applies `sr-only` to the inner input, which clipped input-otp's transparent click/focus overlay. `NativeSelect` option popups now follow dark mode: options render on solid popover tokens and the theme sets `color-scheme: light/dark` on `:root`/`.dark`, which also makes native scrollbars and pickers scheme-aware. `Combobox` gains multi-select (`multiple`, or controlled `values`/`onValuesChange`, or `defaultValues` — items toggle with checks and the popover stays open) and uncontrolled `defaultValue` support. The docs Usage sections now demonstrate composition and usage variants across the component pages, including live Combobox single/multiple/uncontrolled demos, Select/NativeSelect size and invalid states, checkbox indeterminate/invalid, invalid RadioGroup/Switch/TagInput, PopoverClose, custom Accordion chevrons, PaginationLink asChild anchors, router-link Breadcrumbs with custom separators, Avatar auto-initials, file-type Input, Card full composition, Tabs controlled/vertical snippets, and Carousel slide-sizing guidance.
