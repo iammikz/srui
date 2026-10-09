@@ -21,6 +21,17 @@ import { TagInput } from "@iammikz/srui";
   <TagInputDemo />
 </LivePreview>
 
+### Invalid
+
+`TagInput` is controlled (`value: string[]`), so MDX can't demo it
+statically — the markup is the same Usage wiring plus `invalid`:
+
+```tsx
+const [tags, setTags] = useState(["react"]);
+
+<TagInput value={tags} onChange={setTags} invalid placeholder="Add tag…" />
+```
+
 ## Props
 
 | Prop | Type | Default | Description |

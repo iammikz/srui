@@ -2,6 +2,7 @@
 
 import * as React from "react";
 import { Command } from "cmdk";
+import { Check, ChevronDown } from "lucide-react";
 import { Popover, PopoverContent, PopoverTrigger } from "./Popover";
 import { cn } from "../lib/cn";
 
@@ -12,8 +13,20 @@ export interface ComboboxOption {
 
 export interface ComboboxProps {
   options: ComboboxOption[];
+  /** Selected value (single mode), controlled. */
   value?: string;
-  onChange: (value: string) => void;
+  /** Selected values (multi mode), controlled — implies `multiple`. */
+  values?: string[];
+  /** Initial selection without controlling (single mode). */
+  defaultValue?: string;
+  /** Initial selection without controlling (multi mode) — implies `multiple`. */
+  defaultValues?: string[];
+  /** Multi-select mode: items toggle with checks and the popover stays open. */
+  multiple?: boolean;
+  /** Single mode: fires with the picked value (empty string deselects). */
+  onChange?: (value: string) => void;
+  /** Multi mode: fires with the full selection after every toggle. */
+  onValuesChange?: (values: string[]) => void;
   placeholder?: string;
   /** Shown when no option matches the query. English default; override for i18n. */
   emptyText?: string;
@@ -27,12 +40,19 @@ export interface ComboboxProps {
 
 /**
  * Text-filterable select: cmdk list inside a Popover. Matches Select's visual
- * footprint (same trigger height and surface treatment).
+ * footprint (same trigger height and surface treatment). Single selection by
+ * default; `multiple` (or `values`/`defaultValues`) switches to check-toggle
+ * multi-select that keeps the popover open.
  */
 export function Combobox({
   options,
   value,
+  values,
+  defaultValue,
+  defaultValues,
+  multiple = false,
   onChange,
+  onValuesChange,
   placeholder = "Select…",
   emptyText = "No results found.",
   className,
@@ -40,8 +60,39 @@ export function Combobox({
   invalid,
   ...triggerProps
 }: ComboboxProps) {
+  const isMulti = multiple || values !== undefined || defaultValues !== undefined;
   const [open, setOpen] = React.useState(false);
-  const selected = options.find((o) => o.value === value);
+  const [internalSingle, setInternalSingle] = React.useState(defaultValue ?? "");
+  const [internalMulti, setInternalMulti] = React.useState<string[]>(defaultValues ?? []);
+
+  const currentSingle = value ?? internalSingle;
+  const currentMulti = values ?? internalMulti;
+  const selectedLabels = options
+    .filter((o) => currentMulti.includes(o.value))
+    .map((o) => o.label);
+  const triggerLabel = isMulti
+    ? selectedLabels.length > 0
+      ? selectedLabels.join(", ")
+      : placeholder
+    : (options.find((o) => o.value === currentSingle)?.label ?? placeholder);
+
+  const pickSingle = (option: ComboboxOption) => {
+    const next = option.value === currentSingle ? "" : option.value;
+    setInternalSingle(next);
+    onChange?.(next);
+    setOpen(false);
+  };
+
+  const toggleMulti = (option: ComboboxOption) => {
+    const next = currentMulti.includes(option.value)
+      ? currentMulti.filter((v) => v !== option.value)
+      : [...currentMulti, option.value];
+    setInternalMulti(next);
+    onValuesChange?.(next);
+  };
+
+  const isSelected = (option: ComboboxOption) =>
+    isMulti ? currentMulti.includes(option.value) : option.value === currentSingle;
 
   return (
     <Popover open={open} onOpenChange={setOpen}>
@@ -57,19 +108,16 @@ export function Combobox({
         )}
         aria-expanded={open}
       >
-        <span className={cn(!selected && "text-muted-foreground")}>
-          {selected ? selected.label : placeholder}
-        </span>
-        <svg
-          viewBox="0 0 24 24"
-          fill="none"
-          stroke="currentColor"
-          strokeWidth="2"
-          aria-hidden="true"
-          className="size-4 shrink-0 opacity-50"
+        <span
+          className={cn(
+            "truncate",
+            (isMulti ? currentMulti.length === 0 : currentSingle === "") &&
+              "text-muted-foreground",
+          )}
         >
-          <path d="m6 9 6 6 6-6" strokeLinecap="round" strokeLinejoin="round" />
-        </svg>
+          {triggerLabel}
+        </span>
+        <ChevronDown className="size-4 shrink-0 opacity-50" aria-hidden="true" />
       </PopoverTrigger>
       <PopoverContent className="w-(--radix-popover-trigger-width) p-1" align="start">
         <Command>
@@ -85,28 +133,20 @@ export function Combobox({
               <Command.Item
                 key={o.value}
                 value={o.label}
-                onSelect={() => {
-                  onChange(o.value === value ? "" : o.value);
-                  setOpen(false);
-                }}
+                onSelect={() => (isMulti ? toggleMulti(o) : pickSingle(o))}
                 className={cn(
                   "flex cursor-pointer items-center justify-between gap-2 rounded-sm px-2 py-1.5 text-sm outline-none transition-colors duration-(--dur-fast) data-[selected=true]:bg-accent data-[selected=true]:text-accent-foreground",
-                  o.value === value && "font-medium text-primary",
+                  !isMulti && o.value === currentSingle && "font-medium text-primary",
                 )}
               >
                 {o.label}
-                {o.value === value ? (
-                  <svg
-                    viewBox="0 0 24 24"
-                    fill="none"
-                    stroke="currentColor"
-                    strokeWidth="2"
-                    aria-hidden="true"
-                    className="size-4"
-                  >
-                    <path d="M20 6 9 17l-5-5" strokeLinecap="round" strokeLinejoin="round" />
-                  </svg>
-                ) : null}
+                <Check
+                  aria-hidden="true"
+                  className={cn(
+                    "size-4 shrink-0 transition-opacity duration-(--dur-fast)",
+                    isSelected(o) ? "opacity-100" : "opacity-0",
+                  )}
+                />
               </Command.Item>
             ))}
           </Command.List>

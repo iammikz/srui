@@ -59,6 +59,28 @@ import { Switch } from "@iammikz/srui";
   </span>
 </LivePreview>
 
+### Invalid
+
+`invalid` paints the destructive track and sets `aria-invalid`.
+
+<LivePreview code={`<div className="grid w-72 gap-3">
+  <label className="flex items-center justify-between gap-4 text-sm">
+    Airplane mode <Switch defaultChecked />
+  </label>
+  <label className="flex items-center justify-between gap-4 text-sm">
+    Accept terms <Switch invalid />
+  </label>
+</div>`}>
+  <div className="grid w-72 gap-3">
+    <label className="flex items-center justify-between gap-4 text-sm">
+      Airplane mode <Switch defaultChecked />
+    </label>
+    <label className="flex items-center justify-between gap-4 text-sm">
+      Accept terms <Switch invalid />
+    </label>
+  </div>
+</LivePreview>
+
 ## Accessibility
 
 Radix renders a `switch` role with `aria-checked`; Space toggles; the

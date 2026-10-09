@@ -124,3 +124,6 @@ scoped to any wrapper for side-by-side presets.
 - `NavigationMenu` family — `Root/List/Item/Trigger/Content/Link/Indicator/Viewport` (+`Sub`): header navigation with flyout panels; render Indicator + Viewport once per menu. Content composes any layout.
 - `InputGroup, InputGroupAddon, InputGroupInput, InputGroupTextarea, InputGroupButton` — the group carries the border + focus-within ring; addons (`align="start"|"end"`) hold icons/text/buttons; the field renders transparent.
 - `Typography` — `variant: "h1"|"h2"|"h3"|"h4"|"p"|"lead"|"large"|"small"|"muted"|"blockquote"|"ul"|"code"|"inlineCode"` (+`asChild`): styled semantic text on the tokens.
+- `Combobox` — now multi-select and uncontrolled: `multiple` (or `values`/`defaultValues`) enables check-toggle multi-select that keeps the popover open (`onValuesChange` fires with the full list); `defaultValue`/`defaultValues` seed uncontrolled use. `<Combobox options={opts} multiple values={v} onValuesChange={setV} />`
+- `InputOTP` fix: never style the inner input (no sr-only) — input-otp renders its own transparent click/focus overlay.
+- `NativeSelect` + theme: options render on solid popover tokens and the theme now sets `color-scheme: light/dark`, so native popups/scrollbars follow dark mode.

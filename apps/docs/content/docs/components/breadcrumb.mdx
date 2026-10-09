@@ -44,6 +44,52 @@ import {
   </Breadcrumb>
 </LivePreview>
 
+### Router links and custom separators
+
+`asChild` on a `BreadcrumbLink` renders its single child instead of a plain
+anchor — a router `<Link>` in an SPA, or any `<a>` — with the link styling
+kept; giving a `BreadcrumbSeparator` children replaces the default chevron:
+
+<LivePreview code={`<Breadcrumb>
+  <BreadcrumbList>
+    <BreadcrumbItem>
+      <BreadcrumbLink href="#">Home</BreadcrumbLink>
+    </BreadcrumbItem>
+    <BreadcrumbSeparator />
+    <BreadcrumbItem>
+      <BreadcrumbLink asChild>
+        <a href="#breadcrumb">Docs</a>
+      </BreadcrumbLink>
+    </BreadcrumbItem>
+    <BreadcrumbSeparator>
+      <span className="text-xs">/</span>
+    </BreadcrumbSeparator>
+    <BreadcrumbItem>
+      <BreadcrumbPage>Breadcrumb</BreadcrumbPage>
+    </BreadcrumbItem>
+  </BreadcrumbList>
+</Breadcrumb>`}>
+  <Breadcrumb>
+    <BreadcrumbList>
+      <BreadcrumbItem>
+        <BreadcrumbLink href="#">Home</BreadcrumbLink>
+      </BreadcrumbItem>
+      <BreadcrumbSeparator />
+      <BreadcrumbItem>
+        <BreadcrumbLink asChild>
+          <a href="#breadcrumb">Docs</a>
+        </BreadcrumbLink>
+      </BreadcrumbItem>
+      <BreadcrumbSeparator>
+        <span className="text-xs">/</span>
+      </BreadcrumbSeparator>
+      <BreadcrumbItem>
+        <BreadcrumbPage>Breadcrumb</BreadcrumbPage>
+      </BreadcrumbItem>
+    </BreadcrumbList>
+  </Breadcrumb>
+</LivePreview>
+
 ## Exports
 
 | Export | Notes |

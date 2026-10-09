@@ -90,6 +90,89 @@ import {
   </Select>
 </LivePreview>
 
+### Trigger sizes and invalid
+
+`size` lands on the trigger (`"sm"` h-8 / `"default"` h-9 / `"lg"` h-10);
+`invalid` paints the destructive border and sets `aria-invalid`.
+
+<LivePreview code={`<div className="flex flex-wrap items-center gap-4">
+  <Select defaultValue="mon">
+    <SelectTrigger size="sm" className="w-32" aria-label="Day (sm)">
+      <SelectValue placeholder="Day" />
+    </SelectTrigger>
+    <SelectContent>
+      <SelectItem value="mon">Monday</SelectItem>
+      <SelectItem value="tue">Tuesday</SelectItem>
+    </SelectContent>
+  </Select>
+  <Select defaultValue="mon">
+    <SelectTrigger className="w-32" aria-label="Day (default)">
+      <SelectValue placeholder="Day" />
+    </SelectTrigger>
+    <SelectContent>
+      <SelectItem value="mon">Monday</SelectItem>
+      <SelectItem value="tue">Tuesday</SelectItem>
+    </SelectContent>
+  </Select>
+  <Select defaultValue="mon">
+    <SelectTrigger size="lg" className="w-32" aria-label="Day (lg)">
+      <SelectValue placeholder="Day" />
+    </SelectTrigger>
+    <SelectContent>
+      <SelectItem value="mon">Monday</SelectItem>
+      <SelectItem value="tue">Tuesday</SelectItem>
+    </SelectContent>
+  </Select>
+  <Select defaultValue="mon">
+    <SelectTrigger invalid className="w-32" aria-label="Day (invalid)">
+      <SelectValue placeholder="Day" />
+    </SelectTrigger>
+    <SelectContent>
+      <SelectItem value="mon">Monday</SelectItem>
+      <SelectItem value="tue">Tuesday</SelectItem>
+    </SelectContent>
+  </Select>
+</div>`}>
+  <div className="flex flex-wrap items-center gap-4">
+    <Select defaultValue="mon">
+      <SelectTrigger size="sm" className="w-32" aria-label="Day (sm)">
+        <SelectValue placeholder="Day" />
+      </SelectTrigger>
+      <SelectContent>
+        <SelectItem value="mon">Monday</SelectItem>
+        <SelectItem value="tue">Tuesday</SelectItem>
+      </SelectContent>
+    </Select>
+    <Select defaultValue="mon">
+      <SelectTrigger className="w-32" aria-label="Day (default)">
+        <SelectValue placeholder="Day" />
+      </SelectTrigger>
+      <SelectContent>
+        <SelectItem value="mon">Monday</SelectItem>
+        <SelectItem value="tue">Tuesday</SelectItem>
+      </SelectContent>
+    </Select>
+    <Select defaultValue="mon">
+      <SelectTrigger size="lg" className="w-32" aria-label="Day (lg)">
+        <SelectValue placeholder="Day" />
+      </SelectTrigger>
+      <SelectContent>
+        <SelectItem value="mon">Monday</SelectItem>
+        <SelectItem value="tue">Tuesday</SelectItem>
+      </SelectContent>
+    </Select>
+    <Select defaultValue="mon">
+      <SelectTrigger invalid className="w-32" aria-label="Day (invalid)">
+        <SelectValue placeholder="Day" />
+      </SelectTrigger>
+      <SelectContent>
+        <SelectItem value="mon">Monday</SelectItem>
+        <SelectItem value="tue">Tuesday</SelectItem>
+      </SelectContent>
+    </Select>
+  </div>
+</LivePreview>
+
 ## Accessibility
 
 Radix provides the full pattern: the trigger is a `combobox`-role button,

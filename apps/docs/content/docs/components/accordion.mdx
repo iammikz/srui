@@ -77,6 +77,43 @@ import { Accordion, AccordionItem, AccordionTrigger, AccordionContent } from "@i
   </Accordion>
 </LivePreview>
 
+### Custom or hidden chevron
+
+`icon` overrides the trailing chevron with any `lucide-react` icon;
+`icon={null}` hides it entirely.
+
+<LivePreview code={`<Accordion type="single" collapsible className="w-80">
+  <AccordionItem value="default">
+    <AccordionTrigger>Default chevron</AccordionTrigger>
+    <AccordionContent>The default chevron rotates open as usual.</AccordionContent>
+  </AccordionItem>
+  <AccordionItem value="hidden">
+    <AccordionTrigger icon={null}>No chevron</AccordionTrigger>
+    <AccordionContent>The trailing indicator is hidden entirely.</AccordionContent>
+  </AccordionItem>
+</Accordion>`}>
+  <Accordion type="single" collapsible className="w-80">
+    <AccordionItem value="default">
+      <AccordionTrigger>Default chevron</AccordionTrigger>
+      <AccordionContent>The default chevron rotates open as usual.</AccordionContent>
+    </AccordionItem>
+    <AccordionItem value="hidden">
+      <AccordionTrigger icon={null}>No chevron</AccordionTrigger>
+      <AccordionContent>The trailing indicator is hidden entirely.</AccordionContent>
+    </AccordionItem>
+  </Accordion>
+</LivePreview>
+
+For a custom icon, pass any `lucide-react` component (e.g. `Plus`) via the
+`icon` prop — it needs a real component, so it lives in app code rather
+than static MDX:
+
+```tsx
+import { Plus } from "lucide-react";
+
+<AccordionTrigger icon={Plus}>Custom icon</AccordionTrigger>
+```
+
 ## Accessibility
 
 Full `accordion` ARIA pattern from Radix: triggers expose

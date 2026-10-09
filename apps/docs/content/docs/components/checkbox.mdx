@@ -50,6 +50,29 @@ import { Checkbox } from "@iammikz/srui";
   </span>
 </LivePreview>
 
+### Indeterminate and invalid
+
+`checked="indeterminate"` renders a minus (the "some selected" state);
+`invalid` paints the destructive border and sets `aria-invalid`.
+
+<LivePreview code={`<div className="grid gap-3">
+  <label className="flex items-center gap-2 text-sm">
+    <Checkbox checked="indeterminate" /> Select all
+  </label>
+  <label className="flex items-center gap-2 text-sm">
+    <Checkbox invalid /> Accept terms
+  </label>
+</div>`}>
+  <div className="grid gap-3">
+    <label className="flex items-center gap-2 text-sm">
+      <Checkbox checked="indeterminate" /> Select all
+    </label>
+    <label className="flex items-center gap-2 text-sm">
+      <Checkbox invalid /> Accept terms
+    </label>
+  </div>
+</LivePreview>
+
 ## Accessibility
 
 Radix renders a real `checkbox` role button with `aria-checked`; Space

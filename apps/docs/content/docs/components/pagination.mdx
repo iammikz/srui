@@ -63,6 +63,56 @@ const rows = ORDERS.slice((page - 1) * PER_PAGE, page * PER_PAGE);
   <PaginationDemo />
 </LivePreview>
 
+### Real links (asChild)
+
+`asChild` renders the link's single child — an `<a href>` here, a router
+`<Link>` in an SPA — instead of a `<button>`, keeping `isActive` styling
+for real page navigations:
+
+<LivePreview code={`<Pagination>
+  <PaginationContent>
+    <PaginationItem>
+      <PaginationPrevious />
+    </PaginationItem>
+    <PaginationItem>
+      <PaginationLink>1</PaginationLink>
+    </PaginationItem>
+    <PaginationItem>
+      <PaginationLink asChild isActive>
+        <a href="#pagination">2</a>
+      </PaginationLink>
+    </PaginationItem>
+    <PaginationItem>
+      <PaginationLink>3</PaginationLink>
+    </PaginationItem>
+    <PaginationItem>
+      <PaginationNext />
+    </PaginationItem>
+  </PaginationContent>
+</Pagination>`}>
+  <Pagination>
+    <PaginationContent>
+      <PaginationItem>
+        <PaginationPrevious />
+      </PaginationItem>
+      <PaginationItem>
+        <PaginationLink>1</PaginationLink>
+      </PaginationItem>
+      <PaginationItem>
+        <PaginationLink asChild isActive>
+          <a href="#pagination">2</a>
+        </PaginationLink>
+      </PaginationItem>
+      <PaginationItem>
+        <PaginationLink>3</PaginationLink>
+      </PaginationItem>
+      <PaginationItem>
+        <PaginationNext />
+      </PaginationItem>
+    </PaginationContent>
+  </Pagination>
+</LivePreview>
+
 ## Exports
 
 | Export | Notes |

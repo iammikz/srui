@@ -13,8 +13,9 @@ const InputOTP = React.forwardRef<
   <OTPInput
     ref={ref}
     data-slot="input-otp"
+    // The library renders the input as a transparent full-size overlay over
+    // the container — extra input styling (e.g. sr-only) breaks hit-testing.
     containerClassName={cn("flex items-center gap-2 has-disabled:opacity-50", className)}
-    className="sr-only"
     {...props}
   />
 ));

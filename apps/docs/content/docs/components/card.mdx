@@ -79,6 +79,43 @@ Each part accepts all native `div` props (`className`, `onClick`, …):
   </Card>
 </LivePreview>
 
+### Fully composed
+
+Every slot at once — header grid with title, description and an action,
+then content and a two-button footer:
+
+<LivePreview code={`<Card>
+  <CardHeader>
+    <CardTitle>Create project</CardTitle>
+    <CardDescription>Deploy your new project in one-click.</CardDescription>
+    <CardAction>
+      <Button variant="ghost" size="sm">Details</Button>
+    </CardAction>
+  </CardHeader>
+  <CardContent>Content goes here.</CardContent>
+  <CardFooter className="justify-between">
+    <Button variant="ghost">Cancel</Button>
+    <Button size="sm">Deploy</Button>
+  </CardFooter>
+</Card>`}>
+  <Card className="w-full max-w-sm">
+    <CardHeader>
+      <CardTitle>Create project</CardTitle>
+      <CardDescription>Deploy your new project in one-click.</CardDescription>
+      <CardAction>
+        <Button variant="ghost" size="sm">Details</Button>
+      </CardAction>
+    </CardHeader>
+    <CardContent className="text-sm text-muted-foreground">
+      Content goes here.
+    </CardContent>
+    <CardFooter className="justify-between">
+      <Button variant="ghost">Cancel</Button>
+      <Button size="sm">Deploy</Button>
+    </CardFooter>
+  </Card>
+</LivePreview>
+
 ## Accessibility
 
 Cards are plain `div`s — content semantics (headings, buttons) are up to

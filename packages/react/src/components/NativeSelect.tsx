@@ -26,6 +26,9 @@ export const NativeSelect = React.forwardRef<
         aria-invalid={invalid || undefined}
         className={cn(
           "surface flex h-9 w-full appearance-none items-center rounded-md border border-border bg-input/30 px-3 py-2 pr-9 text-sm outline-none transition-[color,box-shadow,border-color] duration-(--dur-fast) ease-(--ease-out) focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-ring disabled:cursor-not-allowed disabled:opacity-50",
+          // The native popup takes its colors from the select/options; keep
+          // options on solid popover tokens so dark mode never shows white.
+          "[&>option]:bg-popover [&>option]:text-popover-foreground",
           size === "sm" && "h-8 py-1 text-xs",
           size === "lg" && "h-10",
           "aria-invalid:border-destructive aria-invalid:outline-destructive",

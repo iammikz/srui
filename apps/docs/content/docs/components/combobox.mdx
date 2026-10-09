@@ -15,6 +15,8 @@ import { Combobox } from "@iammikz/srui";
 
 ## Usage
 
+### Single selection (controlled)
+
 <ComboboxDemo />
 
 ```tsx
@@ -36,13 +38,54 @@ const [value, setValue] = useState("");
 />
 ```
 
+### Multiple selection
+
+Items toggle with checks and the popover stays open until you click away.
+Pass `values` (controlled) or `defaultValues` — either implies multi mode —
+or set `multiple` explicitly.
+
+<ComboboxMultipleDemo />
+
+```tsx
+const [values, setValues] = useState(["react"]);
+
+<Combobox
+  options={options}
+  multiple
+  values={values}
+  onValuesChange={setValues}
+  placeholder="Frameworks…"
+/>
+```
+
+### Uncontrolled
+
+Skip `value`/`values` and the combobox owns its state — `defaultValue` (or
+`defaultValues`) seeds it:
+
+<ComboboxUncontrolledDemo />
+
+```tsx
+<Combobox options={options} defaultValue="vue" placeholder="Framework…" />
+```
+
+### Invalid
+
+```tsx
+<Combobox options={options} invalid placeholder="Pick one…" />
+```
+
 ## Props
 
 | Prop | Type | Default | Description |
-|---|---|---|---|
+|---|---|---|--- |
 | `options` | `{ value: string; label: string }[]` | — | The option list |
-| `value` | `string` | — | Selected value (controlled) |
-| `onChange` | `(value: string) => void` | — | Called with the picked value (empty string deselects) |
+| `value` | `string` | — | Selected value (controlled, single mode) |
+| `values` | `string[]` | — | Selected values (controlled, multi mode) — implies `multiple` |
+| `defaultValue` / `defaultValues` | `string` / `string[]` | — | Initial selection without controlling; `defaultValues` implies `multiple` |
+| `multiple` | `boolean` | `false` | Multi-select mode: check-toggles, popover stays open |
+| `onChange` | `(value: string) => void` | — | Single mode: fires with the picked value (empty string deselects) |
+| `onValuesChange` | `(values: string[]) => void` | — | Multi mode: fires with the full selection after every toggle |
 | `placeholder` | `string` | `"Select…"` | Trigger + filter input placeholder |
 | `emptyText` | `string` | `"No results found."` | Empty-state text; English default, override for i18n |
 | `invalid` | `boolean` | `false` | Destructive trigger border + `aria-invalid` |

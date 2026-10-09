@@ -69,6 +69,21 @@ import { Popover, PopoverTrigger, PopoverContent, PopoverAnchor } from "@iammikz
   </Popover>
 </LivePreview>
 
+### Closing from inside
+
+Wrap a control in `PopoverClose` (it takes `asChild`) to close the
+popover from inside the content — it renders as a button that dismisses
+on click or keyboard activation:
+
+```tsx
+<PopoverContent className="w-64">
+  <p className="text-sm">Settings applied.</p>
+  <PopoverClose asChild>
+    <Button variant="outline" size="sm">Done</Button>
+  </PopoverClose>
+</PopoverContent>
+```
+
 ## Accessibility
 
 Radix wires `aria-expanded`/`aria-controls` on the trigger; Escape closes

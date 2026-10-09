@@ -28,6 +28,68 @@ import { NativeSelect } from "@iammikz/srui";
   </div>
 </LivePreview>
 
+### Sizes and invalid
+
+`size` maps to h-8 / h-9 / h-10; `invalid` paints the destructive border
+and sets `aria-invalid`. A disabled-looking first option with an empty
+value doubles as the placeholder.
+
+<LivePreview code={`<div className="flex flex-wrap items-center gap-4">
+  <div className="w-36">
+    <NativeSelect size="sm" aria-label="Day (sm)" defaultValue="mon">
+      <option value="mon">Monday</option>
+      <option value="tue">Tuesday</option>
+    </NativeSelect>
+  </div>
+  <div className="w-36">
+    <NativeSelect aria-label="Day (default)" defaultValue="mon">
+      <option value="mon">Monday</option>
+      <option value="tue">Tuesday</option>
+    </NativeSelect>
+  </div>
+  <div className="w-36">
+    <NativeSelect size="lg" aria-label="Day (lg)" defaultValue="mon">
+      <option value="mon">Monday</option>
+      <option value="tue">Tuesday</option>
+    </NativeSelect>
+  </div>
+  <div className="w-36">
+    <NativeSelect invalid aria-label="Pick a day">
+      <option value="">Pick a day…</option>
+      <option value="mon">Monday</option>
+      <option value="tue">Tuesday</option>
+    </NativeSelect>
+  </div>
+</div>`}>
+  <div className="flex flex-wrap items-center gap-4">
+    <div className="w-36">
+      <NativeSelect size="sm" aria-label="Day (sm)" defaultValue="mon">
+        <option value="mon">Monday</option>
+        <option value="tue">Tuesday</option>
+      </NativeSelect>
+    </div>
+    <div className="w-36">
+      <NativeSelect aria-label="Day (default)" defaultValue="mon">
+        <option value="mon">Monday</option>
+        <option value="tue">Tuesday</option>
+      </NativeSelect>
+    </div>
+    <div className="w-36">
+      <NativeSelect size="lg" aria-label="Day (lg)" defaultValue="mon">
+        <option value="mon">Monday</option>
+        <option value="tue">Tuesday</option>
+      </NativeSelect>
+    </div>
+    <div className="w-36">
+      <NativeSelect invalid aria-label="Pick a day">
+        <option value="">Pick a day…</option>
+        <option value="mon">Monday</option>
+        <option value="tue">Tuesday</option>
+      </NativeSelect>
+    </div>
+  </div>
+</LivePreview>
+
 ## Props
 
 All native `<select>` attributes plus:

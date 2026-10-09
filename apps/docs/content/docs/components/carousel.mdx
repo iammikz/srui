@@ -26,6 +26,22 @@ import { Carousel, CarouselContent, CarouselItem, CarouselPrevious, CarouselNext
   <CarouselDemo />
 </LivePreview>
 
+### Slide sizing
+
+Slides size themselves via the `className` on each `CarouselItem` — the
+track is a flex row, so `basis-*` utilities decide how many slides share a
+view:
+
+```tsx
+{/* one slide per view */}
+<CarouselItem className="basis-full">…</CarouselItem>
+```
+
+```tsx
+{/* two per view, four from the sm breakpoint up */}
+<CarouselItem className="basis-1/2 sm:basis-1/4">…</CarouselItem>
+```
+
 ## Exports
 
 | Export | Notes |

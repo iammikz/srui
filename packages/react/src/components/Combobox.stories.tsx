@@ -38,3 +38,31 @@ export const Disabled: Story = {
     <Combobox options={options} value="" onChange={() => {}} disabled className="w-56" />
   ),
 };
+
+export const Multiple: Story = {
+  name: "Multiple selection",
+  render: () => {
+    const [values, setValues] = useState(["react", "svelte"]);
+    return (
+      <div className="flex flex-col gap-3">
+        <Combobox
+          options={options}
+          multiple
+          values={values}
+          onValuesChange={setValues}
+          placeholder="Frameworks…"
+          className="w-72"
+        />
+        <span className="text-xs text-muted-foreground">
+          Selected: {values.length ? values.join(", ") : "none"}
+        </span>
+      </div>
+    );
+  },
+};
+
+export const Uncontrolled: Story = {
+  render: () => (
+    <Combobox options={options} defaultValue="vue" placeholder="Framework…" className="w-56" />
+  ),
+};

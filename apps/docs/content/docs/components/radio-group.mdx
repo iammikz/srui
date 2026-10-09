@@ -50,6 +50,21 @@ import { RadioGroup, RadioGroupItem } from "@iammikz/srui";
   </RadioGroup>
 </LivePreview>
 
+### Invalid
+
+`invalid` on the root paints destructive rings on the items and sets
+`aria-invalid` on the group.
+
+<LivePreview code={`<RadioGroup invalid className="w-40">
+  <label className="flex items-center gap-2 text-sm"><RadioGroupItem value="starter" /> Starter</label>
+  <label className="flex items-center gap-2 text-sm"><RadioGroupItem value="pro" /> Pro</label>
+</RadioGroup>`}>
+  <RadioGroup invalid className="w-40">
+    <label className="flex items-center gap-2 text-sm"><RadioGroupItem value="starter" /> Starter</label>
+    <label className="flex items-center gap-2 text-sm"><RadioGroupItem value="pro" /> Pro</label>
+  </RadioGroup>
+</LivePreview>
+
 ## Accessibility
 
 Full `radiogroup` ARIA pattern via Radix: arrow keys move selection,

@@ -100,7 +100,12 @@ test.describe("axe accessibility (§6.1)", () => {
       };
     });
     // The token itself must be the preset primary (indigo), not the page gray.
-    expect(outline.ringVar).toContain("0.5");
+    // Lightness may serialize as `oklch(0.5 …)` (dev CSS) or `oklch(50% …)`
+    // (production build normalizes to percentages) — compare numerically.
+    const m = outline.ringVar.match(/oklch\(\s*([\d.]+)%?/);
+    let lightness = m ? parseFloat(m[1]) : NaN;
+    if (lightness > 1) lightness /= 100;
+    expect(lightness).toBeCloseTo(0.5, 2);
   });
 });
 
@@ -230,6 +235,17 @@ test.describe("keyboard interactions (§6.4)", () => {
     await scope.getByRole("button", { name: "Next" }).click();
     await expect(firstName).toHaveText("Person 11");
     await expect(scope.getByText("Page 2 of 26")).toBeVisible();
+  });
+
+  test("InputOTP: click a slot and type the code", async ({ page }) => {
+    await page.goto("/?style=flat&scheme=light");
+    // input-otp stretches a transparent input over the whole group; clicking
+    // anywhere (the overlay itself here) focuses it — then typing fills slots.
+    await page.locator('#parity-p2 [data-slot="input-otp"]').click();
+    await page.keyboard.type("123456");
+    const slots = page.locator('#parity-p2 [data-slot="input-otp-slot"]');
+    await expect(slots.nth(0)).toHaveText("1");
+    await expect(slots.nth(5)).toHaveText("6");
   });
 
   test("CommandPalette: Ctrl+K opens, arrows + Enter run a command", async ({ page }) => {

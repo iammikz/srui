@@ -47,6 +47,15 @@ foreground text, matching the field.
   <Input disabled placeholder="Disabled" className="w-72" />
 </LivePreview>
 
+### File input
+
+<LivePreview code={`<Input type="file" aria-label="Attachment" />`}>
+  <Input type="file" aria-label="Attachment" className="w-72" />
+</LivePreview>
+
+The native browse button is styled to match — transparent background,
+foreground text — so a file field sits comfortably next to the rest.
+
 ## Accessibility
 
 - Native `<input>`; label it with `Label` + `htmlFor`, or wrap it in

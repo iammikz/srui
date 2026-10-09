@@ -61,12 +61,44 @@ Each part passes through Radix's own prop types:
 </Tabs>`}>
   <Tabs defaultValue="one">
     <TabsList className="w-full">
-      <TabsTrigger value="one">One</TabsTrigger>
-      <TabsTrigger value="two">Two</TabsTrigger>
-      <TabsTrigger value="three">Three</TabsTrigger>
-    </TabsList>
-  </Tabs>
+    <TabsTrigger value="one">One</TabsTrigger>
+    <TabsTrigger value="two">Two</TabsTrigger>
+    <TabsTrigger value="three">Three</TabsTrigger>
+  </TabsList>
+</Tabs>
 </LivePreview>
+
+### Controlled / vertical
+
+Both need state or layout CSS, so snippets only. Controlled tabs hold the
+value yourself — `value` + `onValueChange` instead of `defaultValue`:
+
+```tsx
+const [tab, setTab] = useState("account");
+
+<Tabs value={tab} onValueChange={setTab}>
+  <TabsList>
+    <TabsTrigger value="account">Account</TabsTrigger>
+    <TabsTrigger value="password">Password</TabsTrigger>
+  </TabsList>
+  <TabsContent value="account">Account settings…</TabsContent>
+  <TabsContent value="password">Password settings…</TabsContent>
+</Tabs>
+```
+
+Vertical tabs set `orientation="vertical"` on `Tabs` (arrow-key navigation
+follows orientation) and stack the list with a `flex-col` className:
+
+```tsx
+<Tabs orientation="vertical" defaultValue="account">
+  <TabsList className="flex h-fit flex-col">
+    <TabsTrigger value="account">Account</TabsTrigger>
+    <TabsTrigger value="password">Password</TabsTrigger>
+  </TabsList>
+  <TabsContent value="account">Account settings…</TabsContent>
+  <TabsContent value="password">Password settings…</TabsContent>
+</Tabs>
+```
 
 ## Accessibility
 

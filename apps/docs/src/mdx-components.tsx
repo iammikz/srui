@@ -204,6 +204,13 @@ import {
   MenubarLabel,
   MenubarSeparator,
   MenubarShortcut,
+  Pagination,
+  PaginationContent,
+  PaginationItem,
+  PaginationLink,
+  PaginationPrevious,
+  PaginationNext,
+  PaginationEllipsis,
   NavigationMenu,
   NavigationMenuList,
   NavigationMenuItem,
@@ -227,7 +234,11 @@ import { AppShellDemo } from "./components/app-shell-demo";
 import { ChartCardDemo } from "./components/chart-card-demo";
 import { CheckboxDemo } from "./components/checkbox-demo";
 import { CollapsibleDemo } from "./components/collapsible-demo";
-import { ComboboxDemo } from "./components/combobox-demo";
+import {
+  ComboboxDemo,
+  ComboboxMultipleDemo,
+  ComboboxUncontrolledDemo,
+} from "./components/combobox-demo";
 import { CommandPaletteDemo } from "./components/command-palette-demo";
 import { DataTableDemo, DataTableServerDemo } from "./components/data-table-demo";
 import { FormBuilderDemo } from "./components/form-builder-demo";
@@ -364,6 +375,8 @@ const mdxComponents = {
   CheckboxDemo,
   CollapsibleDemo,
   ComboboxDemo,
+  ComboboxMultipleDemo,
+  ComboboxUncontrolledDemo,
   CommandPaletteDemo,
   DataTableDemo,
   DataTableServerDemo,
@@ -528,6 +541,13 @@ const mdxComponents = {
   MenubarLabel,
   MenubarSeparator,
   MenubarShortcut,
+  Pagination,
+  PaginationContent,
+  PaginationItem,
+  PaginationLink,
+  PaginationPrevious,
+  PaginationNext,
+  PaginationEllipsis,
   InputOTPDemo,
   CarouselDemo,
   ChatDemo,
