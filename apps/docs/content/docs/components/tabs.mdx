@@ -1,10 +1,12 @@
 ---
 title: Tabs
-description: Tab navigation with an animated active state, wrapping Radix Tabs.
+description: Tab navigation with an optional animated active state, wrapping Radix Tabs.
 ---
 
 `Tabs` wraps `@radix-ui/react-tabs`. The list uses `bg-muted`; the active
-trigger lifts onto a `surface`; content changes cross-fade with
+trigger lifts onto a `surface`. Set `animation={true}` on `TabsList` to
+enable a sliding active-tab highlight. List animation defaults to `false`;
+content changes cross-fade with
 `animate-fade-in`.
 
 ## Installation
@@ -44,11 +46,29 @@ Each part passes through Radix's own prop types:
 | Export | Notes |
 |---|---|
 | `Tabs` | Root; `defaultValue` or `value`/`onValueChange` |
-| `TabsList` | The tab strip (`bg-muted`) |
+| `TabsList` | The tab strip (`bg-muted`); `animation?: boolean` defaults to `false` |
 | `TabsTrigger` | One tab button; `data-[state=active]` lifts onto `surface` |
 | `TabsContent` | Panel for one value; `animate-fade-in` on change |
 
 ## Examples
+
+### Animated highlight
+
+```tsx
+<Tabs defaultValue="account">
+  <TabsList animation={true}>
+    <TabsTrigger value="account">Account</TabsTrigger>
+    <TabsTrigger value="password">Password</TabsTrigger>
+  </TabsList>
+  <TabsContent value="account">Account settings…</TabsContent>
+  <TabsContent value="password">Password settings…</TabsContent>
+</Tabs>
+```
+
+Omit `animation` or set `animation={false}` for a static highlight.
+Reduced-motion preferences disable the sliding transition even when enabled.
+This option controls the list highlight and trigger transitions; `TabsContent`
+retains its existing content fade.
 
 ### Full-width tabs
 

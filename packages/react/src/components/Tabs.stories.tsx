@@ -25,3 +25,16 @@ export const Default: Story = {
     </Tabs>
   ),
 };
+
+export const Animated: Story = {
+  render: () => (
+    <Tabs defaultValue="account" className="w-96">
+      <TabsList animation={true}>
+        <TabsTrigger value="account">Account</TabsTrigger>
+        <TabsTrigger value="password">Password</TabsTrigger>
+      </TabsList>
+      <TabsContent value="account" className="mt-3">Account settings…</TabsContent>
+      <TabsContent value="password" className="mt-3">Password settings…</TabsContent>
+    </Tabs>
+  ),
+};
