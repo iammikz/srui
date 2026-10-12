@@ -1,5 +1,7 @@
 # srui
 
+<img src="packages/react/assets/srui-logo-horizontal.svg" alt="SRUI — React UI Library" width="400" />
+
 **srui** = **S**upercomponent **R**eact **UI**. A React + Tailwind v4
 super-component library with four runtime-switchable visual presets (flat,
 glass, neumorphic, skeuomorphic), shadcn-style design tokens, and animated

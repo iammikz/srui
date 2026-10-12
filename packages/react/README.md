@@ -1,5 +1,7 @@
 # @iammikz/srui
 
+<img src="https://raw.githubusercontent.com/iammikz/srui/main/packages/react/assets/srui-logo-horizontal.svg" alt="SRUI — React UI Library" width="400" />
+
 **srui** — Supercomponent React UI. A React component library for
 Tailwind CSS v4 with **four runtime-switchable visual presets** (flat,
 glass, neumorphic, skeuomorphic), shadcn-style design tokens, animated
@@ -12,6 +14,20 @@ them and style them with tokens; you never edit their source.
 
 - React 18 or 19
 - Tailwind CSS v4 (or use the [precompiled CSS fallback](#not-using-tailwind-precompiled-css) with no Tailwind at all)
+
+## Brand assets
+
+The package includes the SRUI horizontal logo and square icon. In Vite,
+import their URLs with:
+
+```tsx
+import sruiLogo from "@iammikz/srui/logo.svg?url";
+import sruiIcon from "@iammikz/srui/icon.svg?url";
+
+<img src={sruiLogo} alt="SRUI — React UI Library" />;
+```
+
+Other bundlers can load the same asset exports using their SVG URL support.
 
 ## Install
 

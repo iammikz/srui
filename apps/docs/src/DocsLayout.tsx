@@ -12,6 +12,8 @@ import {
 import { sidebarNav } from "./nav";
 import { SiteSearch } from "./components/site-search";
 import { StyleSwitcher } from "./components/style-switcher";
+import sruiLogo from "@iammikz/srui/logo.svg?url";
+import sruiIcon from "@iammikz/srui/icon.svg?url";
 
 /**
  * The shared page shell — built from AppShell (dogfooding: the site's own
@@ -38,14 +40,11 @@ function Wordmark() {
   return (
     <Link
       to="/"
-      className="flex items-baseline gap-2 no-underline outline-none focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-ring"
+      aria-label="SRUI home"
+      className="flex shrink-0 items-center no-underline outline-none focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-ring"
     >
-      <span className="text-lg font-bold tracking-tight text-foreground">
-        srui
-      </span>
-      <span className="hidden text-xs text-muted-foreground sm:inline">
-        Supercomponent React UI
-      </span>
+      <img src={sruiLogo} alt="" width={1600} height={420} className="hidden h-9 w-auto rounded-sm sm:block" />
+      <img src={sruiIcon} alt="" width={512} height={512} className="size-9 rounded-sm sm:hidden" />
     </Link>
   );
 }

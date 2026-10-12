@@ -1,5 +1,15 @@
 # @iammikz/srui
 
+## 1.9.0
+
+### Minor Changes
+
+- Add `NavigationMenu` sidebar mode with up to three expandable levels, active-page styling, automatic ancestor expansion, accessible disclosure controls, and router-compatible links. Use it in the docs app shell and App Shell examples.
+
+  Add opt-in `TabsList` animation with a sliding active indicator and reduced-motion support.
+
+  Include the supplied SRUI horizontal logo and square icon in the npm package through `logo.svg` and `icon.svg` exports. Add the logos to the docs header, mobile header, favicon, and package README.
+
 ## 1.8.0
 
 ### Minor Changes
