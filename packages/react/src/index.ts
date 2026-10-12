@@ -413,6 +413,13 @@ export {
   NavigationMenuViewport,
   NavigationMenuSub,
 } from "./components/NavigationMenu";
+export type {
+  NavigationMenuProps,
+  NavigationMenuSidebarItem,
+  NavigationMenuSidebarGroup,
+  NavigationMenuSidebarLink,
+  NavigationMenuSidebarLinkProps,
+} from "./components/NavigationMenu";
 export {
   InputGroup,
   InputGroupAddon,

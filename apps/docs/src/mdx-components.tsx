@@ -231,6 +231,7 @@ import { LivePreview } from "./components/live-preview";
 import { PresetGrid } from "./components/preset-grid";
 import { TokenPlayground } from "./components/token-playground";
 import { AppShellDemo } from "./components/app-shell-demo";
+import { NavigationMenuSidebarDemo } from "./components/navigation-menu-demo";
 import { ChartCardDemo } from "./components/chart-card-demo";
 import { CheckboxDemo } from "./components/checkbox-demo";
 import { CollapsibleDemo } from "./components/collapsible-demo";
@@ -371,6 +372,7 @@ const mdxComponents = {
   TooltipProvider,
   TooltipTrigger,
   AppShellDemo,
+  NavigationMenuSidebarDemo,
   ChartCardDemo,
   CheckboxDemo,
   CollapsibleDemo,

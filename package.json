@@ -11,6 +11,7 @@
     "build:docs": "pnpm --filter docs build",
     "test": "playwright test",
     "test:a11y": "playwright test",
+    "test:navigation": "playwright test -c playwright.navigation.config.ts",
     "test:visual": "playwright test -c playwright.visual.config.ts",
     "test:visual:update": "playwright test -c playwright.visual.config.ts --update-snapshots",
     "storybook": "pnpm --filter @iammikz/srui storybook",

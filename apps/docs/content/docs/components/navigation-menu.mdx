@@ -1,10 +1,11 @@
 ---
 title: Navigation Menu
-description: Site header navigation with flyouts, wrapping Radix NavigationMenu.
+description: Header flyouts and expandable sidebar navigation with up to three levels.
 ---
 
-`NavigationMenu` is the header-navigation pattern: a row of links and
-triggers whose content panels fly out into a shared animated viewport.
+`NavigationMenu` supports two patterns: header links with Radix flyouts,
+and an expandable sidebar with up to three navigation levels. The docs
+app uses the sidebar variant inside `AppShell`.
 
 ## Installation
 
@@ -63,6 +64,66 @@ import {
   </div>
 </LivePreview>
 
+## Sidebar navigation
+
+<div className="not-prose my-6 max-w-xs rounded-lg border border-sidebar-border bg-sidebar p-3">
+  <NavigationMenuSidebarDemo />
+</div>
+
+Use `variant="sidebar"` with nested `items`. A root group can contain
+links or subgroups; subgroups contain links, giving three levels at most.
+
+```tsx
+<NavigationMenu
+  variant="sidebar"
+  aria-label="Application"
+  activeHref="/projects/workspace/overview"
+  items={[
+    { id: "dashboard", label: "Dashboard", href: "/" },
+    {
+      id: "projects", label: "Projects",
+      children: [{
+        id: "workspace", label: "Workspace",
+        children: [
+          { id: "overview", label: "Overview", href: "/projects/workspace/overview" },
+          { id: "team", label: "Team", href: "/projects/workspace/team" },
+        ],
+      }],
+    },
+  ]}
+/>
+```
+
+| Sidebar prop | Description |
+|---|---|
+| `items` | Navigation data; each item needs a stable `id` and a `label` |
+| `activeHref` | Exact current URL; the matching link gets `aria-current="page"` and its ancestors open |
+| `renderLink` | Optional `(item, anchorProps) => ReactNode` for router integration; pass the supplied props to your link |
+| `aria-label` | Accessible navigation label; defaults to `Navigation` |
+
+Items support optional `icon` content. Groups accept `defaultOpen`; links
+accept `disabled`. Branches toggle independently with click, Enter, or Space.
+When `activeHref` changes, the matching ancestors reopen; users can still
+collapse the active branch manually. Use unique IDs among siblings.
+
+With React Router, normalize a trailing slash before passing `activeHref`
+if your item URLs omit it:
+
+```tsx
+<NavigationMenu
+  variant="sidebar"
+  items={items}
+  activeHref={pathname.replace(/\/$/, "") || "/"}
+  renderLink={(item, { href, ...props }) => <Link {...props} to={item.href} />}
+/>
+```
+
+Sidebar mode uses inline nested lists, so it needs no viewport, indicator,
+or header primitives. It uses the `--sidebar*` tokens across all presets.
+Exported types include `NavigationMenuProps`, `NavigationMenuSidebarItem`,
+`NavigationMenuSidebarGroup`, `NavigationMenuSidebarLink`, and
+`NavigationMenuSidebarLinkProps`.
+
 ## Exports
 
 | Export | Notes |
@@ -75,5 +136,10 @@ import {
 
 ## Accessibility
 
-Full Radix keyboard model: tab to a trigger, arrows between items, Enter or
-arrow-down opens content, Escape closes. Links expose standard semantics.
+Header mode uses the Radix keyboard model: tab to a trigger, arrows between
+items, Enter or arrow-down opens content, Escape closes.
+
+Sidebar mode uses ordinary navigation links and disclosure buttons with
+`aria-expanded` and `aria-controls`. Tab moves between visible controls;
+Enter or Space expands groups. Collapsed links are hidden from focus and
+assistive technology. The current page carries `aria-current="page"`.

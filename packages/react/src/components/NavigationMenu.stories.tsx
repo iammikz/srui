@@ -58,9 +58,7 @@ export const Default: Story = {
                 <ListItem title="Form Builder">
                   Zod-driven forms with headless hooks.
                 </ListItem>
-                <ListItem title="Command Palette">
-                  ⌘K palette on cmdk.
-                </ListItem>
+                <ListItem title="Command Palette">⌘K palette on cmdk.</ListItem>
               </ul>
             </NavigationMenuContent>
           </NavigationMenuItem>
@@ -75,7 +73,9 @@ export const Default: Story = {
             </NavigationMenuTrigger>
             <NavigationMenuContent>
               <ul className="grid w-64 gap-1 p-2">
-                <ListItem title="Preferences">Theme, presets, density.</ListItem>
+                <ListItem title="Preferences">
+                  Theme, presets, density.
+                </ListItem>
                 <ListItem title="Team">Members and roles.</ListItem>
               </ul>
             </NavigationMenuContent>
@@ -84,6 +84,51 @@ export const Default: Story = {
         <NavigationMenuIndicator />
         <NavigationMenuViewport />
       </NavigationMenu>
+    </div>
+  ),
+};
+
+export const ThreeLevelSidebar: Story = {
+  render: () => (
+    <div className="w-64 rounded-lg border border-sidebar-border bg-sidebar p-3">
+      <NavigationMenu
+        variant="sidebar"
+        activeHref="#overview"
+        items={[
+          {
+            id: "dashboard",
+            label: "Dashboard",
+            href: "#dashboard",
+            icon: <Layers />,
+          },
+          {
+            id: "projects",
+            label: "Projects",
+            children: [
+              {
+                id: "workspace",
+                label: "Workspace",
+                children: [
+                  { id: "overview", label: "Overview", href: "#overview" },
+                  { id: "team", label: "Team", href: "#team" },
+                  {
+                    id: "billing",
+                    label: "Billing",
+                    href: "#billing",
+                    disabled: true,
+                  },
+                ],
+              },
+            ],
+          },
+          {
+            id: "settings",
+            label: "Settings",
+            href: "#settings",
+            icon: <Settings />,
+          },
+        ]}
+      />
     </div>
   ),
 };

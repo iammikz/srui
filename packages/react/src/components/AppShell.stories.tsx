@@ -1,5 +1,6 @@
 import type { Meta, StoryObj } from "@storybook/react";
 import { AppShell } from "./AppShell";
+import { NavigationMenu } from "./NavigationMenu";
 import { Badge } from "./Badge";
 import { Card, CardContent } from "./Card";
 
@@ -13,18 +14,28 @@ export default meta;
 type Story = StoryObj<typeof AppShell>;
 
 const sidebar = (
-  <ul className="grid gap-1 text-sm">
-    {["Dashboard", "Projects", "Team", "Settings"].map((item) => (
-      <li key={item}>
-        <a
-          href="#"
-          className="block rounded-md px-3 py-2 transition-colors duration-(--dur-fast) hover:bg-sidebar-accent hover:text-sidebar-accent-foreground"
-        >
-          {item}
-        </a>
-      </li>
-    ))}
-  </ul>
+  <NavigationMenu
+    variant="sidebar"
+    activeHref="#overview"
+    items={[
+      { id: "dashboard", label: "Dashboard", href: "#dashboard" },
+      {
+        id: "projects",
+        label: "Projects",
+        children: [
+          {
+            id: "srui",
+            label: "srui",
+            children: [
+              { id: "overview", label: "Overview", href: "#overview" },
+              { id: "team", label: "Team", href: "#team" },
+            ],
+          },
+        ],
+      },
+      { id: "settings", label: "Settings", href: "#settings" },
+    ]}
+  />
 );
 
 export const DesktopShell: Story = {
@@ -33,7 +44,11 @@ export const DesktopShell: Story = {
     <AppShell
       sidebar={sidebar}
       topbar={<span className="text-sm font-medium">Acme Admin</span>}
-      breadcrumbs={[{ label: "Home" }, { label: "Projects" }, { label: "srui" }]}
+      breadcrumbs={[
+        { label: "Home" },
+        { label: "Projects" },
+        { label: "srui" },
+      ]}
       slots={{ topbarEnd: <Badge variant="success">live</Badge> }}
     >
       <Card className="max-w-md">

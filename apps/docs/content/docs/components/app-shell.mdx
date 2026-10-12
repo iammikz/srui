@@ -11,7 +11,7 @@ system. The main content area keeps a stable width across the swap.
 ## Installation
 
 ```tsx
-import { AppShell } from "@iammikz/srui";
+import { AppShell, NavigationMenu } from "@iammikz/srui";
 ```
 
 ## Usage
@@ -20,7 +20,13 @@ import { AppShell } from "@iammikz/srui";
 
 ```tsx
 <AppShell
-  sidebar={<nav>…</nav>}
+  sidebar={
+    <NavigationMenu
+      variant="sidebar"
+      items={navigationItems}
+      activeHref={currentPath}
+    />
+  }
   topbar={<span>Acme Admin</span>}
   breadcrumbs={[
     { label: "Home", href: "/" },
@@ -31,6 +37,12 @@ import { AppShell } from "@iammikz/srui";
   <main>your page</main>
 </AppShell>
 ```
+
+`AppShell` provides the layout and accepts sidebar content. Compose it with
+[`NavigationMenu`](/components/navigation-menu) for expandable navigation
+up to three levels. `navigationItems` is the nested item data and
+`currentPath` is the current page URL. The docs app shell uses this same
+combination, with **Components → category → component** in its sidebar.
 
 ## Props
 

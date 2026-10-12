@@ -1,3 +1,5 @@
+import type { NavigationMenuSidebarItem } from "@iammikz/srui";
+
 /**
  * Sidebar configuration — a plain TypeScript array, not a framework
  * convention. DocsLayout renders it as AppShell's sidebar; routes.tsx is
@@ -115,3 +117,107 @@ export const nav: NavSection[] = [
     ],
   },
 ];
+
+const componentCategories: Record<string, readonly string[]> = {
+  "Inputs & Forms": [
+    "button",
+    "input",
+    "select",
+    "combobox",
+    "checkbox",
+    "radio-group",
+    "switch",
+    "textarea",
+    "slider",
+    "color-picker",
+    "form-field",
+    "calendar",
+    "date-picker",
+    "date-range-picker",
+    "time-picker",
+    "time-range-picker",
+    "tag-input",
+    "file-upload",
+    "toggle",
+    "toggle-group",
+    "button-group",
+    "native-select",
+    "field",
+    "input-otp",
+    "input-group",
+  ],
+  Navigation: [
+    "tabs",
+    "dropdown-menu",
+    "breadcrumb",
+    "tree-view",
+    "pagination",
+    "context-menu",
+    "command",
+    "menubar",
+    "navigation-menu",
+  ],
+  "Feedback & Overlays": [
+    "dialog",
+    "loader",
+    "tooltip",
+    "popover",
+    "toast",
+    "alert",
+    "alert-dialog",
+    "progress",
+    "sheet",
+    "drawer",
+    "modal",
+    "hover-card",
+  ],
+  Layout: [
+    "card",
+    "separator",
+    "accordion",
+    "collapsible",
+    "scroll-area",
+    "aspect-ratio",
+    "carousel",
+    "resizable",
+  ],
+  "Super-components": [
+    "app-shell",
+    "data-table",
+    "chart-card",
+    "form-builder",
+    "command-palette",
+    "notification-center",
+    "wizard",
+  ],
+};
+
+/** Keep the page registry flat; derive the shell's three-level hierarchy. */
+export const sidebarNav: NavigationMenuSidebarItem[] = nav.map((section) => {
+  const links = section.items.map((item) => ({ ...item, id: item.href }));
+  if (section.section !== "Components") {
+    return {
+      id: section.section,
+      label: section.section,
+      defaultOpen: true,
+      children: links,
+    };
+  }
+  const categories = [...Object.keys(componentCategories), "Data Display"];
+  return {
+    id: "components",
+    label: "Components",
+    children: categories.map((label) => ({
+      id: `components-${label}`,
+      label,
+      children: links.filter((item) => {
+        const slug = item.href.split("/").pop()!;
+        const category =
+          Object.entries(componentCategories).find(([, slugs]) =>
+            slugs.includes(slug)
+          )?.[0] ?? "Data Display";
+        return category === label;
+      }),
+    })),
+  };
+});
