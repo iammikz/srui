@@ -1,5 +1,11 @@
 # @iammikz/srui
 
+## 1.10.0
+
+### Minor Changes
+
+- Add opt-in AppShell sidebar controls: `sidebarCollapsible` provides a desktop hamburger hide/show toggle, and `closeOnSelect` closes the mobile drawer or collapsible desktop sidebar after link selection. Preserve existing defaults and expanded desktop navigation state, and return focus to the hamburger when navigation closes.
+
 ## 1.9.0
 
 ### Minor Changes

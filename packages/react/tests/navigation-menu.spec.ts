@@ -40,6 +40,10 @@ test("active third-level page opens its ancestors and branches toggle with the k
   await components.click();
   await expect(components).toHaveAttribute("aria-expanded", "false");
   await nav.getByRole("link", { name: "Introduction", exact: true }).click();
+  // Wait for the router's React render before issuing the next history action.
+  await expect(
+    nav.getByRole("link", { name: "Introduction", exact: true })
+  ).toHaveAttribute("aria-current", "page");
   await page.goBack();
   await expect(components).toHaveAttribute("aria-expanded", "true");
   await expect(nav.getByRole("link", { name: "Input", exact: true })).toBeVisible();

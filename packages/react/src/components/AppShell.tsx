@@ -31,6 +31,10 @@ export interface AppShellProps {
   topbar?: React.ReactNode;
   breadcrumbs?: AppShellBreadcrumb[];
   children: React.ReactNode;
+  /** Show a hamburger toggle to hide/show the desktop sidebar. Defaults to false. */
+  sidebarCollapsible?: boolean;
+  /** Close the drawer (or collapsible desktop sidebar) on sidebar link selection. Defaults to false. */
+  closeOnSelect?: boolean;
   /** Tier 2 — slots + per-part classNames. */
   slots?: AppShellSlots;
   classNames?: AppShellClassNames;
@@ -75,10 +79,12 @@ function SidebarContent({
   children,
   footer,
   className,
+  onSelect,
 }: {
   children: React.ReactNode;
   footer?: React.ReactNode;
   className?: string;
+  onSelect?: React.MouseEventHandler<HTMLElement>;
 }) {
   return (
     <div
@@ -87,7 +93,7 @@ function SidebarContent({
         className,
       )}
     >
-      <nav aria-label="Sidebar" className="flex-1 overflow-y-auto p-3">
+      <nav aria-label="Sidebar" className="flex-1 overflow-y-auto p-3" onClick={onSelect}>
         {children}
       </nav>
       {footer ? <div className="border-t border-sidebar-border p-3">{footer}</div> : null}
@@ -106,34 +112,80 @@ export function AppShell({
   topbar,
   breadcrumbs,
   children,
+  sidebarCollapsible = false,
+  closeOnSelect = false,
   slots,
   classNames,
 }: AppShellProps) {
   const { isDesktop, drawerOpen, setDrawerOpen } = useAppShell();
+  const [sidebarHidden, setSidebarHidden] = React.useState(false);
+  const sidebarId = React.useId();
+  const toggleRef = React.useRef<HTMLButtonElement>(null);
+  const desktopSidebarOpen = !sidebarCollapsible || !sidebarHidden;
+
+  const handleSidebarSelect: React.MouseEventHandler<HTMLElement> = (event) => {
+    if (
+      !closeOnSelect || event.button !== 0 ||
+      event.metaKey || event.ctrlKey || event.shiftKey || event.altKey ||
+      !(event.target instanceof Element)
+    ) return;
+
+    const link = event.target.closest<HTMLAnchorElement>("a[href]");
+    if (
+      !link || !event.currentTarget.contains(link) ||
+      link.closest('[aria-disabled="true"], [disabled]') ||
+      link.hasAttribute("download") ||
+      (link.target && link.target.toLowerCase() !== "_self")
+    ) return;
+
+    // Router links commonly preventDefault while handling navigation themselves.
+    if (isDesktop) {
+      if (sidebarCollapsible) {
+        toggleRef.current?.focus();
+        setSidebarHidden(true);
+      }
+    } else {
+      setDrawerOpen(false);
+    }
+  };
 
   return (
     <div className={cn("flex min-h-svh w-full", classNames?.root)}>
       {isDesktop ? (
         <aside
+          id={sidebarId}
+          hidden={!desktopSidebarOpen}
           className={cn(
-            "sticky top-0 hidden h-svh shrink-0 border-r border-sidebar-border md:block",
+            "sticky top-0 hidden h-svh shrink-0 border-r border-sidebar-border",
+            desktopSidebarOpen && "md:block",
             classNames?.sidebar,
           )}
         >
-          <SidebarContent footer={slots?.sidebarFooter}>{sidebar}</SidebarContent>
+          <SidebarContent footer={slots?.sidebarFooter} onSelect={handleSidebarSelect}>
+            {sidebar}
+          </SidebarContent>
         </aside>
       ) : (
         <Dialog open={drawerOpen} onOpenChange={setDrawerOpen}>
           <DialogContent
+            id={sidebarId}
             showCloseButton={false}
             aria-describedby={undefined}
+            onCloseAutoFocus={(event) => {
+              if (toggleRef.current) {
+                event.preventDefault();
+                toggleRef.current.focus();
+              }
+            }}
             // flex (over the grid base) + overflow-hidden: the SidebarContent
             // column needs a real height constraint, else the nav's
             // overflow-y-auto never engages and the long menu overflows.
             className="surface left-0 top-0 flex h-svh max-w-[calc(100%-4rem)] w-72 translate-x-0 translate-y-0 flex-col overflow-hidden rounded-none border-r border-sidebar-border bg-sidebar p-0 text-sidebar-foreground motion-safe:animate-fade-in"
           >
             <DialogTitle className="sr-only">Navigation</DialogTitle>
-            <SidebarContent footer={slots?.sidebarFooter}>{sidebar}</SidebarContent>
+            <SidebarContent footer={slots?.sidebarFooter} onSelect={handleSidebarSelect}>
+              {sidebar}
+            </SidebarContent>
           </DialogContent>
         </Dialog>
       )}
@@ -145,14 +197,20 @@ export function AppShell({
             classNames?.topbar,
           )}
         >
-          {!isDesktop ? (
+          {!isDesktop || sidebarCollapsible ? (
             <Button
+              ref={toggleRef}
               variant="ghost"
               size="icon"
-              aria-label="Open navigation"
-              onClick={() => setDrawerOpen(true)}
+              aria-label={isDesktop && desktopSidebarOpen ? "Hide navigation" : "Open navigation"}
+              aria-expanded={isDesktop ? desktopSidebarOpen : drawerOpen}
+              aria-controls={sidebarId}
+              onClick={() => {
+                if (isDesktop) setSidebarHidden((hidden) => !hidden);
+                else setDrawerOpen((open) => !open);
+              }}
             >
-              <Menu />
+              <Menu aria-hidden="true" />
             </Button>
           ) : null}
           {topbar}

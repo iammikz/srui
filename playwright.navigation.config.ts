@@ -2,7 +2,7 @@ import { defineConfig } from "@playwright/test";
 
 export default defineConfig({
   testDir: "packages/react/tests",
-  testMatch: /navigation-menu\.spec\.ts/,
+  testMatch: /(navigation-menu|app-shell)\.spec\.ts/,
   outputDir: "packages/react/tests/.playwright",
   use: {
     baseURL: "http://localhost:5212",

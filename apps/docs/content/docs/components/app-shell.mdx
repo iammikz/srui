@@ -52,6 +52,44 @@ combination, with **Components → category → component** in its sidebar.
 | `topbar` | `ReactNode` | — | Topbar content (a menu button is added below 768px) |
 | `breadcrumbs` | `{ label: string; href?: string }[]` | — | Breadcrumb trail; last item is `aria-current="page"` |
 | `children` | `ReactNode` | — | Main content |
+| `sidebarCollapsible` | `boolean` | `false` | Adds a desktop hamburger button to hide/show the sidebar |
+| `closeOnSelect` | `boolean` | `false` | Closes the mobile drawer on link selection; also hides the desktop sidebar when `sidebarCollapsible` is enabled |
+
+## Hiding the sidebar
+
+Both behaviors are opt-in:
+
+```tsx
+<AppShell
+  sidebarCollapsible
+  closeOnSelect
+  sidebar={
+    <NavigationMenu
+      variant="sidebar"
+      items={navigationItems}
+      activeHref={currentPath}
+    />
+  }
+>
+  {children}
+</AppShell>
+```
+
+`sidebarCollapsible` adds a desktop hamburger button. Hiding the sidebar
+frees its width for the main content and preserves expanded navigation
+groups when you reopen it. The desktop hidden state survives viewport
+changes; mobile drawer state is separate.
+
+`closeOnSelect` reacts to enabled sidebar links (`a[href]`), including router
+links and keyboard activation. Expanding a group keeps navigation open.
+Modified clicks (Ctrl, Cmd, Shift, or Alt), download links, and links targeting
+another window keep it open too. Sidebar footer actions do not trigger it.
+Custom button-based navigation can use the headless hook in a custom layout.
+
+With only `closeOnSelect`, desktop navigation stays docked and mobile link
+selection closes the drawer. With only `sidebarCollapsible`, hiding and
+showing desktop navigation is manual. With neither, the existing fixed
+desktop sidebar and mobile drawer behavior is unchanged.
 
 ## Tier 2 — slots and classNames
 
@@ -77,6 +115,8 @@ const { isDesktop, drawerOpen, setDrawerOpen, openDrawer, closeDrawer } =
 
 Build a completely different shell (e.g. a collapsible icon rail) on top of
 it — the hook returns state and handlers only, no JSX.
+Each hook call owns its own state; it does not control an existing
+`<AppShell>`. Use the props above for the built-in shell.
 
 ## Accessibility
 
@@ -86,3 +126,6 @@ it — the hook returns state and handlers only, no JSX.
   carries `aria-current="page"`.
 - Crossing the breakpoint closes the drawer, so navigation is never
   duplicated between drawer and docked sidebar.
+- The hamburger reports `aria-expanded` and `aria-controls`. Closing the
+  drawer or selecting a link that hides desktop navigation returns focus
+  to the hamburger.

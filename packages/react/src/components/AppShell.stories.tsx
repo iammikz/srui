@@ -60,3 +60,15 @@ export const DesktopShell: Story = {
     </AppShell>
   ),
 };
+
+export const CollapsibleSidebar: Story = {
+  args: {
+    sidebar,
+    sidebarCollapsible: true,
+    closeOnSelect: true,
+    topbar: <span className="text-sm font-medium">Acme Admin</span>,
+    children: (
+      <p>Use the hamburger to hide/show navigation, or select a link to close it.</p>
+    ),
+  },
+};
